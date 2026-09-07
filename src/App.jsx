@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from './components/Navbar';
+import MarqueeTicker from './components/MarqueeTicker';
 import Hero from './components/Hero';
 import CaaBadge from './components/CaaBadge';
 import Services from './components/Services';
@@ -11,6 +12,7 @@ import BookingNotice from './components/BookingNotice';
 import Footer from './components/Footer';
 import AdminModal from './components/AdminModal';
 import ContactModal from './components/ContactModal';
+import FloatingActionDock from './components/FloatingActionDock';
 import InteractiveBackground from './components/InteractiveBackground';
 import { getStoredData, saveStoredData } from './utils/initialData';
 
@@ -43,6 +45,7 @@ export default function App() {
       {/* Main Content Sections */}
       <main className="relative z-10">
         <Hero onOpenBooking={() => setIsBookingOpen(true)} />
+        <MarqueeTicker />
         <CaaBadge />
         <Services />
         <Packages onSelectPackage={handleSelectPackage} siteData={siteData} />
@@ -54,6 +57,12 @@ export default function App() {
 
       {/* Footer */}
       <Footer onOpenAdmin={() => setIsAdminOpen(true)} contactData={siteData.contact} />
+
+      {/* Floating Quick Action Dock */}
+      <FloatingActionDock 
+        onOpenBooking={() => setIsBookingOpen(true)}
+        whatsappNumber={siteData.contact.cleanNumber}
+      />
 
       {/* Interactive Modals */}
       <AdminModal
