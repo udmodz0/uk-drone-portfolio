@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Check, Star, Crown, Zap, Send, Clock, Video, Camera, Sparkles, Smartphone } from 'lucide-react';
 
 export default function Packages({ onSelectPackage }) {
   const [activeTab, setActiveTab] = useState('videography');
@@ -9,59 +8,59 @@ export default function Packages({ onSelectPackage }) {
       id: 'essential',
       name: 'Essential',
       price: '£100',
-      tagline: 'Perfect for smaller events and special moments.',
+      tagline: 'Perfect for smaller celebrations & special highlights.',
       duration: '2 Hours Coverage',
-      icon: Zap,
-      badge: 'Starter',
+      icon: 'ri-zap-fill',
+      badge: 'Starter Package',
       featured: false,
       features: [
-        'Up to 2 hours filming',
-        'Drone aerial footage (DJI Air 3S)',
-        '2 edited videos',
-        '50 edited photos',
-        'Social-media-ready videos',
-        'High-quality digital delivery',
-        'CAA Safety Compliant'
+        'Up to 2 hours on-site filming',
+        'DJI Air 3S 4K aerial drone footage',
+        '2 fully edited video highlights',
+        '50 high-resolution edited photos',
+        'Social-media-ready 9:16 vertical clips',
+        'Secure 4K cloud digital delivery',
+        'CAA Safety & Airspace Compliant'
       ]
     },
     {
       id: 'premium',
       name: 'Premium',
       price: '£250',
-      tagline: 'Ideal for larger celebrations & full party coverage.',
+      tagline: 'Ideal for full parties & milestone events.',
       duration: '4 Hours Coverage',
-      icon: Star,
+      icon: 'ri-star-fill',
       badge: 'Most Popular',
       featured: true,
       features: [
-        'Up to 4 hours filming',
-        'Drone aerial footage (DJI Air 3S)',
-        '3 edited videos',
-        '100 edited photos',
-        'Longer highlight video',
-        'Social-media-ready content',
-        'High-quality digital delivery',
-        'Priority editing turnaround'
+        'Up to 4 hours on-site filming',
+        'DJI Air 3S 4K aerial drone footage',
+        '3 fully edited video highlights',
+        '100 high-resolution edited photos',
+        'Cinematic 4K color-graded showcase',
+        'Social-media-ready reels included',
+        'Priority 48-hour edit turnaround',
+        'Full raw footage access on request'
       ]
     },
     {
       id: 'fullevent',
-      name: 'Full Event',
+      name: 'Full Event VIP',
       price: '£400',
-      tagline: 'Complete package from start to finish.',
+      tagline: 'Complete VIP coverage from arrival to departure.',
       duration: 'Up to 6 Hours Coverage',
-      icon: Crown,
+      icon: 'ri-vip-crown-fill',
       badge: 'Complete VIP',
       featured: false,
       features: [
-        'Up to 6 hours filming',
-        'Drone aerial footage (DJI Air 3S)',
-        '5 edited videos',
-        '200 edited photos',
-        'Cinematic highlight video',
-        'Social-media-ready content',
-        'High-quality digital delivery',
-        'Full raw footage access on request'
+        'Up to 6 hours full event filming',
+        'DJI Air 3S 4K aerial drone footage',
+        '5 fully edited video highlights',
+        '200 high-resolution edited photos',
+        'Extended 4K cinematic film reel',
+        'Multi-angle ground & aerial shots',
+        'Priority 24-hour delivery window',
+        'Full raw video archive included'
       ]
     }
   ];
@@ -71,231 +70,225 @@ export default function Packages({ onSelectPackage }) {
       id: 'drone-photo',
       name: 'Drone Photography',
       price: '£30',
-      tagline: 'Stunning 50MP aerial drone photos',
+      tagline: 'Stunning 50MP aerial drone photography',
       count: '10 Edited Photos',
-      icon: Camera,
-      badge: '50MP Aerial',
+      icon: 'ri-camera-lens-fill',
+      badge: '50MP Aerial RAW',
       features: [
         'Professional aerial drone photography',
-        '10 high-quality edited drone photos',
+        '10 high-resolution edited drone photos',
         '50MP Dual Camera resolution',
-        'Professional photo color grading',
-        'Digital delivery via secure link',
+        'Professional Lightroom color grading',
+        'Digital delivery via secure cloud link',
         'Newcastle • Sunderland • Durham'
       ]
     },
     {
       id: 'iphone-photo',
-      name: 'iPhone Photography',
+      name: 'iPhone Ground Photography',
       price: '£25',
       tagline: 'High-quality ground event photography',
       count: '10 Edited Photos',
-      icon: Smartphone,
+      icon: 'ri-smartphone-fill',
       badge: 'iPhone 17 Pro',
       features: [
-        'Professional photography using iPhone 17 Pro',
-        '10 high-quality edited photos',
+        'Professional photography via iPhone 17 Pro',
+        '10 high-quality edited ground photos',
         'Ground-level portraits & candid moments',
-        'Professional photo editing & retouching',
-        'Digital delivery',
+        'Professional retouching & color adjustment',
+        'Instant digital delivery',
         'Newcastle • Sunderland • Durham'
       ]
     }
   ];
 
   return (
-    <section id="packages" className="py-24 bg-obsidian-900 relative">
-      {/* Background Subtle Gradient */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gold-500/5 rounded-full blur-[140px] pointer-events-none"></div>
+    <section id="packages" className="py-24 bg-obsidian-950 relative overflow-hidden">
+      {/* Background Radial Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[750px] bg-gold-500/5 rounded-full blur-[160px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Title */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-gold-500/10 border border-gold-500/30 text-gold-400 text-xs font-bold uppercase tracking-wider mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-gold-400" />
-            Transparent Pricing
+        <div className="text-center max-w-3xl mx-auto mb-14">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-gold-500/30 text-gold-400 text-xs font-mono font-bold uppercase tracking-widest mb-4 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+            <i className="ri-price-tag-3-line text-sm text-gold-400"></i>
+            TRANSPARENT PRICING
           </div>
           <h2 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight">
-            Event Videography & <span className="text-gold-400">Photography Packages</span>
+            Event Videography & <span className="bg-gradient-to-r from-gold-400 to-amber-500 bg-clip-text text-transparent text-glow-gold">Photography Packages</span>
           </h2>
-          <p className="mt-4 text-slate-300 text-base">
-            No hidden costs. Every package includes professional editing and high-res digital delivery.
+          <p className="mt-4 text-slate-300 text-base leading-relaxed">
+            Transparent pricing with zero hidden charges. Every package includes professional 4K editing and instant cloud delivery.
           </p>
 
-          {/* Tab Selector */}
-          <div className="mt-8 inline-flex p-1.5 rounded-2xl bg-obsidian-950 border border-slate-800 backdrop-blur-md">
+          {/* High-Tech Tab Selector Switch */}
+          <div className="mt-8 inline-flex p-1.5 rounded-2xl glass-panel-cinematic border border-white/10 shadow-2xl">
             <button
               onClick={() => setActiveTab('videography')}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs transition-all ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-mono font-bold text-xs transition-all duration-300 ${
                 activeTab === 'videography'
-                  ? 'bg-gold-gradient text-obsidian-950 shadow-lg shadow-gold-500/20'
+                  ? 'bg-gold-gradient text-obsidian-950 shadow-[0_0_20px_rgba(245,158,11,0.4)]'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Video className="w-4 h-4" />
-              <span>Event Videography & Drone</span>
+              <i className="ri-movie-2-line text-base"></i>
+              <span>Videography & Aerial Packages</span>
             </button>
             <button
               onClick={() => setActiveTab('photography')}
-              className={`flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs transition-all ${
+              className={`flex items-center gap-2 px-6 py-3 rounded-xl font-mono font-bold text-xs transition-all duration-300 ${
                 activeTab === 'photography'
-                  ? 'bg-gold-gradient text-obsidian-950 shadow-lg shadow-gold-500/20'
+                  ? 'bg-gold-gradient text-obsidian-950 shadow-[0_0_20px_rgba(245,158,11,0.4)]'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Camera className="w-4 h-4" />
+              <i className="ri-camera-lens-line text-base"></i>
               <span>Photography Packages</span>
             </button>
           </div>
         </div>
 
-        {/* VIDEOGRAPHY PACKAGES */}
+        {/* VIDEOGRAPHY PACKAGES GRID */}
         {activeTab === 'videography' && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-            {videographyPackages.map((pkg) => {
-              const Icon = pkg.icon;
-              return (
-                <div
-                  key={pkg.id}
-                  className={`rounded-3xl p-8 flex flex-col justify-between transition-all duration-300 relative ${
-                    pkg.featured
-                      ? 'glass-card-gold border-2 border-gold-400/70 shadow-2xl shadow-gold-500/15 md:-translate-y-3'
-                      : 'glass-panel border border-slate-800 hover:border-gold-500/30'
-                  }`}
-                >
-                  {pkg.featured && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gold-gradient text-obsidian-950 font-extrabold text-[11px] tracking-wider uppercase shadow-md flex items-center gap-1">
-                      <Star className="w-3 h-3 fill-obsidian-950" />
-                      {pkg.badge}
+            {videographyPackages.map((pkg) => (
+              <div
+                key={pkg.id}
+                className={`rounded-3xl p-8 flex flex-col justify-between transition-all duration-500 relative ${
+                  pkg.featured
+                    ? 'glass-card-gold border-2 border-gold-400 shadow-[0_0_40px_rgba(245,158,11,0.3)] md:-translate-y-4'
+                    : 'glass-panel-cinematic border border-white/10 hover:border-gold-500/40'
+                }`}
+              >
+                {pkg.featured && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gold-gradient text-obsidian-950 font-mono font-extrabold text-[11px] tracking-widest uppercase shadow-xl flex items-center gap-1.5">
+                    <i className="ri-star-fill text-obsidian-950"></i>
+                    {pkg.badge}
+                  </div>
+                )}
+
+                <div>
+                  <div className="flex items-center justify-between">
+                    <div className="w-12 h-12 rounded-2xl bg-obsidian-900 border border-white/15 flex items-center justify-center text-gold-400 shadow-inner">
+                      <i className={`${pkg.icon} text-2xl text-gold-400`}></i>
                     </div>
-                  )}
-
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <div className="w-12 h-12 rounded-2xl bg-obsidian-950 border border-slate-700/60 flex items-center justify-center text-gold-400">
-                        <Icon className="w-6 h-6" />
-                      </div>
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-900 text-slate-300 border border-slate-800 flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-gold-400" />
-                        {pkg.duration}
-                      </span>
-                    </div>
-
-                    <h3 className="font-display font-black text-2xl text-white mt-6">{pkg.name}</h3>
-                    <p className="text-slate-400 text-xs mt-1 min-h-[32px]">{pkg.tagline}</p>
-
-                    <div className="mt-6 flex items-baseline gap-1">
-                      <span className="font-display font-black text-4xl text-gold-400">{pkg.price}</span>
-                      <span className="text-slate-400 text-xs font-medium">/ package</span>
-                    </div>
-
-                    {/* Features list */}
-                    <ul className="mt-8 space-y-3 pt-6 border-t border-slate-800/80">
-                      {pkg.features.map((feat, i) => (
-                        <li key={i} className="flex items-start gap-3 text-xs text-slate-200">
-                          <div className="w-4 h-4 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <Check className="w-3 h-3" />
-                          </div>
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-obsidian-900 text-slate-300 border border-white/10 flex items-center gap-1.5">
+                      <i className="ri-time-line text-gold-400"></i>
+                      {pkg.duration}
+                    </span>
                   </div>
 
-                  <div className="mt-8 pt-4">
-                    <button
-                      onClick={() => onSelectPackage(pkg.name, pkg.price)}
-                      className={`w-full py-3.5 rounded-2xl font-bold text-xs transition-all flex items-center justify-center gap-2 ${
-                        pkg.featured
-                          ? 'bg-gold-gradient text-obsidian-950 shadow-lg shadow-gold-500/20 hover:opacity-95'
-                          : 'bg-obsidian-850 hover:bg-slate-800 text-white border border-slate-700'
-                      }`}
-                    >
-                      <Send className="w-4 h-4" />
-                      <span>Book {pkg.name} ({pkg.price})</span>
-                    </button>
+                  <h3 className="font-display font-black text-2xl text-white mt-6">{pkg.name}</h3>
+                  <p className="text-slate-400 text-xs mt-1 min-h-[36px]">{pkg.tagline}</p>
+
+                  <div className="mt-6 flex items-baseline gap-1.5">
+                    <span className="font-display font-black text-5xl text-gold-400 text-glow-gold">{pkg.price}</span>
+                    <span className="text-slate-400 text-xs font-mono">/ complete flight</span>
                   </div>
+
+                  {/* Features List */}
+                  <ul className="mt-8 space-y-3 pt-6 border-t border-white/10">
+                    {pkg.features.map((feat, i) => (
+                      <li key={i} className="flex items-start gap-3 text-xs text-slate-200">
+                        <div className="w-4 h-4 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center flex-shrink-0 mt-0.5 border border-gold-500/40">
+                          <i className="ri-check-line text-xs"></i>
+                        </div>
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              );
-            })}
+
+                <div className="mt-8 pt-4">
+                  <button
+                    onClick={() => onSelectPackage(pkg.name, pkg.price)}
+                    className={`btn-shimmer w-full py-4 rounded-2xl font-mono font-bold text-xs transition-all duration-300 flex items-center justify-center gap-2 ${
+                      pkg.featured
+                        ? 'bg-gold-gradient text-obsidian-950 shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.6)]'
+                        : 'bg-obsidian-850 hover:bg-slate-800 text-white border border-white/15 hover:border-gold-400/50'
+                    }`}
+                  >
+                    <i className="ri-send-plane-fill text-sm"></i>
+                    <span>Select {pkg.name} ({pkg.price})</span>
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
-        {/* PHOTOGRAPHY PACKAGES */}
+        {/* PHOTOGRAPHY PACKAGES GRID */}
         {activeTab === 'photography' && (
           <div id="photography" className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {photographyPackages.map((pkg) => {
-              const Icon = pkg.icon;
-              return (
-                <div
-                  key={pkg.id}
-                  className="glass-panel p-8 rounded-3xl border border-slate-800 hover:border-gold-500/30 transition-all flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <div className="w-12 h-12 rounded-2xl bg-obsidian-950 border border-slate-700 flex items-center justify-center text-gold-400">
-                        <Icon className="w-6 h-6" />
-                      </div>
-                      <span className="px-3 py-1 rounded-full text-xs font-bold bg-gold-500/10 text-gold-400 border border-gold-500/30">
-                        {pkg.badge}
-                      </span>
+            {photographyPackages.map((pkg) => (
+              <div
+                key={pkg.id}
+                className="glass-panel-cinematic p-8 rounded-3xl border border-white/10 hover:border-gold-500/40 transition-all flex flex-col justify-between shadow-2xl"
+              >
+                <div>
+                  <div className="flex items-center justify-between">
+                    <div className="w-12 h-12 rounded-2xl bg-obsidian-900 border border-white/15 flex items-center justify-center text-gold-400">
+                      <i className={`${pkg.icon} text-2xl text-gold-400`}></i>
                     </div>
-
-                    <h3 className="font-display font-black text-2xl text-white mt-6">{pkg.name}</h3>
-                    <p className="text-slate-400 text-xs mt-1">{pkg.tagline}</p>
-
-                    <div className="mt-6 flex items-baseline gap-2">
-                      <span className="font-display font-black text-4xl text-gold-400">{pkg.price}</span>
-                      <span className="text-slate-300 text-xs font-semibold">({pkg.count})</span>
-                    </div>
-
-                    <ul className="mt-8 space-y-3 pt-6 border-t border-slate-800/80">
-                      {pkg.features.map((feat, i) => (
-                        <li key={i} className="flex items-start gap-3 text-xs text-slate-200">
-                          <div className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <Check className="w-3 h-3" />
-                          </div>
-                          <span>{feat}</span>
-                        </li>
-                      ))}
-                    </ul>
+                    <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-gold-500/10 text-gold-400 border border-gold-500/30">
+                      {pkg.badge}
+                    </span>
                   </div>
 
-                  <div className="mt-8 pt-4">
-                    <button
-                      onClick={() => onSelectPackage(pkg.name, pkg.price)}
-                      className="w-full py-3.5 rounded-2xl font-bold text-xs bg-gold-gradient text-obsidian-950 shadow-md hover:opacity-95 transition-all flex items-center justify-center gap-2"
-                    >
-                      <Send className="w-4 h-4" />
-                      <span>Book {pkg.name} ({pkg.price})</span>
-                    </button>
+                  <h3 className="font-display font-black text-2xl text-white mt-6">{pkg.name}</h3>
+                  <p className="text-slate-400 text-xs mt-1">{pkg.tagline}</p>
+
+                  <div className="mt-6 flex items-baseline gap-2">
+                    <span className="font-display font-black text-5xl text-gold-400 text-glow-gold">{pkg.price}</span>
+                    <span className="text-slate-300 text-xs font-mono">({pkg.count})</span>
                   </div>
+
+                  <ul className="mt-8 space-y-3 pt-6 border-t border-white/10">
+                    {pkg.features.map((feat, i) => (
+                      <li key={i} className="flex items-start gap-3 text-xs text-slate-200">
+                        <div className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5 border border-emerald-500/40">
+                          <i className="ri-check-line text-xs"></i>
+                        </div>
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              );
-            })}
+
+                <div className="mt-8 pt-4">
+                  <button
+                    onClick={() => onSelectPackage(pkg.name, pkg.price)}
+                    className="btn-shimmer w-full py-4 rounded-2xl font-mono font-bold text-xs bg-gold-gradient text-obsidian-950 shadow-[0_0_25px_rgba(245,158,11,0.3)] hover:shadow-[0_0_35px_rgba(245,158,11,0.5)] transition-all flex items-center justify-center gap-2"
+                  >
+                    <i className="ri-send-plane-fill text-sm"></i>
+                    <span>Select {pkg.name} ({pkg.price})</span>
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         )}
 
-        {/* Optional Extras Box */}
-        <div className="mt-12 max-w-4xl mx-auto glass-panel p-6 rounded-3xl border border-slate-800 flex flex-col md:flex-row items-center justify-between gap-6">
+        {/* Tailored Custom Quote Banner */}
+        <div className="mt-14 max-w-4xl mx-auto glass-card-gold p-6 rounded-3xl border border-gold-500/40 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
           <div>
-            <div className="flex items-center gap-2 text-gold-400 font-bold text-sm">
-              <Sparkles className="w-4 h-4" />
-              <span>➕ Optional Extras & Bespoke Packages</span>
+            <div className="flex items-center gap-2 text-gold-300 font-bold text-sm font-display">
+              <i className="ri-sparkling-fill text-gold-400 text-base"></i>
+              <span>Custom Flight Missions & Bespoke Packages</span>
             </div>
-            <p className="text-slate-300 text-xs mt-1">
-              Need additional filming hours, extra edited photographs, or custom video edits? We cater tailored packages for any event length.
+            <p className="text-slate-300 text-xs mt-1 leading-relaxed">
+              Require specific flight durations, thermal photogrammetry, or multi-day event coverage? We craft tailored quotes for any project.
             </p>
           </div>
           
           <a
-            href="https://wa.me/447432266867?text=Hi!%20I'd%20like%20a%20bespoke%20quote%20for%20extra%20drone/photography%20services."
+            href="https://wa.me/447432266867?text=Hi!%20I'd%20like%20a%20bespoke%20quote%20for%20a%20custom%20drone/photography%20project."
             target="_blank"
             rel="noopener noreferrer"
-            className="px-6 py-3 rounded-xl bg-obsidian-850 hover:bg-obsidian-800 text-slate-100 border border-slate-700 text-xs font-bold transition-all flex-shrink-0"
+            className="btn-shimmer px-6 py-3.5 rounded-xl bg-obsidian-900 hover:bg-obsidian-850 text-slate-100 border border-white/20 hover:border-gold-400 text-xs font-mono font-bold transition-all flex-shrink-0 shadow-lg"
           >
-            Request Custom Quote
+            Request Custom Flight Quote
           </a>
         </div>
 

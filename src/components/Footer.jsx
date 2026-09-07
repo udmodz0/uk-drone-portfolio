@@ -1,5 +1,4 @@
 import React from 'react';
-import { ShieldCheck, MapPin, Phone, Lock, Heart, ArrowUp } from 'lucide-react';
 
 export default function Footer({ onOpenAdmin, contactData }) {
   const scrollToTop = () => {
@@ -7,61 +6,64 @@ export default function Footer({ onOpenAdmin, contactData }) {
   };
 
   return (
-    <footer className="bg-obsidian-950 border-t border-slate-800 text-slate-400 py-16 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-obsidian-950 border-t border-white/10 text-slate-400 py-16 relative overflow-hidden">
+      {/* Background Radar Lines */}
+      <div className="absolute inset-0 radar-grid opacity-10 pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-800/80">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
           
-          {/* Column 1: Brand & Logo */}
+          {/* Column 1: Brand & CAA Badge */}
           <div className="md:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl overflow-hidden border border-gold-500/40 p-0.5 bg-obsidian-900">
+              <div className="w-10 h-10 rounded-xl overflow-hidden border border-gold-500/40 p-0.5 bg-obsidian-900 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
                 <img src="/logo.jpeg" alt="AeroView Logo" className="w-full h-full object-cover rounded-lg" />
               </div>
-              <span className="font-display font-black text-2xl text-white tracking-tight">
-                AEROVIEW<span className="text-gold-500">.UK</span>
+              <span className="font-display font-black text-2xl text-white tracking-wider">
+                AEROVIEW<span className="text-gold-500 text-glow-gold">.UK</span>
               </span>
             </div>
 
-            <p className="text-xs text-slate-400 leading-relaxed max-w-md">
-              Professional aerial drone photography & videography service across Newcastle, Sunderland, Durham & surrounding North East areas. Operating DJI Air 3S 50MP drone systems under strict UK CAA regulations.
+            <p className="text-xs text-slate-300 leading-relaxed max-w-md">
+              Professional CAA registered drone operator & videography service based in Newcastle upon Tyne (NE3), serving Sunderland, Durham, and the North East. Operating DJI Air 3S 50MP dual-camera platforms.
             </p>
 
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold">
-              <ShieldCheck className="w-4 h-4" />
-              <span>CAA Registered Drone Operator • Valid Flyer ID & Operator ID</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold">
+              <i className="ri-shield-check-fill text-base"></i>
+              <span>CAA GVC & A2 COFC LICENSED OPERATOR</span>
             </div>
           </div>
 
-          {/* Column 2: Quick Links */}
+          {/* Column 2: Navigation Links */}
           <div>
-            <h4 className="font-display font-bold text-white text-sm mb-4">Navigation</h4>
-            <ul className="space-y-2 text-xs font-medium">
-              <li><a href="#services" className="hover:text-gold-400 transition-colors">What We Offer</a></li>
-              <li><a href="#packages" className="hover:text-gold-400 transition-colors">Videography Packages</a></li>
-              <li><a href="#photography" className="hover:text-gold-400 transition-colors">Photography Options</a></li>
-              <li><a href="#videos" className="hover:text-gold-400 transition-colors">Video Showcase</a></li>
-              <li><a href="#equipment" className="hover:text-gold-400 transition-colors">DJI Air 3S Tech Specs</a></li>
-              <li><a href="#safety" className="hover:text-gold-400 transition-colors">CAA Safety Standards</a></li>
+            <h4 className="font-display font-bold text-white text-sm uppercase tracking-wider mb-4">Flight Navigation</h4>
+            <ul className="space-y-2 text-xs font-mono">
+              <li><a href="#services" className="hover:text-gold-400 transition-colors flex items-center gap-1.5"><i className="ri-radar-line text-gold-400"></i> What We Offer</a></li>
+              <li><a href="#packages" className="hover:text-gold-400 transition-colors flex items-center gap-1.5"><i className="ri-price-tag-3-line text-gold-400"></i> Flight Packages</a></li>
+              <li><a href="#photography" className="hover:text-gold-400 transition-colors flex items-center gap-1.5"><i className="ri-camera-3-line text-gold-400"></i> 50MP Photography</a></li>
+              <li><a href="#videos" className="hover:text-gold-400 transition-colors flex items-center gap-1.5"><i className="ri-film-line text-gold-400"></i> Cinema Reels</a></li>
+              <li><a href="#equipment" className="hover:text-gold-400 transition-colors flex items-center gap-1.5"><i className="ri-cpu-line text-gold-400"></i> Drone Tech Specs</a></li>
+              <li><a href="#safety" className="hover:text-gold-400 transition-colors flex items-center gap-1.5"><i className="ri-shield-check-line text-gold-400"></i> CAA Compliance</a></li>
             </ul>
           </div>
 
           {/* Column 3: Contact & Base */}
           <div>
-            <h4 className="font-display font-bold text-white text-sm mb-4">Location & Contact</h4>
-            <ul className="space-y-3 text-xs">
+            <h4 className="font-display font-bold text-white text-sm uppercase tracking-wider mb-4">Flight Command Base</h4>
+            <ul className="space-y-3 text-xs font-mono">
               <li className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-skyline-400" />
+                <i className="ri-map-pin-2-fill text-cyber-400 text-base"></i>
                 <span>Base: {contactData.location}</span>
               </li>
               <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-emerald-400" />
+                <i className="ri-whatsapp-line text-emerald-400 text-base"></i>
                 <a href={`https://wa.me/${contactData.cleanNumber}`} target="_blank" rel="noreferrer" className="hover:underline">
                   WhatsApp: {contactData.whatsapp}
                 </a>
               </li>
-              <li className="text-[11px] text-amber-300 bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20">
-                ⚠️ Book appointments 1 week in advance for flight safety pre-checks.
+              <li className="text-[11px] text-gold-300 bg-gold-500/10 p-3 rounded-xl border border-gold-500/30">
+                ⚠️ Flight missions require min. 1 week advance booking for CAA risk checks.
               </li>
             </ul>
           </div>
@@ -69,7 +71,7 @@ export default function Footer({ onOpenAdmin, contactData }) {
         </div>
 
         {/* Footer Bottom Bar */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono">
           <div>
             © {new Date().getFullYear()} AeroView UK. All rights reserved. CAA Registered Operator.
           </div>
@@ -77,18 +79,18 @@ export default function Footer({ onOpenAdmin, contactData }) {
           <div className="flex items-center gap-4">
             <button
               onClick={onOpenAdmin}
-              className="flex items-center gap-1.5 text-slate-400 hover:text-gold-400 transition-colors font-medium"
+              className="flex items-center gap-1.5 text-slate-400 hover:text-gold-400 transition-colors font-bold"
             >
-              <Lock className="w-3.5 h-3.5" />
+              <i className="ri-lock-line text-gold-400 text-sm"></i>
               <span>Pilot Admin Portal</span>
             </button>
 
             <button
               onClick={scrollToTop}
-              className="p-2 rounded-xl bg-obsidian-850 border border-slate-800 text-slate-300 hover:text-white hover:border-gold-500/40 transition-all"
+              className="w-9 h-9 rounded-xl bg-obsidian-900 border border-white/15 text-slate-300 hover:text-white hover:border-gold-400 flex items-center justify-center transition-all shadow-lg"
               aria-label="Back to Top"
             >
-              <ArrowUp className="w-4 h-4" />
+              <i className="ri-arrow-up-line text-lg text-gold-400"></i>
             </button>
           </div>
         </div>
