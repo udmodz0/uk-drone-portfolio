@@ -39,15 +39,15 @@ export default function InteractiveBackground() {
     window.addEventListener('mouseleave', handleMouseLeave);
 
     const colors = [
-      'rgba(245, 158, 11, ',  // Amber/Gold
+      'rgba(59, 130, 246, ',  // Electric Blue
+      'rgba(37, 99, 235, ',   // Royal Blue
       'rgba(56, 189, 248, ',  // Cyber Cyan
-      'rgba(255, 255, 255, ', // Soft White
-      'rgba(16, 185, 129, '   // Emerald
+      'rgba(255, 255, 255, '  // Pristine White
     ];
 
     for (let i = 0; i < particleCount; i++) {
       const colorBase = colors[Math.floor(Math.random() * colors.length)];
-      const opacity = Math.random() * 0.4 + 0.15;
+      const opacity = Math.random() * 0.45 + 0.2;
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -64,7 +64,7 @@ export default function InteractiveBackground() {
       ctx.clearRect(0, 0, width, height);
 
       // Draw faint HUD grid lines
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.015)';
+      ctx.strokeStyle = 'rgba(59, 130, 246, 0.025)';
       ctx.lineWidth = 1;
       const gridSize = 60;
       for (let x = 0; x < width; x += gridSize) {
@@ -119,8 +119,8 @@ export default function InteractiveBackground() {
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < 110) {
-            const lineAlpha = (1 - dist / 110) * 0.12;
-            ctx.strokeStyle = `rgba(255, 255, 255, ${lineAlpha})`;
+            const lineAlpha = (1 - dist / 110) * 0.16;
+            ctx.strokeStyle = `rgba(59, 130, 246, ${lineAlpha})`;
             ctx.lineWidth = 0.6;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
@@ -129,6 +129,7 @@ export default function InteractiveBackground() {
           }
         }
       }
+
 
       animationFrameId = requestAnimationFrame(render);
     };

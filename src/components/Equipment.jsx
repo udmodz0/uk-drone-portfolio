@@ -10,14 +10,14 @@ export default function Equipment() {
         
         {/* Section Title */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-gold-500/30 text-gold-400 text-xs font-mono font-bold uppercase tracking-widest mb-4 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-            <i className="ri-cpu-line text-sm text-gold-400"></i>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-blue-500/40 text-blue-400 text-xs font-mono font-bold uppercase tracking-widest mb-4 shadow-[0_0_15px_rgba(59,130,246,0.25)]">
+            <i className="ri-cpu-line text-sm text-blue-400"></i>
             FLEET HANGAR & TECHNICAL SPECS
           </div>
           <h2 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight">
-            Powered By Dual-Camera <span className="bg-gradient-to-r from-gold-400 to-amber-500 bg-clip-text text-transparent text-glow-gold">DJI Air 3S</span>
+            Powered By Dual-Camera <span className="bg-gradient-to-r from-white via-blue-300 to-blue-500 bg-clip-text text-transparent text-glow-blue">DJI Air 3S</span>
           </h2>
-          <p className="mt-4 text-slate-300 text-base leading-relaxed">
+          <p className="mt-4 text-slate-200 text-base leading-relaxed">
             We deploy flagship aviation hardware to guarantee crisp 50MP imagery, ultra-smooth 4K 60fps video, and reliable ground capture.
           </p>
         </div>
@@ -26,18 +26,18 @@ export default function Equipment() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           
           {/* DJI Air 3S Card */}
-          <div className="glass-panel-cinematic p-8 rounded-3xl border border-white/10 relative hover:border-gold-400/50 transition-all duration-500 shadow-2xl">
+          <div className="glass-panel-cinematic p-8 rounded-3xl border border-white/15 relative hover:border-blue-400/50 transition-all duration-500 shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-center justify-center text-gold-400 font-bold text-2xl shadow-[0_0_20px_rgba(245,158,11,0.2)]">
+                <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold text-2xl shadow-[0_0_20px_rgba(59,130,246,0.25)]">
                   <i className="ri-flight-takeoff-line"></i>
                 </div>
                 <div>
-                  <span className="text-[10px] font-mono font-bold text-gold-400 uppercase tracking-widest">FLAGSHIP AERIAL PLATFORM</span>
+                  <span className="text-[10px] font-mono font-bold text-blue-400 uppercase tracking-widest">FLAGSHIP AERIAL PLATFORM</span>
                   <h3 className="font-display font-black text-2xl text-white">DJI Air 3S Dual-Camera Payload</h3>
                 </div>
               </div>
-              <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-gold-500/20 text-gold-300 border border-gold-500/40">
+              <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40">
                 50MP • 4K HDR
               </span>
             </div>
@@ -48,7 +48,7 @@ export default function Equipment() {
 
             <div className="grid grid-cols-2 gap-4 font-mono">
               <div className="p-4 rounded-2xl bg-obsidian-900/90 border border-white/10">
-                <div className="text-gold-400 font-bold text-base flex items-center gap-1.5">
+                <div className="text-blue-400 font-bold text-base flex items-center gap-1.5">
                   <i className="ri-camera-3-line"></i>
                   <span>50MP Resolution</span>
                 </div>
@@ -56,7 +56,7 @@ export default function Equipment() {
               </div>
 
               <div className="p-4 rounded-2xl bg-obsidian-900/90 border border-white/10">
-                <div className="text-cyber-400 font-bold text-base flex items-center gap-1.5">
+                <div className="text-cyan-400 font-bold text-base flex items-center gap-1.5">
                   <i className="ri-film-line"></i>
                   <span>4K 60fps HDR</span>
                 </div>
@@ -72,7 +72,7 @@ export default function Equipment() {
               </div>
 
               <div className="p-4 rounded-2xl bg-obsidian-900/90 border border-white/10">
-                <div className="text-purple-400 font-bold text-base flex items-center gap-1.5">
+                <div className="text-indigo-400 font-bold text-base flex items-center gap-1.5">
                   <i className="ri-speed-line"></i>
                   <span>45 Min Flight</span>
                 </div>
@@ -82,18 +82,18 @@ export default function Equipment() {
           </div>
 
           {/* iPhone 17 Pro Card */}
-          <div className="glass-panel-cinematic p-8 rounded-3xl border border-white/10 relative hover:border-cyber-400/50 transition-all duration-500 shadow-2xl">
+          <div className="glass-panel-cinematic p-8 rounded-3xl border border-white/15 relative hover:border-blue-400/50 transition-all duration-500 shadow-2xl">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-cyber-500/10 border border-cyber-500/30 flex items-center justify-center text-cyber-400 font-bold text-2xl shadow-[0_0_20px_rgba(56,189,248,0.2)]">
+                <div className="w-14 h-14 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400 font-bold text-2xl shadow-[0_0_20px_rgba(59,130,246,0.25)]">
                   <i className="ri-smartphone-line"></i>
                 </div>
                 <div>
-                  <span className="text-[10px] font-mono font-bold text-cyber-400 uppercase tracking-widest">GROUND PHOTOGRAPHY RIG</span>
+                  <span className="text-[10px] font-mono font-bold text-blue-400 uppercase tracking-widest">GROUND PHOTOGRAPHY RIG</span>
                   <h3 className="font-display font-black text-2xl text-white">iPhone 17 Pro Ground Array</h3>
                 </div>
               </div>
-              <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-cyber-500/20 text-cyber-300 border border-cyber-500/40">
+              <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40">
                 48MP ProRAW
               </span>
             </div>
@@ -104,7 +104,7 @@ export default function Equipment() {
 
             <div className="grid grid-cols-2 gap-4 font-mono">
               <div className="p-4 rounded-2xl bg-obsidian-900/90 border border-white/10">
-                <div className="text-cyber-400 font-bold text-base flex items-center gap-1.5">
+                <div className="text-blue-400 font-bold text-base flex items-center gap-1.5">
                   <i className="ri-camera-lens-line"></i>
                   <span>48MP ProRAW</span>
                 </div>
@@ -112,7 +112,7 @@ export default function Equipment() {
               </div>
 
               <div className="p-4 rounded-2xl bg-obsidian-900/90 border border-white/10">
-                <div className="text-gold-400 font-bold text-base flex items-center gap-1.5">
+                <div className="text-cyan-400 font-bold text-base flex items-center gap-1.5">
                   <i className="ri-vidicon-line"></i>
                   <span>4K ProRes</span>
                 </div>
@@ -128,7 +128,7 @@ export default function Equipment() {
               </div>
 
               <div className="p-4 rounded-2xl bg-obsidian-900/90 border border-white/10">
-                <div className="text-purple-400 font-bold text-base flex items-center gap-1.5">
+                <div className="text-indigo-400 font-bold text-base flex items-center gap-1.5">
                   <i className="ri-share-forward-line"></i>
                   <span>Instant Sync</span>
                 </div>
@@ -143,3 +143,4 @@ export default function Equipment() {
     </section>
   );
 }
+

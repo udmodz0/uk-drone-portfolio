@@ -28,45 +28,45 @@ Please confirm flight availability!`;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex items-center justify-center p-4 overflow-y-auto">
-      <div className="relative w-full max-w-xl glass-panel-cinematic rounded-3xl overflow-hidden border border-gold-500/50 shadow-[0_0_50px_rgba(245,158,11,0.3)] my-8 animate-in fade-in zoom-in-95 duration-300">
+      <div className="relative w-full max-w-xl glass-panel-cinematic rounded-3xl overflow-hidden border border-blue-500/40 shadow-[0_0_50px_rgba(37,99,235,0.3)] my-8 animate-in fade-in zoom-in-95 duration-300">
         
         {/* Header */}
         <div className="flex items-center justify-between p-6 bg-obsidian-950 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-gold-500/10 border border-gold-500/40 flex items-center justify-center text-gold-400 font-bold text-xl shadow-[0_0_15px_rgba(245,158,11,0.2)]">
+            <div className="w-11 h-11 rounded-2xl bg-blue-500/10 border border-blue-500/40 flex items-center justify-center text-blue-400 font-bold text-xl shadow-[0_0_15px_rgba(59,130,246,0.25)]">
               <i className="ri-rocket-2-line"></i>
             </div>
             <div>
               <h3 className="font-display font-black text-xl text-white">Book Flight Mission / Inquiry</h3>
-              <p className="text-xs font-mono text-slate-400">Direct WhatsApp instant flight booking</p>
+              <p className="text-xs font-mono text-slate-300">Direct WhatsApp instant flight booking</p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="w-9 h-9 rounded-full text-slate-400 hover:text-white bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all"
+            className="w-9 h-9 rounded-full text-slate-300 hover:text-white bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all"
           >
             <i className="ri-close-line text-xl"></i>
           </button>
         </div>
 
         {/* Modal Body Form */}
-        <form onSubmit={handleWhatsAppSend} className="p-6 space-y-4">
+        <form onSubmit={handleWhatsAppSend} className="p-6 space-y-4 font-mono">
           
           {/* Policy Notice Box */}
-          <div className="p-4 rounded-2xl bg-gold-500/10 border border-gold-500/30 flex items-start gap-3 text-xs font-mono text-gold-300">
-            <i className="ri-time-line text-lg text-gold-400 flex-shrink-0 mt-0.5"></i>
+          <div className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/30 flex items-start gap-3 text-xs text-blue-300">
+            <i className="ri-time-line text-lg text-blue-400 flex-shrink-0 mt-0.5"></i>
             <div>
-              <span className="font-bold text-gold-300">Minimum 1 Week Notice:</span> Please select dates at least 7 days in advance for CAA flight risk assessments & airspace clearance.
+              <span className="font-bold text-white">Minimum 1 Week Notice:</span> Please select dates at least 7 days in advance for CAA flight risk assessments & airspace clearance.
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">Selected Package</label>
+            <label className="text-xs font-bold text-slate-200 uppercase tracking-wider">Selected Package</label>
             <select
               value={packageInput}
               onChange={(e) => setPackageInput(e.target.value)}
-              className="w-full mt-1.5 px-4 py-3 rounded-xl bg-obsidian-900 border border-white/15 text-white text-xs font-mono font-bold focus:border-gold-400 focus:outline-none"
+              className="w-full mt-1.5 px-4 py-3 rounded-xl bg-obsidian-900 border border-white/15 text-white text-xs font-bold focus:border-blue-400 focus:outline-none"
             >
               <option value="Essential (£100)">Essential Videography Package — £100 (2 Hours)</option>
               <option value="Premium (£250)">Premium Videography Package — £250 (4 Hours - Popular)</option>
@@ -79,11 +79,11 @@ Please confirm flight availability!`;
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">Event Category</label>
+              <label className="text-xs font-bold text-slate-200 uppercase tracking-wider">Event Category</label>
               <select
                 value={eventType}
                 onChange={(e) => setEventType(e.target.value)}
-                className="w-full mt-1.5 px-4 py-3 rounded-xl bg-obsidian-900 border border-white/15 text-white text-xs font-mono focus:border-gold-400 focus:outline-none"
+                className="w-full mt-1.5 px-4 py-3 rounded-xl bg-obsidian-900 border border-white/15 text-white text-xs focus:border-blue-400 focus:outline-none"
               >
                 <option value="Birthday Celebration">🎂 Birthday Party</option>
                 <option value="Outdoor Party / BBQ">🎉 Outdoor Party & Event</option>
@@ -94,41 +94,41 @@ Please confirm flight availability!`;
             </div>
 
             <div>
-              <label className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">Preferred Flight Date</label>
+              <label className="text-xs font-bold text-slate-200 uppercase tracking-wider">Preferred Flight Date</label>
               <input
                 type="date"
                 value={preferredDate}
                 onChange={(e) => setPreferredDate(e.target.value)}
-                className="w-full mt-1.5 px-4 py-3 rounded-xl bg-obsidian-900 border border-white/15 text-white text-xs font-mono focus:border-gold-400 focus:outline-none"
+                className="w-full mt-1.5 px-4 py-3 rounded-xl bg-obsidian-900 border border-white/15 text-white text-xs focus:border-blue-400 focus:outline-none"
               />
             </div>
           </div>
 
           <div>
-            <label className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">Location / Postcode</label>
+            <label className="text-xs font-bold text-slate-200 uppercase tracking-wider">Location / Postcode</label>
             <input
               type="text"
               placeholder="e.g. Newcastle NE3, Sunderland, Durham"
               value={locationInput}
               onChange={(e) => setLocationInput(e.target.value)}
-              className="w-full mt-1.5 px-4 py-3 rounded-xl bg-obsidian-900 border border-white/15 text-white text-xs font-mono focus:border-gold-400 focus:outline-none"
+              className="w-full mt-1.5 px-4 py-3 rounded-xl bg-obsidian-900 border border-white/15 text-white text-xs focus:border-blue-400 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="text-xs font-mono font-bold text-slate-300 uppercase tracking-wider">Additional Flight Notes</label>
+            <label className="text-xs font-bold text-slate-200 uppercase tracking-wider">Additional Flight Notes</label>
             <textarea
               rows={2}
               placeholder="Any specific requests or filming preferences..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full mt-1.5 px-4 py-3 rounded-xl bg-obsidian-900 border border-white/15 text-white text-xs font-mono focus:border-gold-400 focus:outline-none"
+              className="w-full mt-1.5 px-4 py-3 rounded-xl bg-obsidian-900 border border-white/15 text-white text-xs focus:border-blue-400 focus:outline-none"
             />
           </div>
 
           <button
             type="submit"
-            className="btn-shimmer w-full py-4 rounded-2xl font-mono font-bold text-xs bg-gold-gradient text-obsidian-950 shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.6)] transition-all flex items-center justify-center gap-2"
+            className="btn-shimmer w-full py-4 rounded-2xl font-bold text-xs bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-[0_0_25px_rgba(37,99,235,0.45)] hover:shadow-[0_0_35px_rgba(37,99,235,0.65)] transition-all flex items-center justify-center gap-2 border border-blue-400/30"
           >
             <i className="ri-whatsapp-line text-lg"></i>
             <span>Send Booking Inquiry via WhatsApp ({contactData.whatsapp})</span>
@@ -139,3 +139,4 @@ Please confirm flight availability!`;
     </div>
   );
 }
+

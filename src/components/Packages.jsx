@@ -105,31 +105,31 @@ export default function Packages({ onSelectPackage }) {
   return (
     <section id="packages" className="py-24 bg-obsidian-950 relative overflow-hidden">
       {/* Background Radial Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[750px] bg-gold-500/5 rounded-full blur-[160px] pointer-events-none"></div>
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[750px] bg-blue-600/10 rounded-full blur-[160px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Title */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-gold-500/30 text-gold-400 text-xs font-mono font-bold uppercase tracking-widest mb-4 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-            <i className="ri-price-tag-3-line text-sm text-gold-400"></i>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-blue-500/40 text-blue-400 text-xs font-mono font-bold uppercase tracking-widest mb-4 shadow-[0_0_15px_rgba(59,130,246,0.25)]">
+            <i className="ri-price-tag-3-line text-sm text-blue-400"></i>
             TRANSPARENT PRICING
           </div>
           <h2 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight">
-            Event Videography & <span className="bg-gradient-to-r from-gold-400 to-amber-500 bg-clip-text text-transparent text-glow-gold">Photography Packages</span>
+            Event Videography & <span className="bg-gradient-to-r from-white via-blue-300 to-blue-500 bg-clip-text text-transparent text-glow-blue">Photography Packages</span>
           </h2>
-          <p className="mt-4 text-slate-300 text-base leading-relaxed">
+          <p className="mt-4 text-slate-200 text-base leading-relaxed">
             Transparent pricing with zero hidden charges. Every package includes professional 4K editing and instant cloud delivery.
           </p>
 
           {/* High-Tech Tab Selector Switch */}
-          <div className="mt-8 inline-flex p-1.5 rounded-2xl glass-panel-cinematic border border-white/10 shadow-2xl">
+          <div className="mt-8 inline-flex p-1.5 rounded-2xl glass-panel-cinematic border border-white/15 shadow-2xl">
             <button
               onClick={() => setActiveTab('videography')}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-mono font-bold text-xs transition-all duration-300 ${
                 activeTab === 'videography'
-                  ? 'bg-gold-gradient text-obsidian-950 shadow-[0_0_20px_rgba(245,158,11,0.4)]'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-[0_0_20px_rgba(37,99,235,0.45)]'
+                  : 'text-slate-300 hover:text-white'
               }`}
             >
               <i className="ri-movie-2-line text-base"></i>
@@ -139,8 +139,8 @@ export default function Packages({ onSelectPackage }) {
               onClick={() => setActiveTab('photography')}
               className={`flex items-center gap-2 px-6 py-3 rounded-xl font-mono font-bold text-xs transition-all duration-300 ${
                 activeTab === 'photography'
-                  ? 'bg-gold-gradient text-obsidian-950 shadow-[0_0_20px_rgba(245,158,11,0.4)]'
-                  : 'text-slate-400 hover:text-white'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-[0_0_20px_rgba(37,99,235,0.45)]'
+                  : 'text-slate-300 hover:text-white'
               }`}
             >
               <i className="ri-camera-lens-line text-base"></i>
@@ -157,41 +157,41 @@ export default function Packages({ onSelectPackage }) {
                 key={pkg.id}
                 className={`rounded-3xl p-8 flex flex-col justify-between transition-all duration-500 relative ${
                   pkg.featured
-                    ? 'glass-card-gold border-2 border-gold-400 shadow-[0_0_40px_rgba(245,158,11,0.3)] md:-translate-y-4'
-                    : 'glass-panel-cinematic border border-white/10 hover:border-gold-500/40'
+                    ? 'glass-card-blue border-2 border-blue-400 shadow-[0_0_40px_rgba(37,99,235,0.4)] md:-translate-y-4'
+                    : 'glass-panel-cinematic border border-white/15 hover:border-blue-500/50'
                 }`}
               >
                 {pkg.featured && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gold-gradient text-obsidian-950 font-mono font-extrabold text-[11px] tracking-widest uppercase shadow-xl flex items-center gap-1.5">
-                    <i className="ri-star-fill text-obsidian-950"></i>
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white font-mono font-extrabold text-[11px] tracking-widest uppercase shadow-xl flex items-center gap-1.5 border border-blue-400/40">
+                    <i className="ri-star-fill text-white"></i>
                     {pkg.badge}
                   </div>
                 )}
 
                 <div>
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-obsidian-900 border border-white/15 flex items-center justify-center text-gold-400 shadow-inner">
-                      <i className={`${pkg.icon} text-2xl text-gold-400`}></i>
+                    <div className="w-12 h-12 rounded-2xl bg-obsidian-900 border border-white/15 flex items-center justify-center text-blue-400 shadow-inner">
+                      <i className={`${pkg.icon} text-2xl text-blue-400`}></i>
                     </div>
-                    <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-obsidian-900 text-slate-300 border border-white/10 flex items-center gap-1.5">
-                      <i className="ri-time-line text-gold-400"></i>
+                    <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-obsidian-900 text-slate-200 border border-white/15 flex items-center gap-1.5">
+                      <i className="ri-time-line text-blue-400"></i>
                       {pkg.duration}
                     </span>
                   </div>
 
                   <h3 className="font-display font-black text-2xl text-white mt-6">{pkg.name}</h3>
-                  <p className="text-slate-400 text-xs mt-1 min-h-[36px]">{pkg.tagline}</p>
+                  <p className="text-slate-300 text-xs mt-1 min-h-[36px]">{pkg.tagline}</p>
 
                   <div className="mt-6 flex items-baseline gap-1.5">
-                    <span className="font-display font-black text-5xl text-gold-400 text-glow-gold">{pkg.price}</span>
-                    <span className="text-slate-400 text-xs font-mono">/ complete flight</span>
+                    <span className="font-display font-black text-5xl text-white text-glow-blue">{pkg.price}</span>
+                    <span className="text-slate-300 text-xs font-mono">/ complete flight</span>
                   </div>
 
                   {/* Features List */}
                   <ul className="mt-8 space-y-3 pt-6 border-t border-white/10">
                     {pkg.features.map((feat, i) => (
-                      <li key={i} className="flex items-start gap-3 text-xs text-slate-200">
-                        <div className="w-4 h-4 rounded-full bg-gold-500/20 text-gold-400 flex items-center justify-center flex-shrink-0 mt-0.5 border border-gold-500/40">
+                      <li key={i} className="flex items-start gap-3 text-xs text-slate-100">
+                        <div className="w-4 h-4 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5 border border-blue-500/40">
                           <i className="ri-check-line text-xs"></i>
                         </div>
                         <span>{feat}</span>
@@ -205,8 +205,8 @@ export default function Packages({ onSelectPackage }) {
                     onClick={() => onSelectPackage(pkg.name, pkg.price)}
                     className={`btn-shimmer w-full py-4 rounded-2xl font-mono font-bold text-xs transition-all duration-300 flex items-center justify-center gap-2 ${
                       pkg.featured
-                        ? 'bg-gold-gradient text-obsidian-950 shadow-[0_0_25px_rgba(245,158,11,0.4)] hover:shadow-[0_0_35px_rgba(245,158,11,0.6)]'
-                        : 'bg-obsidian-850 hover:bg-slate-800 text-white border border-white/15 hover:border-gold-400/50'
+                        ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-[0_0_25px_rgba(37,99,235,0.5)] hover:shadow-[0_0_35px_rgba(37,99,235,0.7)] border border-blue-400/30'
+                        : 'bg-obsidian-850 hover:bg-slate-800 text-white border border-white/15 hover:border-blue-400/50'
                     }`}
                   >
                     <i className="ri-send-plane-fill text-sm"></i>
@@ -224,30 +224,30 @@ export default function Packages({ onSelectPackage }) {
             {photographyPackages.map((pkg) => (
               <div
                 key={pkg.id}
-                className="glass-panel-cinematic p-8 rounded-3xl border border-white/10 hover:border-gold-500/40 transition-all flex flex-col justify-between shadow-2xl"
+                className="glass-panel-cinematic p-8 rounded-3xl border border-white/15 hover:border-blue-500/50 transition-all flex flex-col justify-between shadow-2xl"
               >
                 <div>
                   <div className="flex items-center justify-between">
-                    <div className="w-12 h-12 rounded-2xl bg-obsidian-900 border border-white/15 flex items-center justify-center text-gold-400">
-                      <i className={`${pkg.icon} text-2xl text-gold-400`}></i>
+                    <div className="w-12 h-12 rounded-2xl bg-obsidian-900 border border-white/15 flex items-center justify-center text-blue-400">
+                      <i className={`${pkg.icon} text-2xl text-blue-400`}></i>
                     </div>
-                    <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-gold-500/10 text-gold-400 border border-gold-500/30">
+                    <span className="px-3.5 py-1 rounded-full text-xs font-mono font-bold bg-blue-500/10 text-blue-400 border border-blue-500/30">
                       {pkg.badge}
                     </span>
                   </div>
 
                   <h3 className="font-display font-black text-2xl text-white mt-6">{pkg.name}</h3>
-                  <p className="text-slate-400 text-xs mt-1">{pkg.tagline}</p>
+                  <p className="text-slate-300 text-xs mt-1">{pkg.tagline}</p>
 
                   <div className="mt-6 flex items-baseline gap-2">
-                    <span className="font-display font-black text-5xl text-gold-400 text-glow-gold">{pkg.price}</span>
+                    <span className="font-display font-black text-5xl text-white text-glow-blue">{pkg.price}</span>
                     <span className="text-slate-300 text-xs font-mono">({pkg.count})</span>
                   </div>
 
                   <ul className="mt-8 space-y-3 pt-6 border-t border-white/10">
                     {pkg.features.map((feat, i) => (
-                      <li key={i} className="flex items-start gap-3 text-xs text-slate-200">
-                        <div className="w-4 h-4 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5 border border-emerald-500/40">
+                      <li key={i} className="flex items-start gap-3 text-xs text-slate-100">
+                        <div className="w-4 h-4 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center flex-shrink-0 mt-0.5 border border-blue-500/40">
                           <i className="ri-check-line text-xs"></i>
                         </div>
                         <span>{feat}</span>
@@ -259,7 +259,7 @@ export default function Packages({ onSelectPackage }) {
                 <div className="mt-8 pt-4">
                   <button
                     onClick={() => onSelectPackage(pkg.name, pkg.price)}
-                    className="btn-shimmer w-full py-4 rounded-2xl font-mono font-bold text-xs bg-gold-gradient text-obsidian-950 shadow-[0_0_25px_rgba(245,158,11,0.3)] hover:shadow-[0_0_35px_rgba(245,158,11,0.5)] transition-all flex items-center justify-center gap-2"
+                    className="btn-shimmer w-full py-4 rounded-2xl font-mono font-bold text-xs bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-[0_0_25px_rgba(37,99,235,0.4)] hover:shadow-[0_0_35px_rgba(37,99,235,0.6)] transition-all flex items-center justify-center gap-2 border border-blue-400/30"
                   >
                     <i className="ri-send-plane-fill text-sm"></i>
                     <span>Select {pkg.name} ({pkg.price})</span>
@@ -271,13 +271,13 @@ export default function Packages({ onSelectPackage }) {
         )}
 
         {/* Tailored Custom Quote Banner */}
-        <div className="mt-14 max-w-4xl mx-auto glass-card-gold p-6 rounded-3xl border border-gold-500/40 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+        <div className="mt-14 max-w-4xl mx-auto glass-card-blue p-6 rounded-3xl border border-blue-500/40 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
           <div>
-            <div className="flex items-center gap-2 text-gold-300 font-bold text-sm font-display">
-              <i className="ri-sparkling-fill text-gold-400 text-base"></i>
+            <div className="flex items-center gap-2 text-blue-300 font-bold text-sm font-display">
+              <i className="ri-sparkling-fill text-blue-400 text-base"></i>
               <span>Custom Flight Missions & Bespoke Packages</span>
             </div>
-            <p className="text-slate-300 text-xs mt-1 leading-relaxed">
+            <p className="text-slate-200 text-xs mt-1 leading-relaxed">
               Require specific flight durations, thermal photogrammetry, or multi-day event coverage? We craft tailored quotes for any project.
             </p>
           </div>
@@ -286,7 +286,7 @@ export default function Packages({ onSelectPackage }) {
             href="https://wa.me/447432266867?text=Hi!%20I'd%20like%20a%20bespoke%20quote%20for%20a%20custom%20drone/photography%20project."
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-shimmer px-6 py-3.5 rounded-xl bg-obsidian-900 hover:bg-obsidian-850 text-slate-100 border border-white/20 hover:border-gold-400 text-xs font-mono font-bold transition-all flex-shrink-0 shadow-lg"
+            className="btn-shimmer px-6 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 text-white border border-blue-400/30 hover:border-blue-300 text-xs font-mono font-bold transition-all flex-shrink-0 shadow-lg"
           >
             Request Custom Flight Quote
           </a>
@@ -296,3 +296,4 @@ export default function Packages({ onSelectPackage }) {
     </section>
   );
 }
+

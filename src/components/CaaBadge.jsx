@@ -74,15 +74,16 @@ export default function CaaBadge() {
           </div>
 
           {/* Regulatory Note */}
-          <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-slate-400 gap-4">
-            <div className="flex items-center gap-2 text-gold-400">
+          <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-slate-300 gap-4">
+            <div className="flex items-center gap-2 text-blue-400">
               <i className="ri-compass-3-line text-lg"></i>
               <span>Pre-flight hazard evaluation & weather window checks on every mission.</span>
             </div>
-            <div className="font-bold text-slate-300 bg-white/5 px-3 py-1 rounded-lg border border-white/10">
+            <div className="font-bold text-slate-200 bg-blue-500/10 px-3 py-1 rounded-lg border border-blue-500/30">
               NEWCASTLE (NE3) • SUNDERLAND • DURHAM & NORTH EAST
             </div>
           </div>
+
 
         </div>
 

@@ -73,21 +73,21 @@ export default function PhotoGallery() {
 
   return (
     <section id="photography" className="py-24 bg-obsidian-950 border-t border-white/10 relative overflow-hidden">
-      {/* Background Radar Overlay */}
+      {/* Background Grid Accent */}
       <div className="absolute inset-0 radar-grid opacity-15 pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-gold-500/30 text-gold-400 text-xs font-mono font-bold uppercase tracking-widest mb-4 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-            <i className="ri-camera-3-line text-sm text-gold-400"></i>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-blue-500/40 text-blue-400 text-xs font-mono font-bold uppercase tracking-widest mb-4 shadow-[0_0_15px_rgba(59,130,246,0.25)]">
+            <i className="ri-camera-3-line text-sm text-blue-400"></i>
             50MP HIGH-RES GALLERY
           </div>
           <h2 className="font-display font-black text-3xl sm:text-5xl text-white tracking-tight">
-            50MP Aerial & <span className="bg-gradient-to-r from-gold-400 to-amber-500 bg-clip-text text-transparent text-glow-gold">Ground Photography</span>
+            50MP Aerial & <span className="bg-gradient-to-r from-white via-blue-300 to-blue-500 bg-clip-text text-transparent text-glow-blue">Ground Photography</span>
           </h2>
-          <p className="mt-4 text-slate-300 text-base leading-relaxed">
+          <p className="mt-4 text-slate-200 text-base leading-relaxed">
             Every photo package includes full RAW color grading, high dynamic range processing, and full print rights digital delivery.
           </p>
 
@@ -104,8 +104,8 @@ export default function PhotoGallery() {
                 onClick={() => setActiveFilter(tab.id)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-xl font-mono text-xs font-bold transition-all duration-300 ${
                   activeFilter === tab.id
-                    ? 'bg-gold-gradient text-obsidian-950 shadow-[0_0_20px_rgba(245,158,11,0.4)]'
-                    : 'bg-obsidian-900 text-slate-300 hover:text-white border border-white/10'
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-[0_0_20px_rgba(37,99,235,0.45)] border border-blue-400/30'
+                    : 'bg-obsidian-900 text-slate-300 hover:text-white border border-white/15'
                 }`}
               >
                 <i className={`${tab.icon} text-sm`}></i>
@@ -121,7 +121,7 @@ export default function PhotoGallery() {
             <div
               key={photo.id}
               onClick={() => setActiveImage(photo)}
-              className="group glass-panel-cinematic rounded-3xl overflow-hidden border border-white/10 hover:border-gold-400/50 cursor-pointer transition-all duration-500 shadow-2xl"
+              className="group glass-panel-cinematic rounded-3xl overflow-hidden border border-white/15 hover:border-blue-400/50 cursor-pointer transition-all duration-500 shadow-2xl"
             >
               <div className="relative aspect-[4/3] bg-obsidian-950 overflow-hidden">
                 <img
@@ -132,18 +132,18 @@ export default function PhotoGallery() {
                 <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950 via-obsidian-950/20 to-transparent opacity-90 group-hover:opacity-60 transition-opacity"></div>
                 
                 <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <span className="w-10 h-10 rounded-full bg-obsidian-950/80 backdrop-blur-md flex items-center justify-center text-gold-400 border border-gold-500/40 shadow-lg">
+                  <span className="w-10 h-10 rounded-full bg-obsidian-950/90 backdrop-blur-md flex items-center justify-center text-blue-400 border border-blue-500/40 shadow-lg">
                     <i className="ri-eye-line text-lg"></i>
                   </span>
                 </div>
 
                 <div className="absolute bottom-4 left-4 right-4">
-                  <span className="inline-block px-3 py-0.5 rounded-md text-[10px] font-mono font-bold bg-gold-500/20 text-gold-300 border border-gold-500/40 mb-1.5 backdrop-blur-md">
+                  <span className="inline-block px-3 py-0.5 rounded-md text-[10px] font-mono font-bold bg-blue-500/20 text-blue-300 border border-blue-500/40 mb-1.5 backdrop-blur-md">
                     {photo.camera}
                   </span>
                   <h4 className="font-display font-bold text-white text-base truncate">{photo.title}</h4>
                   <p className="text-xs font-mono text-slate-300 flex items-center gap-1.5 mt-0.5">
-                    <i className="ri-map-pin-2-fill text-cyber-400"></i>
+                    <i className="ri-map-pin-2-fill text-cyan-400"></i>
                     {photo.location}
                   </p>
                 </div>
@@ -161,10 +161,10 @@ export default function PhotoGallery() {
             <div className="flex items-center justify-between p-5 bg-obsidian-950 border-b border-white/10">
               <div>
                 <h4 className="font-display font-bold text-white text-lg flex items-center gap-2">
-                  <i className="ri-image-line text-gold-400"></i>
+                  <i className="ri-image-line text-blue-400"></i>
                   {activeImage.title}
                 </h4>
-                <p className="text-xs font-mono text-slate-400 mt-0.5">
+                <p className="text-xs font-mono text-slate-300 mt-0.5">
                   {activeImage.location} • {activeImage.camera} ({activeImage.resolution}) • {activeImage.focal}
                 </p>
               </div>
@@ -185,3 +185,4 @@ export default function PhotoGallery() {
     </section>
   );
 }
+

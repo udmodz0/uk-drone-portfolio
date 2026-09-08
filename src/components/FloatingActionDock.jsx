@@ -22,8 +22,8 @@ export default function FloatingActionDock({ onOpenBooking, whatsappNumber }) {
       <div className="glass-panel-cinematic p-2.5 rounded-2xl border border-white/20 shadow-[0_15px_40px_rgba(0,0,0,0.8)] flex items-center justify-between gap-2 backdrop-blur-2xl">
         
         {/* CAA Status Pill */}
-        <div className="hidden xs:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-obsidian-950/80 border border-emerald-500/30 text-emerald-400 font-mono text-[10px] font-bold">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <div className="hidden xs:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-obsidian-950/90 border border-blue-500/30 text-blue-400 font-mono text-[10px] font-bold">
+          <span className="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
           <span>CAA ACTIVE</span>
         </div>
 
@@ -42,7 +42,7 @@ export default function FloatingActionDock({ onOpenBooking, whatsappNumber }) {
         {/* Primary Book Mission Button */}
         <button
           onClick={onOpenBooking}
-          className="btn-shimmer flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-obsidian-950 bg-gold-gradient shadow-[0_0_20px_rgba(245,158,11,0.4)] hover:shadow-[0_0_30px_rgba(245,158,11,0.6)] transition-all transform hover:scale-105 active:scale-95"
+          className="btn-shimmer flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 shadow-[0_0_20px_rgba(37,99,235,0.45)] hover:shadow-[0_0_30px_rgba(37,99,235,0.65)] transition-all transform hover:scale-105 active:scale-95 border border-blue-400/30"
         >
           <i className="ri-calendar-event-line text-sm"></i>
           <span>Book Flight</span>
@@ -51,13 +51,14 @@ export default function FloatingActionDock({ onOpenBooking, whatsappNumber }) {
         {/* Scroll Top Button */}
         <button
           onClick={scrollToTop}
-          className="w-10 h-10 rounded-xl bg-obsidian-900 border border-white/15 text-slate-300 hover:text-white hover:border-gold-400 flex items-center justify-center transition-all flex-shrink-0 shadow-md"
+          className="w-10 h-10 rounded-xl bg-obsidian-900 border border-white/15 text-slate-300 hover:text-white hover:border-blue-400 flex items-center justify-center transition-all flex-shrink-0 shadow-md"
           aria-label="Scroll to top"
         >
-          <i className="ri-arrow-up-line text-lg text-gold-400"></i>
+          <i className="ri-arrow-up-line text-lg text-blue-400"></i>
         </button>
 
       </div>
     </div>
   );
 }
+

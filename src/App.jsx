@@ -34,7 +34,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-obsidian-950 text-slate-100 font-sans selection:bg-gold-500 selection:text-black relative overflow-x-hidden">
+    <div className="min-h-screen bg-obsidian-950 text-slate-100 font-sans selection:bg-blue-600 selection:text-white relative overflow-x-hidden">
       
       {/* Interactive Particle Constellation Canvas Background */}
       <InteractiveBackground />
