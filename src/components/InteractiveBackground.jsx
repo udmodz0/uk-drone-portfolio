@@ -39,15 +39,15 @@ export default function InteractiveBackground() {
     window.addEventListener('mouseleave', handleMouseLeave);
 
     const colors = [
-      'rgba(59, 130, 246, ',  // Electric Blue
       'rgba(37, 99, 235, ',   // Royal Blue
-      'rgba(56, 189, 248, ',  // Cyber Cyan
-      'rgba(255, 255, 255, '  // Pristine White
+      'rgba(2, 132, 199, ',   // Cyan
+      'rgba(99, 102, 241, ',  // Indigo
+      'rgba(15, 23, 42, '     // Slate Dark
     ];
 
     for (let i = 0; i < particleCount; i++) {
       const colorBase = colors[Math.floor(Math.random() * colors.length)];
-      const opacity = Math.random() * 0.45 + 0.2;
+      const opacity = Math.random() * 0.35 + 0.15;
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
@@ -59,6 +59,7 @@ export default function InteractiveBackground() {
         baseOpacity: opacity
       });
     }
+
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);

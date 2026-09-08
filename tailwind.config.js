@@ -8,11 +8,11 @@ export default {
     extend: {
       colors: {
         obsidian: {
-          950: '#05080E',
-          900: '#090E1A',
-          850: '#0E172A',
-          800: '#162038',
-          700: '#1E2B4A'
+          950: '#FFFFFF',
+          900: '#F8FAFC',
+          850: '#F1F5F9',
+          800: '#E2E8F0',
+          700: '#CBD5E1'
         },
         brand: {
           50: '#EFF6FF',
@@ -25,26 +25,26 @@ export default {
           700: '#1D4ED8',
           800: '#1E40AF',
           900: '#1E3A8A',
-          glow: '#00F0FF'
+          glow: '#3B82F6'
         },
         gold: {
-          300: '#93C5FD',
-          400: '#60A5FA',
-          500: '#3B82F6',
-          600: '#2563EB',
-          glow: '#00F0FF'
+          300: '#2563EB',
+          400: '#1D4ED8',
+          500: '#2563EB',
+          600: '#1E40AF',
+          glow: '#3B82F6'
         },
         cyber: {
-          300: '#7DD3FC',
-          400: '#38BDF8',
-          500: '#0EA5E9',
-          600: '#0284C7',
-          glow: '#00E5FF'
+          300: '#0284C7',
+          400: '#0369A1',
+          500: '#0284C7',
+          600: '#075985',
+          glow: '#0284C7'
         },
         neon: {
           green: '#10B981',
-          amber: '#3B82F6',
-          cyan: '#00E5FF'
+          amber: '#2563EB',
+          cyan: '#0284C7'
         }
       },
       fontFamily: {
@@ -53,12 +53,12 @@ export default {
         mono: ['Space Mono', 'monospace']
       },
       backgroundImage: {
-        'grid-pattern': "radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.12) 0%, transparent 70%), linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px)",
-        'hud-pattern': "linear-gradient(to right, rgba(59, 130, 246, 0.04) 1px, transparent 1px), linear-gradient(to bottom, rgba(59, 130, 246, 0.04) 1px, transparent 1px)",
-        'gold-gradient': "linear-gradient(135deg, #60A5FA 0%, #2563EB 50%, #1D4ED8 100%)",
-        'blue-gradient': "linear-gradient(135deg, #60A5FA 0%, #2563EB 50%, #1D4ED8 100%)",
-        'white-blue-gradient': "linear-gradient(135deg, #FFFFFF 0%, #93C5FD 50%, #3B82F6 100%)",
-        'cyber-gradient': "linear-gradient(135deg, #00F0FF 0%, #38BDF8 50%, #6366F1 100%)"
+        'grid-pattern': "radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.06) 0%, transparent 70%), linear-gradient(to right, rgba(0, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 0, 0, 0.03) 1px, transparent 1px)",
+        'hud-pattern': "linear-gradient(to right, rgba(37, 99, 235, 0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(37, 99, 235, 0.03) 1px, transparent 1px)",
+        'gold-gradient': "linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%)",
+        'blue-gradient': "linear-gradient(135deg, #3B82F6 0%, #2563EB 50%, #1D4ED8 100%)",
+        'white-blue-gradient': "linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #1E40AF 100%)",
+        'cyber-gradient': "linear-gradient(135deg, #0284C7 0%, #2563EB 100%)"
       },
       animation: {
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -87,12 +87,13 @@ export default {
           '100%': { transform: 'translateY(1000%)' }
         },
         glowPulse: {
-          '0%': { opacity: '0.4', filter: 'drop-shadow(0 0 8px rgba(59, 130, 246, 0.4))' },
-          '100%': { opacity: '0.9', filter: 'drop-shadow(0 0 25px rgba(59, 130, 246, 0.8))' }
+          '0%': { opacity: '0.4', filter: 'drop-shadow(0 0 8px rgba(37, 99, 235, 0.3))' },
+          '100%': { opacity: '0.9', filter: 'drop-shadow(0 0 25px rgba(37, 99, 235, 0.5))' }
         }
       }
     },
   },
   plugins: [],
 }
+
 
