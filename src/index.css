@@ -1,0 +1,465 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-color: #0B0D11;
+    color: #E4E4E7;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100%;
+  }
+
+  /* Prevent automatic iOS Safari zoom-in on focus by ensuring at least 16px font size */
+  input, select, textarea {
+    font-size: 16px;
+  }
+  @media (min-width: 640px) {
+    input, select, textarea {
+      font-size: inherit;
+    }
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Manrope', 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -0.025em;
+    color: #FAF9F6;
+  }
+}
+
+/* ==========================================================
+   LIQUID GLASS BUTTON DESIGN SYSTEM (Exact match to reference)
+   ========================================================== */
+
+/* Exact Liquid Glass Pill Button from user reference image */
+.btn-liquid {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 50%, rgba(0, 0, 0, 0.22) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.55),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.35),
+    0 8px 24px -4px rgba(0, 0, 0, 0.45);
+  color: #FFFFFF;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Liquid top specular reflection lens */
+.btn-liquid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 9999px 9999px 0 0;
+  pointer-events: none;
+  filter: blur(0.5px);
+  transition: opacity 0.3s ease;
+}
+
+.btn-liquid:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.32) 0%, rgba(255, 255, 255, 0.14) 50%, rgba(0, 0, 0, 0.18) 100%);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.3),
+    0 12px 30px -4px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+  color: #FFFFFF;
+}
+
+.btn-liquid:active {
+  transform: translateY(0px) scale(0.97);
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 2px 4px 0 rgba(0, 0, 0, 0.5),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Luminous Bright Liquid Pill Button for High-Priority CTAs */
+.btn-liquid-primary {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 242, 245, 0.92) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 1),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.15),
+    0 8px 24px -4px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(255, 255, 255, 0.2);
+  color: #0B0D11;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-liquid-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 50%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 9999px 9999px 0 0;
+  pointer-events: none;
+}
+
+.btn-liquid-primary:hover {
+  background: #FFFFFF;
+  box-shadow: 
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 1),
+    0 12px 30px -4px rgba(255, 255, 255, 0.3),
+    0 0 30px rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+.btn-liquid-primary:active {
+  transform: translateY(0px) scale(0.97);
+}
+
+/* Emerald Liquid Glass Pill Button for WhatsApp */
+.btn-liquid-emerald {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.35) 0%, rgba(5, 150, 105, 0.18) 50%, rgba(4, 120, 87, 0.28) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  box-shadow: 
+    inset 0 1.5px 1.5px 0 rgba(167, 243, 208, 0.6),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.35),
+    0 8px 24px -4px rgba(0, 0, 0, 0.45);
+  color: #FFFFFF;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-liquid-emerald::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 12%;
+  right: 12%;
+  height: 45%;
+  background: linear-gradient(180deg, rgba(209, 250, 229, 0.5) 0%, rgba(209, 250, 229, 0) 100%);
+  border-radius: 9999px 9999px 0 0;
+  pointer-events: none;
+}
+
+.btn-liquid-emerald:hover {
+  background: linear-gradient(180deg, rgba(16, 185, 129, 0.45) 0%, rgba(5, 150, 105, 0.25) 50%, rgba(4, 120, 87, 0.35) 100%);
+  border-color: rgba(52, 211, 153, 0.65);
+  box-shadow: 
+    inset 0 1.5px 2px 0 rgba(167, 243, 208, 0.8),
+    0 12px 28px -4px rgba(16, 185, 129, 0.35),
+    0 0 25px rgba(16, 185, 129, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-liquid-emerald:active {
+  transform: translateY(0px) scale(0.97);
+}
+
+/* Backwards compatibility classes mapping to liquid buttons */
+.btn-studio-primary {
+  @apply btn-liquid-primary;
+}
+
+.btn-studio-secondary {
+  @apply btn-liquid;
+}
+
+.btn-studio-aviation {
+  @apply btn-liquid;
+}
+
+/* ==========================================================
+   CINEMATIC DRONE FLIGHT ANIMATIONS (100% GPU-Accelerated, Zero-Lag)
+   ========================================================== */
+
+/* Aerodynamic 3D Drone Hovering with Natural Pitch & Roll */
+@keyframes droneHover {
+  0% {
+    transform: translate3d(0, 0px, 0) rotate(0deg);
+  }
+  20% {
+    transform: translate3d(3px, -12px, 0) rotate(1.4deg);
+  }
+  40% {
+    transform: translate3d(-4px, -20px, 0) rotate(-1.6deg);
+  }
+  60% {
+    transform: translate3d(-2px, -8px, 0) rotate(-0.8deg);
+  }
+  80% {
+    transform: translate3d(4px, -15px, 0) rotate(1.1deg);
+  }
+  100% {
+    transform: translate3d(0, 0px, 0) rotate(0deg);
+  }
+}
+
+.animate-drone-hover {
+  animation: droneHover 8s ease-in-out infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* High-speed rotor blade spin simulation */
+@keyframes rotorSpinFast {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-rotor {
+  animation: rotorSpinFast 0.1s linear infinite;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.animate-rotor-reverse {
+  animation: rotorSpinFast 0.1s linear infinite reverse;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+/* Aviation Navigation Strobe Lights (Starboard green / Port red) */
+@keyframes navStrobeGreen {
+  0%, 100% { opacity: 0.35; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 6px #10B981); }
+}
+
+.animate-strobe-green {
+  animation: navStrobeGreen 1.4s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes navStrobeRed {
+  0%, 100% { opacity: 0.35; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.3); filter: drop-shadow(0 0 6px #EF4444); }
+}
+
+.animate-strobe-red {
+  animation: navStrobeRed 1.4s ease-in-out infinite 0.7s;
+  transform-origin: center center;
+}
+
+/* High-intensity rear white beacon flash */
+@keyframes beaconFlashWhite {
+  0%, 85%, 100% { opacity: 0.2; }
+  90%, 94% { opacity: 1; filter: drop-shadow(0 0 8px #FFFFFF); }
+}
+
+.animate-beacon-white {
+  animation: beaconFlashWhite 2s ease-in-out infinite;
+}
+
+/* Gimbal active tracking sensor scan */
+@keyframes gimbalScan {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  35% { transform: rotate(4deg) scale(1.02); }
+  70% { transform: rotate(-4deg) scale(0.98); }
+}
+
+.animate-gimbal {
+  animation: gimbalScan 6s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+/* Flowing flight vector path */
+@keyframes flightVectorDash {
+  0% { stroke-dashoffset: 240; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.animate-flight-vector {
+  stroke-dasharray: 6 12;
+  animation: flightVectorDash 16s linear infinite;
+}
+
+/* High-altitude ambient drone cross-screen flight */
+@keyframes ambientFlyover {
+  0% {
+    transform: translate3d(-10vw, 15vh, 0) scale(0.65) rotate(5deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.75; }
+  90% { opacity: 0.75; }
+  100% {
+    transform: translate3d(110vw, -10vh, 0) scale(0.75) rotate(5deg);
+    opacity: 0;
+  }
+}
+
+.animate-ambient-flyover {
+  animation: ambientFlyover 40s linear infinite;
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* Live radar sweep pulse */
+@keyframes radarSweepSmooth {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.animate-radar-sweep {
+  animation: radarSweepSmooth 4s linear infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* ==========================================================
+   STUDIO DESIGN SYSTEM CARDS & PANELS
+   ========================================================== */
+
+.studio-surface {
+  background-color: #12151B;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.studio-card {
+  background: linear-gradient(180deg, rgba(22, 26, 33, 0.75) 0%, rgba(14, 17, 22, 0.85) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.studio-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-2px);
+  box-shadow: 0 24px 48px -12px rgba(0, 0, 0, 0.65);
+}
+
+.studio-panel {
+  background: rgba(18, 21, 27, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Image Zoom on Card Hover */
+.image-zoom-container {
+  overflow: hidden;
+}
+
+.image-zoom-target {
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.image-zoom-container:hover .image-zoom-target {
+  transform: scale(1.035);
+}
+
+/* Subtle Underline Animation for Navigation */
+.nav-link-understated {
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.nav-link-understated::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 1.5px;
+  background-color: #FAF9F6;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-link-understated:hover::after {
+  width: 100%;
+}
+
+/* Restrained Editorial Marquee */
+@keyframes editorialMarquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-editorial-marquee {
+  display: flex;
+  width: max-content;
+  animation: editorialMarquee 45s linear infinite;
+}
+
+.animate-editorial-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Utility to hide scrollbar on mobile horizontal pill lists */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Refined Dark Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0D11;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272A;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3F3F46;
+}
