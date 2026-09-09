@@ -7,67 +7,62 @@ export default function PhotoGallery() {
   const photos = [
     {
       id: 1,
-      title: 'Newcastle Quayside Vista',
-      category: 'aerial',
-      location: 'Tyne Bridges, Newcastle',
-      camera: 'DJI Air 3S • 50MP Dual Camera',
+      title: 'Community Award Presentation',
+      category: 'celebrations',
+      location: 'Newcastle Sports Field',
+      camera: 'DJI Air 3S • 50MP Aerial',
       aspect: 'md:col-span-2 aspect-[16/10]',
-      url: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=1400&auto=format&fit=crop'
+      url: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
+      fullUrl: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg'
     },
     {
       id: 2,
-      title: 'Durham Cathedral at Sunset',
-      category: 'landscape',
-      location: 'Durham Heritage Coast',
-      camera: 'DJI Air 3S • 70mm Telephoto',
+      title: 'Outdoor Youth Event & Setup',
+      category: 'events',
+      location: 'Durham Event Park',
+      camera: 'DJI Air 3S • Ground & Aerial',
       aspect: 'aspect-[4/5]',
-      url: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1000&auto=format&fit=crop'
+      url: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
+      fullUrl: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg'
     },
     {
       id: 3,
-      title: 'Garden Celebration Highlights',
-      category: 'celebrations',
-      location: 'Private Estate, Northumberland',
-      camera: 'DJI Air 3S + Ground Filming',
+      title: 'Tournament Winners Team Photo',
+      category: 'portraits',
+      location: 'Newcastle Sports Complex',
+      camera: 'iPhone 17 Pro • ProRAW',
       aspect: 'aspect-[4/5]',
-      url: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=1000&auto=format&fit=crop'
+      url: 'https://i.ibb.co/Kc42r24L/IMG-0021.jpg',
+      fullUrl: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg'
     },
     {
       id: 4,
-      title: 'Sunderland Marine Horizon',
-      category: 'aerial',
-      location: 'Sunderland Coastline',
-      camera: 'DJI Air 3S • 24mm Wide Angle',
-      aspect: 'md:col-span-2 aspect-[16/10]',
-      url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=1400&auto=format&fit=crop'
+      title: 'Live Match Action & Field Focus',
+      category: 'landscape',
+      location: 'Sunderland Sports Ground',
+      camera: 'DJI Air 3S • 70mm Telephoto',
+      aspect: 'aspect-[4/5]',
+      url: 'https://i.ibb.co/v4cxrywr/IMG-0019.jpg',
+      fullUrl: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg'
     },
     {
       id: 5,
-      title: 'Event Atmosphere Portrait',
-      category: 'portraits',
-      location: 'Newcastle Event Space',
-      camera: 'iPhone 17 Pro • 48MP ProRAW',
-      aspect: 'aspect-[4/5]',
-      url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000&auto=format&fit=crop'
-    },
-    {
-      id: 6,
-      title: 'Dusk Gathering Aerial',
-      category: 'events',
-      location: 'Durham Countryside Estate',
-      camera: 'DJI Air 3S • Low-Light Nightscape',
-      aspect: 'aspect-[4/5]',
-      url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?q=80&w=1000&auto=format&fit=crop'
+      title: 'Official Trophy Handover Ceremony',
+      category: 'celebrations',
+      location: 'Newcastle Event Pavilion',
+      camera: 'iPhone 17 Pro • 48MP',
+      aspect: 'md:col-span-2 aspect-[16/10]',
+      url: 'https://i.ibb.co/XkMJ9y5x/IMG-0020.jpg',
+      fullUrl: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg'
     }
   ];
 
   const categories = [
     { id: 'all', label: 'All Works' },
-    { id: 'aerial', label: 'Aerial' },
     { id: 'events', label: 'Events' },
     { id: 'portraits', label: 'Portraits' },
     { id: 'celebrations', label: 'Celebrations' },
-    { id: 'landscape', label: 'Landscape' },
+    { id: 'landscape', label: 'Sports & Landscape' },
   ];
 
   const filteredPhotos = activeFilter === 'all' 
@@ -162,19 +157,31 @@ export default function PhotoGallery() {
                 </h3>
                 <p className="text-[11px] sm:text-xs font-mono text-zinc-400">{activeImage.location} • {activeImage.camera}</p>
               </div>
-              <button
-                onClick={() => setActiveImage(null)}
-                className="btn-liquid w-9 h-9 p-0 flex items-center justify-center text-zinc-300 hover:text-white"
-              >
-                <i className="ri-close-line text-lg"></i>
-              </button>
+
+              <div className="flex items-center gap-3">
+                <a
+                  href={activeImage.fullUrl || activeImage.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-liquid px-3.5 py-1.5 text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-1.5"
+                >
+                  <i className="ri-external-link-line"></i>
+                  <span>Full HD</span>
+                </a>
+                <button
+                  onClick={() => setActiveImage(null)}
+                  className="btn-liquid w-9 h-9 p-0 flex items-center justify-center text-zinc-300 hover:text-white"
+                >
+                  <i className="ri-close-line text-lg"></i>
+                </button>
+              </div>
             </div>
             
             <div className="max-h-[75vh] bg-black/60 flex items-center justify-center p-2 sm:p-4">
               <img 
-                src={activeImage.url} 
+                src={activeImage.fullUrl || activeImage.url} 
                 alt={activeImage.title} 
-                className="max-h-[65vh] sm:max-h-[70vh] w-auto object-contain rounded-xl" 
+                className="max-h-[65vh] sm:max-h-[70vh] w-auto object-contain rounded-xl shadow-2xl" 
               />
             </div>
           </div>

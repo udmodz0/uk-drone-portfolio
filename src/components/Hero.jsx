@@ -114,8 +114,8 @@ export default function Hero({ onOpenBooking }) {
         {/* Full-Width Cinematic Background Image with Dark Gradient Vignette */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <img
-            src="https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=85&w=2400&auto=format&fit=crop"
-            alt="Aerial drone perspective of coastline and landscape"
+            src="https://i.ibb.co/99TVY9DZ/IMG-0025.jpg"
+            alt="Aerial drone perspective of event and landscape"
             className="w-full h-full object-cover object-center opacity-30 scale-105 transition-transform duration-1000 ease-out"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0B0D11] via-[#0B0D11]/80 to-[#0B0D11]/50" />

@@ -10,18 +10,18 @@ export default function VideoShowcase() {
     duration: '01:45',
     quality: '4K 60FPS 10-Bit D-Log',
     camera: 'DJI Air 3S Dual-Camera Payload',
-    thumbnail: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=85&w=1600&auto=format&fit=crop',
+    thumbnail: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
     videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-drone-view-of-a-coastal-city-and-ocean-41584-large.mp4',
   };
 
   const additionalReels = [
     {
       id: 2,
-      title: 'Durham Heritage & Countryside Stills',
-      subtitle: 'Durham Cathedral & Historic Riverbanks',
+      title: 'Durham Heritage & Event Coverage',
+      subtitle: 'Sports Event & Community Atmosphere',
       duration: '02:15',
       quality: '4K HDR',
-      thumbnail: 'https://images.unsplash.com/photo-1473968512647-3e447244af8f?q=80&w=800&auto=format&fit=crop',
+      thumbnail: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
       videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-city-traffic-and-buildings-41582-large.mp4',
       isPlaceholder: false,
     },

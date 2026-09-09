@@ -5,37 +5,37 @@ export default function Services() {
     {
       title: 'Drone Photography',
       desc: 'High-resolution 50MP aerial stills capturing fine architectural detail, landscapes, and private venues with balanced dynamic range.',
-      image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
       tag: '50MP Aerial RAW',
     },
     {
       title: 'Drone Videography',
       desc: 'High-speed 4K 60fps aerial sequences captured using the dual-camera DJI Air 3S with 10-bit D-Log color profiles.',
-      image: 'https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://i.ibb.co/v4cxrywr/IMG-0019.jpg',
       tag: '4K 60FPS D-Log',
     },
     {
       title: 'Ground Photography',
       desc: 'Professional ground-level portraits, candid moments, and event atmosphere captured with iPhone 17 Pro 48MP ProRAW.',
-      image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://i.ibb.co/Kc42r24L/IMG-0021.jpg',
       tag: '48MP ProRAW',
     },
     {
       title: 'Event Videography',
       desc: 'Comprehensive multi-angle event coverage from arrival to departure for birthdays, celebrations, and outdoor gatherings.',
-      image: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
       tag: 'Milestone Events',
     },
     {
       title: 'Professional Editing',
       desc: 'Complete post-production including cinematic color grading, licensed audio mastering, and high-bitrate digital delivery.',
-      image: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://i.ibb.co/XkMJ9y5x/IMG-0020.jpg',
       tag: 'Master Color Grade',
     },
     {
       title: 'Social Media Content',
       desc: 'Custom 9:16 vertical sequences tailored specifically for high-engagement Instagram Reels, TikTok, and YouTube Shorts.',
-      image: 'https://images.unsplash.com/photo-1616469829941-c7200edec809?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
       tag: 'Vertical 9:16',
     }
   ];
