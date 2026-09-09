@@ -1,44 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export default function Services() {
+  const [activeModal, setActiveModal] = useState(null);
+  const [isImageLoading, setIsImageLoading] = useState(true);
+
   const servicesList = [
     {
       title: 'Drone Photography',
       desc: 'High-resolution 50MP aerial stills capturing fine architectural detail, landscapes, and private venues with balanced dynamic range.',
-      image: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
+      image: '/img/IMG-0025.jpg',
       tag: '50MP Aerial RAW',
+      location: 'Newcastle Sports Ground',
     },
     {
       title: 'Drone Videography',
       desc: 'High-speed 4K 60fps aerial sequences captured using the dual-camera DJI Air 3S with 10-bit D-Log color profiles.',
-      image: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
+      image: '/img/IMG-0018.jpg',
       tag: '4K 60FPS D-Log',
+      location: 'Durham Event Grounds',
     },
     {
       title: 'Ground Photography',
       desc: 'Professional ground-level portraits, candid moments, and event atmosphere captured with iPhone 17 Pro 48MP ProRAW.',
-      image: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg',
+      image: '/img/IMG-0021.jpg',
       tag: '48MP ProRAW',
+      location: 'Newcastle Sports Complex',
     },
     {
       title: 'Event Videography',
       desc: 'Comprehensive multi-angle event coverage from arrival to departure for birthdays, celebrations, and outdoor gatherings.',
-      image: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg',
+      image: '/img/IMG-0019.jpg',
       tag: 'Milestone Events',
+      location: 'Sunderland Sports Field',
     },
     {
       title: 'Professional Editing',
       desc: 'Complete post-production including cinematic color grading, licensed audio mastering, and high-bitrate digital delivery.',
-      image: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg',
+      image: '/img/IMG-0020.jpg',
       tag: 'Master Color Grade',
+      location: 'Newcastle Event Pavilion',
     },
     {
       title: 'Social Media Content',
       desc: 'Custom 9:16 vertical sequences tailored specifically for high-engagement Instagram Reels, TikTok, and YouTube Shorts.',
-      image: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
+      image: '/img/IMG-0025.jpg',
       tag: 'Vertical 9:16',
+      location: 'Newcastle NE3 Base',
     }
   ];
+
+  const handleOpenModal = (srv) => {
+    setIsImageLoading(true);
+    setActiveModal(srv);
+  };
 
   return (
     <section id="services" className="py-24 md:py-32 bg-[#0B0D11] relative overflow-hidden">
@@ -67,17 +81,26 @@ export default function Services() {
               key={idx} 
               className="group studio-card rounded-xl overflow-hidden flex flex-col justify-between"
             >
-              {/* Image Container with Subtle 1.035x Hover Zoom */}
-              <div className="relative aspect-[16/10] image-zoom-container bg-studio-800">
+              {/* Image Container with Subtle 1.035x Hover Zoom & Click to View */}
+              <div 
+                onClick={() => handleOpenModal(srv)}
+                className="relative aspect-[16/10] image-zoom-container bg-studio-800 cursor-pointer"
+              >
                 <img
                   src={srv.image}
                   alt={srv.title}
                   loading="lazy"
-                  className="w-full h-full object-cover image-zoom-target opacity-80 group-hover:opacity-95 transition-opacity duration-500"
+                  className="w-full h-full object-cover image-zoom-target opacity-85 group-hover:opacity-100 transition-all duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#12151B] via-transparent to-transparent opacity-90" />
                 
-                <span className="absolute top-3 right-3 px-2.5 py-1 rounded bg-black/60 backdrop-blur-md text-[10px] font-mono tracking-widest uppercase text-zinc-200 border border-white/10">
+                {/* Click to view badge */}
+                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] font-mono tracking-wider text-zinc-200 border border-white/10 flex items-center gap-1.5 group-hover:bg-emerald-500/20 group-hover:text-emerald-300 group-hover:border-emerald-500/30 transition-all z-10">
+                  <i className="ri-expand-diagonal-line text-xs"></i>
+                  <span>Click to view</span>
+                </div>
+
+                <span className="absolute top-3 right-3 px-2.5 py-1 rounded bg-black/60 backdrop-blur-md text-[10px] font-mono tracking-widest uppercase text-zinc-200 border border-white/10 z-10">
                   {srv.tag}
                 </span>
               </div>
@@ -93,8 +116,11 @@ export default function Services() {
                   </p>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-white/[0.08] flex items-center justify-between text-xs font-medium text-zinc-300 group-hover:text-[#FAF9F6] transition-colors">
-                  <span>Explore Service</span>
+                <div 
+                  onClick={() => handleOpenModal(srv)}
+                  className="mt-6 pt-4 border-t border-white/[0.08] flex items-center justify-between text-xs font-medium text-zinc-300 group-hover:text-[#FAF9F6] transition-colors cursor-pointer"
+                >
+                  <span>Explore Service & Image</span>
                   <i className="ri-arrow-right-line text-sm text-zinc-300 group-hover:text-white group-hover:translate-x-1 transition-all"></i>
                 </div>
               </div>
@@ -103,7 +129,64 @@ export default function Services() {
         </div>
 
       </div>
+
+      {/* Lightbox Modal with Loading Spinner */}
+      {activeModal && (
+        <div 
+          onClick={() => setActiveModal(null)}
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 cursor-zoom-out animate-in fade-in duration-200"
+        >
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-5xl w-full bg-[#0F1217] rounded-2xl overflow-hidden border border-white/15 shadow-2xl cursor-default"
+          >
+            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-white/10 bg-[#12151B]">
+              <div>
+                <h3 className="font-display font-medium text-white text-sm sm:text-base">
+                  {activeModal.title}
+                </h3>
+                <p className="text-[11px] sm:text-xs font-mono text-zinc-400">{activeModal.tag} • {activeModal.location}</p>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <a
+                  href={activeModal.image}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-liquid px-3.5 py-1.5 text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-1.5"
+                >
+                  <i className="ri-external-link-line"></i>
+                  <span>Full HD</span>
+                </a>
+                <button
+                  onClick={() => setActiveModal(null)}
+                  className="btn-liquid w-9 h-9 p-0 flex items-center justify-center text-zinc-300 hover:text-white"
+                >
+                  <i className="ri-close-line text-lg"></i>
+                </button>
+              </div>
+            </div>
+            
+            <div className="relative min-h-[320px] max-h-[75vh] bg-black/60 flex items-center justify-center p-2 sm:p-4">
+              {isImageLoading && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 gap-3 z-10">
+                  <div className="w-10 h-10 border-2 border-white/10 border-t-emerald-400 rounded-full animate-spin"></div>
+                  <span className="text-xs font-mono tracking-wider text-zinc-400">Loading High-Res Image...</span>
+                </div>
+              )}
+              <img 
+                src={activeModal.image} 
+                alt={activeModal.title} 
+                onLoad={() => setIsImageLoading(false)}
+                className={`max-h-[65vh] sm:max-h-[70vh] w-auto object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'}`} 
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
     </section>
   );
 }
+
 

@@ -11,7 +11,7 @@ export default function VideoShowcase() {
     duration: '01:26',
     quality: '4K 60FPS 10-Bit D-Log',
     camera: 'DJI Air 3S Dual-Camera Payload',
-    thumbnail: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
+    thumbnail: '/img/IMG-0025.jpg',
     youtubeId: 'PIja76NisHs',
   };
 
@@ -22,9 +22,8 @@ export default function VideoShowcase() {
       subtitle: 'Newcastle Event Grounds (IMG 2432)',
       duration: '01:26',
       quality: '4K Reel',
-      thumbnail: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
+      thumbnail: '/img/IMG-0025.jpg',
       youtubeId: 'PIja76NisHs',
-      isPlaceholder: false,
     },
     {
       id: 3,
@@ -32,19 +31,8 @@ export default function VideoShowcase() {
       subtitle: 'Durham Sports Park (IMG 8292)',
       duration: '00:25',
       quality: '4K Reel',
-      thumbnail: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
+      thumbnail: '/img/IMG-0018.jpg',
       youtubeId: 'TSlTqqy4SO8',
-      isPlaceholder: false,
-    },
-    {
-      id: 4,
-      title: 'Live Match Action & Field Focus',
-      subtitle: 'Sunderland Sports Ground Coverage',
-      duration: '01:30',
-      quality: '4K Cinema',
-      thumbnail: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg',
-      youtubeId: 'PIja76NisHs',
-      isPlaceholder: false,
     }
   ];
 
@@ -171,11 +159,11 @@ export default function VideoShowcase() {
       {selectedVideo && (
         <div 
           onClick={() => setSelectedVideo(null)}
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200"
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200"
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-4xl bg-[#0F1217] rounded-2xl overflow-hidden border border-white/10 shadow-2xl animate-in zoom-in-95 duration-200"
+            className="relative w-full max-w-2xl bg-[#0F1217] rounded-2xl overflow-hidden border border-white/15 shadow-2xl animate-in zoom-in-95 duration-200"
           >
             
             {/* Modal Header */}
@@ -194,43 +182,16 @@ export default function VideoShowcase() {
               </button>
             </div>
 
-            {/* Custom Embedded Protected Player Frame */}
-            <div 
-              className="relative aspect-video bg-black flex items-center justify-center overflow-hidden select-none"
-              onContextMenu={(e) => e.preventDefault()}
-            >
+            {/* Embedded Player Frame */}
+            <div className="relative w-full h-[65vh] max-h-[600px] bg-black flex items-center justify-center overflow-hidden">
               {selectedVideo.youtubeId ? (
-                <>
-                  <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=${isMuted ? 1 : 0}&loop=1&playlist=${selectedVideo.youtubeId}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&playsinline=1`}
-                    title={selectedVideo.title}
-                    className="w-[115%] h-[115%] object-cover pointer-events-none scale-105"
-                    allow="autoplay; encrypted-media; picture-in-picture"
-                    allowFullScreen
-                  />
-
-                  {/* Header Shield */}
-                  <div className="absolute top-0 inset-x-0 h-16 bg-gradient-to-b from-black/80 to-transparent pointer-events-auto z-10 px-4 py-3 flex items-start justify-between">
-                    <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                      <span className="text-[10px] font-mono tracking-widest text-zinc-300 uppercase">STUDIO VIDEO PLAYER</span>
-                    </div>
-                  </div>
-
-                  {/* Custom Audio Control Toggle Button */}
-                  <div className="absolute bottom-4 right-4 z-20 flex items-center gap-3 pointer-events-auto">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsMuted(!isMuted);
-                      }}
-                      className="btn-liquid px-4 py-2.5 rounded-full text-xs font-mono text-white flex items-center gap-2 backdrop-blur-xl bg-black/70 border border-white/20 hover:bg-white/20 transition-all shadow-xl"
-                    >
-                      <i className={`ri-volume-${isMuted ? 'mute-line text-rose-400' : 'up-line text-emerald-400'} text-sm`}></i>
-                      <span>{isMuted ? 'TAP TO UNMUTE' : 'MUTED'}</span>
-                    </button>
-                  </div>
-                </>
+                <iframe
+                  src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&playsinline=1&rel=0&modestbranding=1`}
+                  title={selectedVideo.title}
+                  className="w-full h-full border-0 rounded-b-2xl"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
               ) : (
                 <video
                   src={selectedVideo.videoUrl}

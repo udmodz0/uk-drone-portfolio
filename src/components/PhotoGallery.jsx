@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 export default function PhotoGallery() {
   const [activeFilter, setActiveFilter] = useState('all');
   const [activeImage, setActiveImage] = useState(null);
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   const photos = [
     {
@@ -12,8 +13,8 @@ export default function PhotoGallery() {
       location: 'Newcastle Sports Field',
       camera: 'DJI Air 3S • 50MP Aerial',
       aspect: 'md:col-span-2 aspect-[16/10]',
-      url: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
-      fullUrl: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg'
+      url: '/img/IMG-0025.jpg',
+      fullUrl: '/img/IMG-0025.jpg'
     },
     {
       id: 2,
@@ -22,8 +23,8 @@ export default function PhotoGallery() {
       location: 'Durham Event Park',
       camera: 'DJI Air 3S • Ground & Aerial',
       aspect: 'aspect-[4/5]',
-      url: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
-      fullUrl: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg'
+      url: '/img/IMG-0018.jpg',
+      fullUrl: '/img/IMG-0018.jpg'
     },
     {
       id: 3,
@@ -32,8 +33,8 @@ export default function PhotoGallery() {
       location: 'Newcastle Sports Complex',
       camera: 'iPhone 17 Pro • ProRAW',
       aspect: 'aspect-[4/5]',
-      url: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg',
-      fullUrl: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg'
+      url: '/img/IMG-0021.jpg',
+      fullUrl: '/img/IMG-0021.jpg'
     },
     {
       id: 4,
@@ -42,8 +43,8 @@ export default function PhotoGallery() {
       location: 'Sunderland Sports Ground',
       camera: 'DJI Air 3S • 70mm Telephoto',
       aspect: 'aspect-[4/5]',
-      url: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg',
-      fullUrl: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg'
+      url: '/img/IMG-0019.jpg',
+      fullUrl: '/img/IMG-0019.jpg'
     },
     {
       id: 5,
@@ -52,8 +53,8 @@ export default function PhotoGallery() {
       location: 'Newcastle Event Pavilion',
       camera: 'iPhone 17 Pro • 48MP',
       aspect: 'md:col-span-2 aspect-[16/10]',
-      url: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg',
-      fullUrl: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg'
+      url: '/img/IMG-0020.jpg',
+      fullUrl: '/img/IMG-0020.jpg'
     }
   ];
 
@@ -68,6 +69,11 @@ export default function PhotoGallery() {
   const filteredPhotos = activeFilter === 'all' 
     ? photos 
     : photos.filter(p => p.category === activeFilter);
+
+  const handleOpenPhoto = (photo) => {
+    setIsImageLoading(true);
+    setActiveImage(photo);
+  };
 
   return (
     <section id="photography" className="py-16 sm:py-24 md:py-32 bg-[#0B0D11] relative overflow-hidden">
@@ -108,7 +114,7 @@ export default function PhotoGallery() {
           {filteredPhotos.map((photo) => (
             <div
               key={photo.id}
-              onClick={() => setActiveImage(photo)}
+              onClick={() => handleOpenPhoto(photo)}
               className={`group relative rounded-2xl overflow-hidden cursor-pointer studio-card border-white/10 ${photo.aspect}`}
             >
               <img
@@ -118,6 +124,12 @@ export default function PhotoGallery() {
                 className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 opacity-85 group-hover:opacity-100"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+
+              {/* Click to view badge */}
+              <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] font-mono tracking-wider text-zinc-200 border border-white/10 flex items-center gap-1.5 group-hover:bg-emerald-500/20 group-hover:text-emerald-300 group-hover:border-emerald-500/30 transition-all z-10">
+                <i className="ri-expand-diagonal-line text-xs"></i>
+                <span>Click to view</span>
+              </div>
 
               {/* Minimal Editorial Card Meta */}
               <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between">
@@ -140,7 +152,7 @@ export default function PhotoGallery() {
 
       </div>
 
-      {/* Lightbox Modal */}
+      {/* Lightbox Modal with Animated Loading Spinner */}
       {activeImage && (
         <div 
           onClick={() => setActiveImage(null)}
@@ -177,11 +189,18 @@ export default function PhotoGallery() {
               </div>
             </div>
             
-            <div className="max-h-[75vh] bg-black/60 flex items-center justify-center p-2 sm:p-4">
+            <div className="relative min-h-[320px] max-h-[75vh] bg-black/60 flex items-center justify-center p-2 sm:p-4">
+              {isImageLoading && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 gap-3 z-10">
+                  <div className="w-10 h-10 border-2 border-white/10 border-t-emerald-400 rounded-full animate-spin"></div>
+                  <span className="text-xs font-mono tracking-wider text-zinc-400">Loading High-Res Image...</span>
+                </div>
+              )}
               <img 
                 src={activeImage.fullUrl || activeImage.url} 
                 alt={activeImage.title} 
-                className="max-h-[65vh] sm:max-h-[70vh] w-auto object-contain rounded-xl shadow-2xl" 
+                onLoad={() => setIsImageLoading(false)}
+                className={`max-h-[65vh] sm:max-h-[70vh] w-auto object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'}`} 
               />
             </div>
           </div>
@@ -191,3 +210,4 @@ export default function PhotoGallery() {
     </section>
   );
 }
+
