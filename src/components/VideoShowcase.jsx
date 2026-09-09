@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 
 export default function VideoShowcase() {
   const [selectedVideo, setSelectedVideo] = useState(null);
-  const [isMuted, setIsMuted] = useState(true);
 
   const featuredReel = {
     id: 1,
     title: 'Newcastle & North East Aerial Showcase',
-    subtitle: 'Newcastle Event Grounds & Tyne River Aerial Reel (IMG 2432)',
+    subtitle: 'Newcastle Event Grounds & Tyne River Reel (IMG 2432)',
     duration: '01:26',
     quality: '4K 60FPS 10-Bit D-Log',
     camera: 'DJI Air 3S Dual-Camera Payload',
     thumbnail: '/img/IMG-0025.jpg',
+    fallbackThumbnail: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
     youtubeId: 'PIja76NisHs',
   };
 
@@ -23,6 +23,7 @@ export default function VideoShowcase() {
       duration: '01:26',
       quality: '4K Reel',
       thumbnail: '/img/IMG-0025.jpg',
+      fallbackThumbnail: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
       youtubeId: 'PIja76NisHs',
     },
     {
@@ -32,6 +33,7 @@ export default function VideoShowcase() {
       duration: '00:25',
       quality: '4K Reel',
       thumbnail: '/img/IMG-0018.jpg',
+      fallbackThumbnail: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
       youtubeId: 'TSlTqqy4SO8',
     }
   ];
@@ -55,30 +57,24 @@ export default function VideoShowcase() {
           </p>
         </div>
 
-        {/* Large Cinematic Hero Video Card with Auto-playing Background */}
+        {/* Large Cinematic Hero Video Card */}
         <div 
-          onClick={() => {
-            setIsMuted(true);
-            setSelectedVideo(featuredReel);
-          }}
+          onClick={() => setSelectedVideo(featuredReel)}
           className="relative aspect-[16/9] sm:aspect-[21/9] min-h-[260px] sm:min-h-[360px] rounded-2xl overflow-hidden cursor-pointer group studio-card border-white/10 mb-6 sm:mb-8 select-none"
-          onContextMenu={(e) => e.preventDefault()}
         >
-          {/* Autoplay Muted Embed Background */}
-          <div className="absolute inset-0 pointer-events-none scale-110">
-            <iframe
-              src={`https://www.youtube-nocookie.com/embed/${featuredReel.youtubeId}?autoplay=1&mute=1&loop=1&playlist=${featuredReel.youtubeId}&controls=0&modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&playsinline=1`}
-              title="Featured Reel Background"
-              className="w-full h-full object-cover opacity-75 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700 pointer-events-none"
-              allow="autoplay; encrypted-media"
-            />
-          </div>
-
+          <img
+            src={featuredReel.thumbnail}
+            alt={featuredReel.title}
+            onError={(e) => {
+              e.currentTarget.src = featuredReel.fallbackThumbnail;
+            }}
+            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 opacity-80 group-hover:opacity-95"
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20" />
 
           {/* Liquid Play Button */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-            <div className="btn-liquid w-14 h-14 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-white group-hover:scale-105 transition-all duration-300 shadow-2xl">
+            <div className="btn-liquid w-14 h-14 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-all duration-300 shadow-2xl">
               <i className="ri-play-fill text-xl sm:text-3xl ml-0.5 sm:ml-1 text-white"></i>
             </div>
           </div>
@@ -112,11 +108,7 @@ export default function VideoShowcase() {
             <div
               key={reel.id}
               className="rounded-2xl overflow-hidden studio-card border-white/10 flex flex-col justify-between cursor-pointer group select-none"
-              onClick={() => {
-                setIsMuted(true);
-                setSelectedVideo(reel);
-              }}
-              onContextMenu={(e) => e.preventDefault()}
+              onClick={() => setSelectedVideo(reel)}
             >
               {/* Video Thumbnail Card */}
               <div className="flex flex-col h-full">
@@ -124,7 +116,10 @@ export default function VideoShowcase() {
                   <img
                     src={reel.thumbnail}
                     alt={reel.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-75 group-hover:opacity-90"
+                    onError={(e) => {
+                      e.currentTarget.src = reel.fallbackThumbnail;
+                    }}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-95"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                   
@@ -155,7 +150,7 @@ export default function VideoShowcase() {
 
       </div>
 
-      {/* Custom Protected Video Lightbox Player Modal */}
+      {/* Video Lightbox Player Modal */}
       {selectedVideo && (
         <div 
           onClick={() => setSelectedVideo(null)}
@@ -163,7 +158,7 @@ export default function VideoShowcase() {
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-2xl bg-[#0F1217] rounded-2xl overflow-hidden border border-white/15 shadow-2xl animate-in zoom-in-95 duration-200"
+            className="relative w-full max-w-xl bg-[#0F1217] rounded-2xl overflow-hidden border border-white/15 shadow-2xl animate-in zoom-in-95 duration-200"
           >
             
             {/* Modal Header */}
@@ -182,16 +177,18 @@ export default function VideoShowcase() {
               </button>
             </div>
 
-            {/* Embedded Player Frame */}
-            <div className="relative w-full h-[65vh] max-h-[600px] bg-black flex items-center justify-center overflow-hidden">
+            {/* Embedded Shorts Vertical Player */}
+            <div className="relative w-full h-[70vh] max-h-[640px] bg-black flex items-center justify-center p-2 sm:p-4">
               {selectedVideo.youtubeId ? (
-                <iframe
-                  src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&playsinline=1&rel=0&modestbranding=1`}
-                  title={selectedVideo.title}
-                  className="w-full h-full border-0 rounded-b-2xl"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
+                <div className="w-full max-w-[360px] h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black">
+                  <iframe
+                    src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&playsinline=1&rel=0&modestbranding=1`}
+                    title={selectedVideo.title}
+                    className="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                </div>
               ) : (
                 <video
                   src={selectedVideo.videoUrl}
@@ -209,4 +206,5 @@ export default function VideoShowcase() {
     </section>
   );
 }
+
 

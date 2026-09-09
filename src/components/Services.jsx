@@ -9,6 +9,7 @@ export default function Services() {
       title: 'Drone Photography',
       desc: 'High-resolution 50MP aerial stills capturing fine architectural detail, landscapes, and private venues with balanced dynamic range.',
       image: '/img/IMG-0025.jpg',
+      fallbackImage: 'https://i.ibb.co/BVZrsVpn/IMG-0025.jpg',
       tag: '50MP Aerial RAW',
       location: 'Newcastle Sports Ground',
     },
@@ -16,6 +17,7 @@ export default function Services() {
       title: 'Drone Videography',
       desc: 'High-speed 4K 60fps aerial sequences captured using the dual-camera DJI Air 3S with 10-bit D-Log color profiles.',
       image: '/img/IMG-0018.jpg',
+      fallbackImage: 'https://i.ibb.co/C3zLKSSF/IMG-0018.jpg',
       tag: '4K 60FPS D-Log',
       location: 'Durham Event Grounds',
     },
@@ -23,6 +25,7 @@ export default function Services() {
       title: 'Ground Photography',
       desc: 'Professional ground-level portraits, candid moments, and event atmosphere captured with iPhone 17 Pro 48MP ProRAW.',
       image: '/img/IMG-0021.jpg',
+      fallbackImage: 'https://i.ibb.co/6c9HWH91/IMG-0021.jpg',
       tag: '48MP ProRAW',
       location: 'Newcastle Sports Complex',
     },
@@ -30,6 +33,7 @@ export default function Services() {
       title: 'Event Videography',
       desc: 'Comprehensive multi-angle event coverage from arrival to departure for birthdays, celebrations, and outdoor gatherings.',
       image: '/img/IMG-0019.jpg',
+      fallbackImage: 'https://i.ibb.co/XxWZd02d/IMG-0019.jpg',
       tag: 'Milestone Events',
       location: 'Sunderland Sports Field',
     },
@@ -37,6 +41,7 @@ export default function Services() {
       title: 'Professional Editing',
       desc: 'Complete post-production including cinematic color grading, licensed audio mastering, and high-bitrate digital delivery.',
       image: '/img/IMG-0020.jpg',
+      fallbackImage: 'https://i.ibb.co/5xwcdYjh/IMG-0020.jpg',
       tag: 'Master Color Grade',
       location: 'Newcastle Event Pavilion',
     },
@@ -44,6 +49,7 @@ export default function Services() {
       title: 'Social Media Content',
       desc: 'Custom 9:16 vertical sequences tailored specifically for high-engagement Instagram Reels, TikTok, and YouTube Shorts.',
       image: '/img/IMG-0025.jpg',
+      fallbackImage: 'https://i.ibb.co/BVZrsVpn/IMG-0025.jpg',
       tag: 'Vertical 9:16',
       location: 'Newcastle NE3 Base',
     }
@@ -90,6 +96,9 @@ export default function Services() {
                   src={srv.image}
                   alt={srv.title}
                   loading="lazy"
+                  onError={(e) => {
+                    e.currentTarget.src = srv.fallbackImage;
+                  }}
                   className="w-full h-full object-cover image-zoom-target opacity-85 group-hover:opacity-100 transition-all duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#12151B] via-transparent to-transparent opacity-90" />

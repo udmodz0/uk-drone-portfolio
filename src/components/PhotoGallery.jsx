@@ -14,7 +14,8 @@ export default function PhotoGallery() {
       camera: 'DJI Air 3S • 50MP Aerial',
       aspect: 'md:col-span-2 aspect-[16/10]',
       url: '/img/IMG-0025.jpg',
-      fullUrl: '/img/IMG-0025.jpg'
+      fullUrl: '/img/IMG-0025.jpg',
+      fallbackUrl: 'https://i.ibb.co/BVZrsVpn/IMG-0025.jpg'
     },
     {
       id: 2,
@@ -24,7 +25,8 @@ export default function PhotoGallery() {
       camera: 'DJI Air 3S • Ground & Aerial',
       aspect: 'aspect-[4/5]',
       url: '/img/IMG-0018.jpg',
-      fullUrl: '/img/IMG-0018.jpg'
+      fullUrl: '/img/IMG-0018.jpg',
+      fallbackUrl: 'https://i.ibb.co/C3zLKSSF/IMG-0018.jpg'
     },
     {
       id: 3,
@@ -34,7 +36,8 @@ export default function PhotoGallery() {
       camera: 'iPhone 17 Pro • ProRAW',
       aspect: 'aspect-[4/5]',
       url: '/img/IMG-0021.jpg',
-      fullUrl: '/img/IMG-0021.jpg'
+      fullUrl: '/img/IMG-0021.jpg',
+      fallbackUrl: 'https://i.ibb.co/6c9HWH91/IMG-0021.jpg'
     },
     {
       id: 4,
@@ -44,7 +47,8 @@ export default function PhotoGallery() {
       camera: 'DJI Air 3S • 70mm Telephoto',
       aspect: 'aspect-[4/5]',
       url: '/img/IMG-0019.jpg',
-      fullUrl: '/img/IMG-0019.jpg'
+      fullUrl: '/img/IMG-0019.jpg',
+      fallbackUrl: 'https://i.ibb.co/XxWZd02d/IMG-0019.jpg'
     },
     {
       id: 5,
@@ -54,7 +58,8 @@ export default function PhotoGallery() {
       camera: 'iPhone 17 Pro • 48MP',
       aspect: 'md:col-span-2 aspect-[16/10]',
       url: '/img/IMG-0020.jpg',
-      fullUrl: '/img/IMG-0020.jpg'
+      fullUrl: '/img/IMG-0020.jpg',
+      fallbackUrl: 'https://i.ibb.co/5xwcdYjh/IMG-0020.jpg'
     }
   ];
 
@@ -121,6 +126,9 @@ export default function PhotoGallery() {
                 src={photo.url}
                 alt={photo.title}
                 loading="lazy"
+                onError={(e) => {
+                  e.currentTarget.src = photo.fallbackUrl;
+                }}
                 className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 opacity-85 group-hover:opacity-100"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
