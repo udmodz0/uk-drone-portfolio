@@ -5,31 +5,31 @@ export default function Services() {
     {
       title: 'Drone Photography',
       desc: 'High-resolution 50MP aerial stills capturing fine architectural detail, landscapes, and private venues with balanced dynamic range.',
-      image: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
+      image: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
       tag: '50MP Aerial RAW',
     },
     {
       title: 'Drone Videography',
       desc: 'High-speed 4K 60fps aerial sequences captured using the dual-camera DJI Air 3S with 10-bit D-Log color profiles.',
-      image: 'https://i.ibb.co/v4cxrywr/IMG-0019.jpg',
+      image: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
       tag: '4K 60FPS D-Log',
     },
     {
       title: 'Ground Photography',
       desc: 'Professional ground-level portraits, candid moments, and event atmosphere captured with iPhone 17 Pro 48MP ProRAW.',
-      image: 'https://i.ibb.co/Kc42r24L/IMG-0021.jpg',
+      image: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg',
       tag: '48MP ProRAW',
     },
     {
       title: 'Event Videography',
       desc: 'Comprehensive multi-angle event coverage from arrival to departure for birthdays, celebrations, and outdoor gatherings.',
-      image: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
+      image: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg',
       tag: 'Milestone Events',
     },
     {
       title: 'Professional Editing',
       desc: 'Complete post-production including cinematic color grading, licensed audio mastering, and high-bitrate digital delivery.',
-      image: 'https://i.ibb.co/XkMJ9y5x/IMG-0020.jpg',
+      image: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg',
       tag: 'Master Color Grade',
     },
     {
