@@ -9,8 +9,8 @@ export default function Services() {
       title: 'Drone Photography',
       desc: 'High-resolution 50MP aerial stills capturing fine architectural detail, landscapes, and private venues with balanced dynamic range.',
       thumbnail: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
-      fullImage: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
-      localFallback: '/img/IMG-0025.jpg',
+      fullImage: '/img/IMG-0025.jpg',
+      fallbackFullImage: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
       tag: '50MP Aerial RAW',
       location: 'Newcastle Sports Ground',
     },
@@ -18,8 +18,8 @@ export default function Services() {
       title: 'Drone Videography',
       desc: 'High-speed 4K 60fps aerial sequences captured using the dual-camera DJI Air 3S with 10-bit D-Log color profiles.',
       thumbnail: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
-      fullImage: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
-      localFallback: '/img/IMG-0018.jpg',
+      fullImage: '/img/IMG-0018.jpg',
+      fallbackFullImage: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
       tag: '4K 60FPS D-Log',
       location: 'Durham Event Grounds',
     },
@@ -27,8 +27,8 @@ export default function Services() {
       title: 'Ground Photography',
       desc: 'Professional ground-level portraits, candid moments, and event atmosphere captured with iPhone 17 Pro 48MP ProRAW.',
       thumbnail: 'https://i.ibb.co/Kc42r24L/IMG-0021.jpg',
-      fullImage: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg',
-      localFallback: '/img/IMG-0021.jpg',
+      fullImage: '/img/IMG-0021.jpg',
+      fallbackFullImage: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg',
       tag: '48MP ProRAW',
       location: 'Newcastle Sports Complex',
     },
@@ -36,8 +36,8 @@ export default function Services() {
       title: 'Event Videography',
       desc: 'Comprehensive multi-angle event coverage from arrival to departure for birthdays, celebrations, and outdoor gatherings.',
       thumbnail: 'https://i.ibb.co/v4cxrywr/IMG-0019.jpg',
-      fullImage: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg',
-      localFallback: '/img/IMG-0019.jpg',
+      fullImage: '/img/IMG-0019.jpg',
+      fallbackFullImage: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg',
       tag: 'Milestone Events',
       location: 'Sunderland Sports Field',
     },
@@ -45,8 +45,8 @@ export default function Services() {
       title: 'Professional Editing',
       desc: 'Complete post-production including cinematic color grading, licensed audio mastering, and high-bitrate digital delivery.',
       thumbnail: 'https://i.ibb.co/XkMJ9y5x/IMG-0020.jpg',
-      fullImage: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg',
-      localFallback: '/img/IMG-0020.jpg',
+      fullImage: '/img/IMG-0020.jpg',
+      fallbackFullImage: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg',
       tag: 'Master Color Grade',
       location: 'Newcastle Event Pavilion',
     },
@@ -54,8 +54,8 @@ export default function Services() {
       title: 'Social Media Content',
       desc: 'Custom 9:16 vertical sequences tailored specifically for high-engagement Instagram Reels, TikTok, and YouTube Shorts.',
       thumbnail: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
-      fullImage: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
-      localFallback: '/img/IMG-0025.jpg',
+      fullImage: '/img/IMG-0025.jpg',
+      fallbackFullImage: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
       tag: 'Vertical 9:16',
       location: 'Newcastle NE3 Base',
     }
@@ -184,7 +184,7 @@ export default function Services() {
               </div>
             </div>
             
-            <div className="relative min-h-[320px] max-h-[75vh] bg-black/60 flex items-center justify-center p-2 sm:p-4">
+            <div className="relative min-h-[380px] max-h-[82vh] bg-black/80 flex items-center justify-center p-2 sm:p-4">
               {isImageLoading && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 gap-3 z-10">
                   <div className="w-10 h-10 border-2 border-white/10 border-t-emerald-400 rounded-full animate-spin"></div>
@@ -194,8 +194,13 @@ export default function Services() {
               <img 
                 src={activeModal.fullImage} 
                 alt={activeModal.title} 
+                onError={(e) => {
+                  if (activeModal.fallbackFullImage && e.currentTarget.src !== activeModal.fallbackFullImage) {
+                    e.currentTarget.src = activeModal.fallbackFullImage;
+                  }
+                }}
                 onLoad={() => setIsImageLoading(false)}
-                className={`max-h-[65vh] sm:max-h-[70vh] w-auto object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'}`} 
+                className={`max-h-[75vh] sm:max-h-[80vh] w-full max-w-full object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'}`} 
               />
             </div>
           </div>

@@ -14,8 +14,8 @@ export default function PhotoGallery() {
       camera: 'DJI Air 3S • 50MP Aerial',
       aspect: 'md:col-span-2 aspect-[16/10]',
       url: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
-      fullUrl: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
-      localFallback: '/img/IMG-0025.jpg'
+      fullUrl: '/img/IMG-0025.jpg',
+      fallbackUrl: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg'
     },
     {
       id: 2,
@@ -25,8 +25,8 @@ export default function PhotoGallery() {
       camera: 'DJI Air 3S • Ground & Aerial',
       aspect: 'aspect-[4/5]',
       url: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
-      fullUrl: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
-      localFallback: '/img/IMG-0018.jpg'
+      fullUrl: '/img/IMG-0018.jpg',
+      fallbackUrl: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg'
     },
     {
       id: 3,
@@ -36,8 +36,8 @@ export default function PhotoGallery() {
       camera: 'iPhone 17 Pro • ProRAW',
       aspect: 'aspect-[4/5]',
       url: 'https://i.ibb.co/Kc42r24L/IMG-0021.jpg',
-      fullUrl: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg',
-      localFallback: '/img/IMG-0021.jpg'
+      fullUrl: '/img/IMG-0021.jpg',
+      fallbackUrl: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg'
     },
     {
       id: 4,
@@ -47,8 +47,8 @@ export default function PhotoGallery() {
       camera: 'DJI Air 3S • 70mm Telephoto',
       aspect: 'aspect-[4/5]',
       url: 'https://i.ibb.co/v4cxrywr/IMG-0019.jpg',
-      fullUrl: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg',
-      localFallback: '/img/IMG-0019.jpg'
+      fullUrl: '/img/IMG-0019.jpg',
+      fallbackUrl: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg'
     },
     {
       id: 5,
@@ -58,8 +58,8 @@ export default function PhotoGallery() {
       camera: 'iPhone 17 Pro • 48MP',
       aspect: 'md:col-span-2 aspect-[16/10]',
       url: 'https://i.ibb.co/XkMJ9y5x/IMG-0020.jpg',
-      fullUrl: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg',
-      localFallback: '/img/IMG-0020.jpg'
+      fullUrl: '/img/IMG-0020.jpg',
+      fallbackUrl: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg'
     }
   ];
 
@@ -199,7 +199,7 @@ export default function PhotoGallery() {
               </div>
             </div>
             
-            <div className="relative min-h-[320px] max-h-[75vh] bg-black/60 flex items-center justify-center p-2 sm:p-4">
+            <div className="relative min-h-[380px] max-h-[82vh] bg-black/80 flex items-center justify-center p-2 sm:p-4">
               {isImageLoading && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 gap-3 z-10">
                   <div className="w-10 h-10 border-2 border-white/10 border-t-emerald-400 rounded-full animate-spin"></div>
@@ -209,8 +209,13 @@ export default function PhotoGallery() {
               <img 
                 src={activeImage.fullUrl || activeImage.url} 
                 alt={activeImage.title} 
+                onError={(e) => {
+                  if (activeImage.fallbackUrl && e.currentTarget.src !== activeImage.fallbackUrl) {
+                    e.currentTarget.src = activeImage.fallbackUrl;
+                  }
+                }}
                 onLoad={() => setIsImageLoading(false)}
-                className={`max-h-[65vh] sm:max-h-[70vh] w-auto object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'}`} 
+                className={`max-h-[75vh] sm:max-h-[80vh] w-full max-w-full object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'}`} 
               />
             </div>
           </div>
