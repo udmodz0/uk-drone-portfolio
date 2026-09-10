@@ -1,4 +1,203 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import CustomVideoPlayer, { fetchDirectVideoUrl } from './CustomVideoPlayer';
+
+// Subcomponent for Video Card with Autoplay on Hover
+function HoverableVideoCard({ reel, isHero = false, onClick }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const [videoStreamUrl, setVideoStreamUrl] = useState(null);
+  const [isLoadingStream, setIsLoadingStream] = useState(false);
+  const videoRef = useRef(null);
+
+  // Fetch direct video stream when hovered
+  useEffect(() => {
+    let active = true;
+    if (isHovered && !videoStreamUrl && !isLoadingStream && reel.youtubeId) {
+      setIsLoadingStream(true);
+      fetchDirectVideoUrl(reel.youtubeId).then((url) => {
+        if (active) {
+          if (url) setVideoStreamUrl(url);
+          setIsLoadingStream(false);
+        }
+      });
+    }
+    return () => { active = false; };
+  }, [isHovered, videoStreamUrl, isLoadingStream, reel.youtubeId]);
+
+  // Handle Play/Pause on hover
+  useEffect(() => {
+    if (videoRef.current && videoStreamUrl) {
+      if (isHovered) {
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isHovered, videoStreamUrl]);
+
+  if (isHero) {
+    return (
+      <div 
+        onClick={onClick}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="relative aspect-[16/9] sm:aspect-[21/9] min-h-[260px] sm:min-h-[360px] rounded-2xl overflow-hidden cursor-pointer group studio-card border-white/10 mb-6 sm:mb-8 select-none"
+      >
+        {/* Background Thumbnail */}
+        <img
+          src={reel.thumbnail}
+          alt={reel.title}
+          onError={(e) => {
+            if (e.currentTarget.src !== reel.fallbackThumbnail) {
+              e.currentTarget.src = reel.fallbackThumbnail;
+            } else if (reel.localFallback) {
+              e.currentTarget.src = reel.localFallback;
+            }
+          }}
+          className={`w-full h-full object-cover blur-[4px] scale-105 transition-all duration-700 opacity-80 group-hover:opacity-95 ${
+            isHovered && videoStreamUrl ? 'opacity-0' : 'opacity-80'
+          }`}
+        />
+
+        {/* Hover Auto-play Direct HTML5 Video Stream */}
+        {videoStreamUrl && (
+          <video
+            ref={videoRef}
+            src={videoStreamUrl}
+            muted
+            loop
+            playsInline
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+              isHovered ? 'opacity-100' : 'opacity-0'
+            }`}
+          />
+        )}
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20 pointer-events-none" />
+
+        {/* Loading Spinner on hover if stream resolving */}
+        {isHovered && isLoadingStream && (
+          <div className="absolute top-4 right-4 z-20 px-3 py-1 rounded-full bg-black/80 backdrop-blur-md text-[10px] font-mono text-zinc-300 flex items-center gap-2 border border-white/10">
+            <div className="w-3 h-3 border border-white/20 border-t-emerald-400 rounded-full animate-spin"></div>
+            <span>Loading stream...</span>
+          </div>
+        )}
+
+        {/* Live Hover Playing Indicator */}
+        {isHovered && videoStreamUrl && (
+          <div className="absolute top-4 right-4 z-20 px-3 py-1 rounded-full bg-emerald-950/80 backdrop-blur-md text-[10px] font-mono text-emerald-300 flex items-center gap-1.5 border border-emerald-500/40 animate-pulse">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>AUTOPLAY PREVIEW</span>
+          </div>
+        )}
+
+        {/* Center Liquid Play Button */}
+        <div className={`absolute inset-0 flex items-center justify-center pointer-events-none z-10 transition-opacity duration-300 ${isHovered && videoStreamUrl ? 'opacity-40 group-hover:opacity-90' : 'opacity-100'}`}>
+          <div className="btn-liquid w-14 h-14 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-all duration-300 shadow-2xl">
+            <i className="ri-play-fill text-xl sm:text-3xl ml-0.5 sm:ml-1 text-white"></i>
+          </div>
+        </div>
+
+        {/* Metadata Overlay */}
+        <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 z-10 pointer-events-none">
+          <div>
+            <span className="text-[10px] font-mono tracking-widest uppercase text-zinc-300 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>Featured Showreel • {reel.duration}</span>
+            </span>
+            <h3 className="font-display font-semibold text-lg sm:text-2xl text-white mt-0.5 sm:mt-1">
+              {reel.title}
+            </h3>
+            <p className="text-[11px] sm:text-xs text-zinc-300 font-mono mt-0.5">
+              {reel.subtitle}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="btn-liquid px-3 py-1 rounded-full text-[10px] font-mono text-zinc-200">
+              {reel.quality}
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Secondary Card Grid Item
+  return (
+    <div
+      onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="rounded-2xl overflow-hidden studio-card border-white/10 flex flex-col justify-between cursor-pointer group select-none"
+    >
+      <div className="flex flex-col h-full">
+        <div className="relative aspect-video bg-studio-800 overflow-hidden">
+          <img
+            src={reel.thumbnail}
+            alt={reel.title}
+            onError={(e) => {
+              if (e.currentTarget.src !== reel.fallbackThumbnail) {
+                e.currentTarget.src = reel.fallbackThumbnail;
+              } else if (reel.localFallback) {
+                e.currentTarget.src = reel.localFallback;
+              }
+            }}
+            className={`w-full h-full object-cover blur-[4px] transition-all duration-500 opacity-80 ${
+              isHovered && videoStreamUrl ? 'opacity-0' : 'opacity-80'
+            }`}
+          />
+
+          {/* Hover Auto-play Direct Stream */}
+          {videoStreamUrl && (
+            <video
+              ref={videoRef}
+              src={videoStreamUrl}
+              muted
+              loop
+              playsInline
+              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${
+                isHovered ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          )}
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+          
+          {/* Small Liquid Play Button */}
+          <div className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${isHovered && videoStreamUrl ? 'opacity-40 group-hover:opacity-90' : 'opacity-100'}`}>
+            <div className="btn-liquid w-10 h-10 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+              <i className="ri-play-fill text-sm ml-0.5"></i>
+            </div>
+          </div>
+
+          {/* Hovering Live Stream Tag */}
+          {isHovered && videoStreamUrl && (
+            <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-emerald-950/80 backdrop-blur-md text-[9px] font-mono text-emerald-300 border border-emerald-500/30 flex items-center gap-1 animate-pulse z-10">
+              <span className="w-1 h-1 rounded-full bg-emerald-400 animate-ping"></span>
+              <span>PLAYING</span>
+            </span>
+          )}
+
+          <span className="absolute bottom-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-mono text-zinc-300 z-10">
+            {reel.duration}
+          </span>
+        </div>
+
+        <div className="p-4 sm:p-5">
+          <h4 className="font-display font-medium text-sm sm:text-base text-[#FAF9F6] group-hover:text-white transition-colors">
+            {reel.title}
+          </h4>
+          <p className="text-xs text-zinc-400 font-mono mt-0.5">
+            {reel.subtitle}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function VideoShowcase() {
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -56,112 +255,31 @@ export default function VideoShowcase() {
             Events. Moments.
           </h2>
           <p className="mt-3 sm:mt-4 text-zinc-300 text-xs sm:text-base leading-relaxed font-normal max-w-xl">
-            Experience sample 4K cinema highlight reels filmed with our dual-camera DJI Air 3S platform across Newcastle, Sunderland, and Durham.
+            Experience sample 4K cinema highlight reels filmed with our dual-camera DJI Air 3S platform across Newcastle, Sunderland, and Durham. Hover over any reel to preview automatically.
           </p>
         </div>
 
-        {/* Large Cinematic Hero Video Card */}
-        <div 
-          onClick={() => setSelectedVideo(featuredReel)}
-          className="relative aspect-[16/9] sm:aspect-[21/9] min-h-[260px] sm:min-h-[360px] rounded-2xl overflow-hidden cursor-pointer group studio-card border-white/10 mb-6 sm:mb-8 select-none"
-        >
-          <img
-            src={featuredReel.thumbnail}
-            alt={featuredReel.title}
-            onError={(e) => {
-              if (e.currentTarget.src !== featuredReel.fallbackThumbnail) {
-                e.currentTarget.src = featuredReel.fallbackThumbnail;
-              } else if (featuredReel.localFallback) {
-                e.currentTarget.src = featuredReel.localFallback;
-              }
-            }}
-            className="w-full h-full object-cover blur-[4px] scale-105 group-hover:blur-[1px] group-hover:scale-110 transition-all duration-700 opacity-80 group-hover:opacity-95"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20" />
+        {/* Large Cinematic Hero Video Card with Hover Autoplay */}
+        <HoverableVideoCard 
+          reel={featuredReel} 
+          isHero={true} 
+          onClick={() => setSelectedVideo(featuredReel)} 
+        />
 
-          {/* Liquid Play Button */}
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-            <div className="btn-liquid w-14 h-14 sm:w-20 sm:h-20 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-all duration-300 shadow-2xl">
-              <i className="ri-play-fill text-xl sm:text-3xl ml-0.5 sm:ml-1 text-white"></i>
-            </div>
-          </div>
-
-          {/* Metadata Overlay */}
-          <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 right-4 sm:right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-3 sm:gap-4 z-10 pointer-events-none">
-            <div>
-              <span className="text-[10px] font-mono tracking-widest uppercase text-zinc-300 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>Featured Showreel • {featuredReel.duration}</span>
-              </span>
-              <h3 className="font-display font-semibold text-lg sm:text-2xl text-white mt-0.5 sm:mt-1">
-                {featuredReel.title}
-              </h3>
-              <p className="text-[11px] sm:text-xs text-zinc-300 font-mono mt-0.5">
-                {featuredReel.subtitle}
-              </p>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="btn-liquid px-3 py-1 rounded-full text-[10px] font-mono text-zinc-200">
-                {featuredReel.quality}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Secondary Reel Grid */}
+        {/* Secondary Reel Grid with Hover Autoplay */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 sm:gap-6">
           {additionalReels.map((reel) => (
-            <div
+            <HoverableVideoCard
               key={reel.id}
-              className="rounded-2xl overflow-hidden studio-card border-white/10 flex flex-col justify-between cursor-pointer group select-none"
+              reel={reel}
               onClick={() => setSelectedVideo(reel)}
-            >
-              {/* Video Thumbnail Card */}
-              <div className="flex flex-col h-full">
-                <div className="relative aspect-video bg-studio-800 overflow-hidden">
-                  <img
-                    src={reel.thumbnail}
-                    alt={reel.title}
-                    onError={(e) => {
-                      if (e.currentTarget.src !== reel.fallbackThumbnail) {
-                        e.currentTarget.src = reel.fallbackThumbnail;
-                      } else if (reel.localFallback) {
-                        e.currentTarget.src = reel.localFallback;
-                      }
-                    }}
-                    className="w-full h-full object-cover blur-[4px] group-hover:blur-[1px] group-hover:scale-105 transition-all duration-500 opacity-80 group-hover:opacity-95"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                  
-                  {/* Small Liquid Play Button */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="btn-liquid w-10 h-10 rounded-full flex items-center justify-center text-white group-hover:scale-110 transition-transform">
-                      <i className="ri-play-fill text-sm ml-0.5"></i>
-                    </div>
-                  </div>
-
-                  <span className="absolute bottom-2.5 right-2.5 px-2.5 py-0.5 rounded-full bg-black/70 backdrop-blur-md text-[10px] font-mono text-zinc-300">
-                    {reel.duration}
-                  </span>
-                </div>
-
-                <div className="p-4 sm:p-5">
-                  <h4 className="font-display font-medium text-sm sm:text-base text-[#FAF9F6] group-hover:text-white transition-colors">
-                    {reel.title}
-                  </h4>
-                  <p className="text-xs text-zinc-400 font-mono mt-0.5">
-                    {reel.subtitle}
-                  </p>
-                </div>
-              </div>
-            </div>
+            />
           ))}
         </div>
 
       </div>
 
-      {/* Video Lightbox Player Modal */}
+      {/* Video Custom Lightbox Player Modal (NO YouTube Iframe) */}
       {selectedVideo && (
         <div 
           onClick={() => setSelectedVideo(null)}
@@ -169,47 +287,16 @@ export default function VideoShowcase() {
         >
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-xl bg-[#0F1217] rounded-2xl overflow-hidden border border-white/15 shadow-2xl animate-in zoom-in-95 duration-200"
+            className="relative flex items-center justify-center w-full"
           >
-            
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-white/10 bg-[#12151B]">
-              <div>
-                <h4 className="font-display font-medium text-white text-sm sm:text-base">
-                  {selectedVideo.title}
-                </h4>
-                <p className="text-[11px] sm:text-xs font-mono text-zinc-400">{selectedVideo.subtitle || selectedVideo.quality}</p>
-              </div>
-              <button
-                onClick={() => setSelectedVideo(null)}
-                className="btn-liquid w-9 h-9 p-0 flex items-center justify-center text-zinc-300 hover:text-white"
-              >
-                <i className="ri-close-line text-lg"></i>
-              </button>
-            </div>
-
-            {/* Embedded Shorts Vertical Player */}
-            <div className="relative w-full h-[70vh] max-h-[640px] bg-black flex items-center justify-center p-2 sm:p-4">
-              {selectedVideo.youtubeId ? (
-                <div className="w-full max-w-[360px] h-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-black">
-                  <iframe
-                    src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&playsinline=1&rel=0&modestbranding=1`}
-                    title={selectedVideo.title}
-                    className="w-full h-full border-0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                  />
-                </div>
-              ) : (
-                <video
-                  src={selectedVideo.videoUrl}
-                  controls
-                  autoPlay
-                  className="w-full h-full object-contain"
-                ></video>
-              )}
-            </div>
-
+            <CustomVideoPlayer 
+              youtubeId={selectedVideo.youtubeId}
+              initialVideoUrl={selectedVideo.videoUrl}
+              title={selectedVideo.title}
+              subtitle={selectedVideo.subtitle}
+              isAutoPlay={true}
+              onClose={() => setSelectedVideo(null)}
+            />
           </div>
         </div>
       )}
@@ -217,5 +304,3 @@ export default function VideoShowcase() {
     </section>
   );
 }
-
-
