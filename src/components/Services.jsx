@@ -8,48 +8,48 @@ export default function Services() {
     {
       title: 'Drone Photography',
       desc: 'High-resolution 50MP aerial stills capturing fine architectural detail, landscapes, and private venues with balanced dynamic range.',
-      image: '/img/IMG-0025.jpg',
-      fallbackImage: 'https://i.ibb.co/BVZrsVpn/IMG-0025.jpg',
+      thumbnail: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
+      fullImage: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
       tag: '50MP Aerial RAW',
       location: 'Newcastle Sports Ground',
     },
     {
       title: 'Drone Videography',
       desc: 'High-speed 4K 60fps aerial sequences captured using the dual-camera DJI Air 3S with 10-bit D-Log color profiles.',
-      image: '/img/IMG-0018.jpg',
-      fallbackImage: 'https://i.ibb.co/C3zLKSSF/IMG-0018.jpg',
+      thumbnail: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
+      fullImage: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
       tag: '4K 60FPS D-Log',
       location: 'Durham Event Grounds',
     },
     {
       title: 'Ground Photography',
       desc: 'Professional ground-level portraits, candid moments, and event atmosphere captured with iPhone 17 Pro 48MP ProRAW.',
-      image: '/img/IMG-0021.jpg',
-      fallbackImage: 'https://i.ibb.co/6c9HWH91/IMG-0021.jpg',
+      thumbnail: 'https://i.ibb.co/Kc42r24L/IMG-0021.jpg',
+      fullImage: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg',
       tag: '48MP ProRAW',
       location: 'Newcastle Sports Complex',
     },
     {
       title: 'Event Videography',
       desc: 'Comprehensive multi-angle event coverage from arrival to departure for birthdays, celebrations, and outdoor gatherings.',
-      image: '/img/IMG-0019.jpg',
-      fallbackImage: 'https://i.ibb.co/XxWZd02d/IMG-0019.jpg',
+      thumbnail: 'https://i.ibb.co/v4cxrywr/IMG-0019.jpg',
+      fullImage: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg',
       tag: 'Milestone Events',
       location: 'Sunderland Sports Field',
     },
     {
       title: 'Professional Editing',
       desc: 'Complete post-production including cinematic color grading, licensed audio mastering, and high-bitrate digital delivery.',
-      image: '/img/IMG-0020.jpg',
-      fallbackImage: 'https://i.ibb.co/5xwcdYjh/IMG-0020.jpg',
+      thumbnail: 'https://i.ibb.co/XkMJ9y5x/IMG-0020.jpg',
+      fullImage: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg',
       tag: 'Master Color Grade',
       location: 'Newcastle Event Pavilion',
     },
     {
       title: 'Social Media Content',
       desc: 'Custom 9:16 vertical sequences tailored specifically for high-engagement Instagram Reels, TikTok, and YouTube Shorts.',
-      image: '/img/IMG-0025.jpg',
-      fallbackImage: 'https://i.ibb.co/BVZrsVpn/IMG-0025.jpg',
+      thumbnail: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
+      fullImage: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
       tag: 'Vertical 9:16',
       location: 'Newcastle NE3 Base',
     }
@@ -93,12 +93,9 @@ export default function Services() {
                 className="relative aspect-[16/10] image-zoom-container bg-studio-800 cursor-pointer"
               >
                 <img
-                  src={srv.image}
+                  src={srv.thumbnail}
                   alt={srv.title}
                   loading="lazy"
-                  onError={(e) => {
-                    e.currentTarget.src = srv.fallbackImage;
-                  }}
                   className="w-full h-full object-cover image-zoom-target opacity-85 group-hover:opacity-100 transition-all duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#12151B] via-transparent to-transparent opacity-90" />
@@ -159,7 +156,7 @@ export default function Services() {
 
               <div className="flex items-center gap-3">
                 <a
-                  href={activeModal.image}
+                  href={activeModal.fullImage}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-liquid px-3.5 py-1.5 text-xs font-mono text-zinc-300 hover:text-white flex items-center gap-1.5"
@@ -184,7 +181,7 @@ export default function Services() {
                 </div>
               )}
               <img 
-                src={activeModal.image} 
+                src={activeModal.fullImage} 
                 alt={activeModal.title} 
                 onLoad={() => setIsImageLoading(false)}
                 className={`max-h-[65vh] sm:max-h-[70vh] w-auto object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'}`} 
