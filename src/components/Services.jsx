@@ -8,48 +8,54 @@ export default function Services() {
     {
       title: 'Drone Photography',
       desc: 'High-resolution 50MP aerial stills capturing fine architectural detail, landscapes, and private venues with balanced dynamic range.',
-      thumbnail: '/img/thumb-IMG-0025.jpg',
-      fullImage: '/img/IMG-0025.jpg',
+      thumbnail: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
+      fullImage: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
+      localFallback: '/img/IMG-0025.jpg',
       tag: '50MP Aerial RAW',
       location: 'Newcastle Sports Ground',
     },
     {
       title: 'Drone Videography',
       desc: 'High-speed 4K 60fps aerial sequences captured using the dual-camera DJI Air 3S with 10-bit D-Log color profiles.',
-      thumbnail: '/img/thumb-IMG-0018.jpg',
-      fullImage: '/img/IMG-0018.jpg',
+      thumbnail: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
+      fullImage: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
+      localFallback: '/img/IMG-0018.jpg',
       tag: '4K 60FPS D-Log',
       location: 'Durham Event Grounds',
     },
     {
       title: 'Ground Photography',
       desc: 'Professional ground-level portraits, candid moments, and event atmosphere captured with iPhone 17 Pro 48MP ProRAW.',
-      thumbnail: '/img/thumb-IMG-0021.jpg',
-      fullImage: '/img/IMG-0021.jpg',
+      thumbnail: 'https://i.ibb.co/Kc42r24L/IMG-0021.jpg',
+      fullImage: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg',
+      localFallback: '/img/IMG-0021.jpg',
       tag: '48MP ProRAW',
       location: 'Newcastle Sports Complex',
     },
     {
       title: 'Event Videography',
       desc: 'Comprehensive multi-angle event coverage from arrival to departure for birthdays, celebrations, and outdoor gatherings.',
-      thumbnail: '/img/thumb-IMG-0019.jpg',
-      fullImage: '/img/IMG-0019.jpg',
+      thumbnail: 'https://i.ibb.co/v4cxrywr/IMG-0019.jpg',
+      fullImage: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg',
+      localFallback: '/img/IMG-0019.jpg',
       tag: 'Milestone Events',
       location: 'Sunderland Sports Field',
     },
     {
       title: 'Professional Editing',
       desc: 'Complete post-production including cinematic color grading, licensed audio mastering, and high-bitrate digital delivery.',
-      thumbnail: '/img/thumb-IMG-0020.jpg',
-      fullImage: '/img/IMG-0020.jpg',
+      thumbnail: 'https://i.ibb.co/XkMJ9y5x/IMG-0020.jpg',
+      fullImage: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg',
+      localFallback: '/img/IMG-0020.jpg',
       tag: 'Master Color Grade',
       location: 'Newcastle Event Pavilion',
     },
     {
       title: 'Social Media Content',
       desc: 'Custom 9:16 vertical sequences tailored specifically for high-engagement Instagram Reels, TikTok, and YouTube Shorts.',
-      thumbnail: '/img/thumb-IMG-0025.jpg',
-      fullImage: '/img/IMG-0025.jpg',
+      thumbnail: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
+      fullImage: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
+      localFallback: '/img/IMG-0025.jpg',
       tag: 'Vertical 9:16',
       location: 'Newcastle NE3 Base',
     }
@@ -87,26 +93,31 @@ export default function Services() {
               key={idx} 
               className="group studio-card rounded-xl overflow-hidden flex flex-col justify-between"
             >
-              {/* Image Container with Subtle 1.035x Hover Zoom & Click to View */}
+              {/* Image Container with Subtle Blur Preview & Click to View */}
               <div 
                 onClick={() => handleOpenModal(srv)}
-                className="relative aspect-[16/10] image-zoom-container bg-studio-800 cursor-pointer"
+                className="relative aspect-[16/10] overflow-hidden bg-studio-800 cursor-pointer"
               >
                 <img
                   src={srv.thumbnail}
                   alt={srv.title}
                   loading="lazy"
-                  className="w-full h-full object-cover image-zoom-target opacity-85 group-hover:opacity-100 transition-all duration-500"
+                  onError={(e) => {
+                    e.currentTarget.src = srv.localFallback || srv.fullImage;
+                  }}
+                  className="w-full h-full object-cover blur-[5px] scale-105 group-hover:blur-[2px] group-hover:scale-110 transition-all duration-700 opacity-80 group-hover:opacity-100"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#12151B] via-transparent to-transparent opacity-90" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#12151B] via-black/30 to-transparent opacity-90" />
                 
-                {/* Click to view badge */}
-                <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] font-mono tracking-wider text-zinc-200 border border-white/10 flex items-center gap-1.5 group-hover:bg-emerald-500/20 group-hover:text-emerald-300 group-hover:border-emerald-500/30 transition-all z-10">
-                  <i className="ri-expand-diagonal-line text-xs"></i>
-                  <span>Click to view</span>
+                {/* Center Blurred View Indicator Badge */}
+                <div className="absolute inset-0 flex items-center justify-center p-4 z-10 pointer-events-none">
+                  <div className="px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-white text-[11px] font-medium tracking-wide flex items-center gap-2 shadow-2xl group-hover:border-emerald-400/60 group-hover:bg-black/90 group-hover:text-emerald-300 transition-all">
+                    <i className="ri-eye-line text-emerald-400 text-xs animate-pulse"></i>
+                    <span>Click to view full photo</span>
+                  </div>
                 </div>
 
-                <span className="absolute top-3 right-3 px-2.5 py-1 rounded bg-black/60 backdrop-blur-md text-[10px] font-mono tracking-widest uppercase text-zinc-200 border border-white/10 z-10">
+                <span className="absolute top-3 right-3 px-2.5 py-1 rounded bg-black/70 backdrop-blur-md text-[10px] font-mono tracking-widest uppercase text-zinc-200 border border-white/10 z-10">
                   {srv.tag}
                 </span>
               </div>

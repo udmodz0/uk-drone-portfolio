@@ -10,8 +10,9 @@ export default function VideoShowcase() {
     duration: '01:26',
     quality: '4K 60FPS 10-Bit D-Log',
     camera: 'DJI Air 3S Dual-Camera Payload',
-    thumbnail: '/img/thumb-IMG-0025.jpg',
-    fallbackThumbnail: '/img/IMG-0025.jpg',
+    thumbnail: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
+    fallbackThumbnail: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
+    localFallback: '/img/IMG-0025.jpg',
     youtubeId: 'PIja76NisHs',
   };
 
@@ -22,8 +23,9 @@ export default function VideoShowcase() {
       subtitle: 'Newcastle Event Grounds (IMG 2432)',
       duration: '01:26',
       quality: '4K Reel',
-      thumbnail: '/img/thumb-IMG-0025.jpg',
-      fallbackThumbnail: '/img/IMG-0025.jpg',
+      thumbnail: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
+      fallbackThumbnail: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
+      localFallback: '/img/IMG-0025.jpg',
       youtubeId: 'PIja76NisHs',
     },
     {
@@ -32,8 +34,9 @@ export default function VideoShowcase() {
       subtitle: 'Durham Sports Park (IMG 8292)',
       duration: '00:25',
       quality: '4K Reel',
-      thumbnail: '/img/thumb-IMG-0018.jpg',
-      fallbackThumbnail: '/img/IMG-0018.jpg',
+      thumbnail: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
+      fallbackThumbnail: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
+      localFallback: '/img/IMG-0018.jpg',
       youtubeId: 'TSlTqqy4SO8',
     }
   ];
@@ -66,9 +69,13 @@ export default function VideoShowcase() {
             src={featuredReel.thumbnail}
             alt={featuredReel.title}
             onError={(e) => {
-              e.currentTarget.src = featuredReel.fallbackThumbnail;
+              if (e.currentTarget.src !== featuredReel.fallbackThumbnail) {
+                e.currentTarget.src = featuredReel.fallbackThumbnail;
+              } else if (featuredReel.localFallback) {
+                e.currentTarget.src = featuredReel.localFallback;
+              }
             }}
-            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 opacity-80 group-hover:opacity-95"
+            className="w-full h-full object-cover blur-[4px] scale-105 group-hover:blur-[1px] group-hover:scale-110 transition-all duration-700 opacity-80 group-hover:opacity-95"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-black/20" />
 
@@ -117,9 +124,13 @@ export default function VideoShowcase() {
                     src={reel.thumbnail}
                     alt={reel.title}
                     onError={(e) => {
-                      e.currentTarget.src = reel.fallbackThumbnail;
+                      if (e.currentTarget.src !== reel.fallbackThumbnail) {
+                        e.currentTarget.src = reel.fallbackThumbnail;
+                      } else if (reel.localFallback) {
+                        e.currentTarget.src = reel.localFallback;
+                      }
                     }}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-95"
+                    className="w-full h-full object-cover blur-[4px] group-hover:blur-[1px] group-hover:scale-105 transition-all duration-500 opacity-80 group-hover:opacity-95"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                   

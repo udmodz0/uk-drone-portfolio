@@ -13,8 +13,9 @@ export default function PhotoGallery() {
       location: 'Newcastle Sports Field',
       camera: 'DJI Air 3S • 50MP Aerial',
       aspect: 'md:col-span-2 aspect-[16/10]',
-      url: '/img/thumb-IMG-0025.jpg',
-      fullUrl: '/img/IMG-0025.jpg'
+      url: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
+      fullUrl: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
+      localFallback: '/img/IMG-0025.jpg'
     },
     {
       id: 2,
@@ -23,8 +24,9 @@ export default function PhotoGallery() {
       location: 'Durham Event Park',
       camera: 'DJI Air 3S • Ground & Aerial',
       aspect: 'aspect-[4/5]',
-      url: '/img/thumb-IMG-0018.jpg',
-      fullUrl: '/img/IMG-0018.jpg'
+      url: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
+      fullUrl: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
+      localFallback: '/img/IMG-0018.jpg'
     },
     {
       id: 3,
@@ -33,8 +35,9 @@ export default function PhotoGallery() {
       location: 'Newcastle Sports Complex',
       camera: 'iPhone 17 Pro • ProRAW',
       aspect: 'aspect-[4/5]',
-      url: '/img/thumb-IMG-0021.jpg',
-      fullUrl: '/img/IMG-0021.jpg'
+      url: 'https://i.ibb.co/Kc42r24L/IMG-0021.jpg',
+      fullUrl: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg',
+      localFallback: '/img/IMG-0021.jpg'
     },
     {
       id: 4,
@@ -43,8 +46,9 @@ export default function PhotoGallery() {
       location: 'Sunderland Sports Ground',
       camera: 'DJI Air 3S • 70mm Telephoto',
       aspect: 'aspect-[4/5]',
-      url: '/img/thumb-IMG-0019.jpg',
-      fullUrl: '/img/IMG-0019.jpg'
+      url: 'https://i.ibb.co/v4cxrywr/IMG-0019.jpg',
+      fullUrl: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg',
+      localFallback: '/img/IMG-0019.jpg'
     },
     {
       id: 5,
@@ -53,8 +57,9 @@ export default function PhotoGallery() {
       location: 'Newcastle Event Pavilion',
       camera: 'iPhone 17 Pro • 48MP',
       aspect: 'md:col-span-2 aspect-[16/10]',
-      url: '/img/thumb-IMG-0020.jpg',
-      fullUrl: '/img/IMG-0020.jpg'
+      url: 'https://i.ibb.co/XkMJ9y5x/IMG-0020.jpg',
+      fullUrl: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg',
+      localFallback: '/img/IMG-0020.jpg'
     }
   ];
 
@@ -122,16 +127,18 @@ export default function PhotoGallery() {
                 alt={photo.title}
                 loading="lazy"
                 onError={(e) => {
-                  e.currentTarget.src = photo.fullUrl;
+                  e.currentTarget.src = photo.localFallback || photo.fullUrl;
                 }}
-                className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-700 opacity-85 group-hover:opacity-100"
+                className="w-full h-full object-cover blur-[5px] scale-105 group-hover:blur-[2px] group-hover:scale-110 transition-all duration-700 opacity-80 group-hover:opacity-100"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
 
-              {/* Click to view badge */}
-              <div className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md text-[10px] font-mono tracking-wider text-zinc-200 border border-white/10 flex items-center gap-1.5 group-hover:bg-emerald-500/20 group-hover:text-emerald-300 group-hover:border-emerald-500/30 transition-all z-10">
-                <i className="ri-expand-diagonal-line text-xs"></i>
-                <span>Click to view</span>
+              {/* Center Blurred View Indicator Badge */}
+              <div className="absolute inset-0 flex items-center justify-center p-4 z-10 pointer-events-none">
+                <div className="px-3.5 py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-white text-[11px] font-medium tracking-wide flex items-center gap-2 shadow-2xl group-hover:border-emerald-400/60 group-hover:bg-black/90 group-hover:text-emerald-300 transition-all">
+                  <i className="ri-eye-line text-emerald-400 text-xs animate-pulse"></i>
+                  <span>Click to view full photo</span>
+                </div>
               </div>
 
               {/* Minimal Editorial Card Meta */}
