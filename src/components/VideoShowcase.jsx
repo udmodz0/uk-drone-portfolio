@@ -10,8 +10,8 @@ export default function VideoShowcase() {
     duration: '01:26',
     quality: '4K 60FPS 10-Bit D-Log',
     camera: 'DJI Air 3S Dual-Camera Payload',
-    thumbnail: '/img/IMG-0025.jpg',
-    fallbackThumbnail: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
+    thumbnail: '/img/thumb-IMG-0025.jpg',
+    fallbackThumbnail: '/img/IMG-0025.jpg',
     youtubeId: 'PIja76NisHs',
   };
 
@@ -22,8 +22,8 @@ export default function VideoShowcase() {
       subtitle: 'Newcastle Event Grounds (IMG 2432)',
       duration: '01:26',
       quality: '4K Reel',
-      thumbnail: '/img/IMG-0025.jpg',
-      fallbackThumbnail: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
+      thumbnail: '/img/thumb-IMG-0025.jpg',
+      fallbackThumbnail: '/img/IMG-0025.jpg',
       youtubeId: 'PIja76NisHs',
     },
     {
@@ -32,8 +32,8 @@ export default function VideoShowcase() {
       subtitle: 'Durham Sports Park (IMG 8292)',
       duration: '00:25',
       quality: '4K Reel',
-      thumbnail: '/img/IMG-0018.jpg',
-      fallbackThumbnail: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
+      thumbnail: '/img/thumb-IMG-0018.jpg',
+      fallbackThumbnail: '/img/IMG-0018.jpg',
       youtubeId: 'TSlTqqy4SO8',
     }
   ];

@@ -15,7 +15,17 @@ export default function Footer({ onOpenAdmin, contactData }) {
           <div className="md:col-span-5 space-y-3 sm:space-y-4">
             <div className="flex items-center gap-2.5 sm:gap-3">
               <div className="w-8 h-8 rounded-full overflow-hidden border border-white/20 p-0.5 bg-black/40 shadow-sm">
-                <img src="/logo.jpeg" alt="AirVibe UK" className="w-full h-full object-cover rounded-full" />
+                <img 
+                  src="/logo.jpeg" 
+                  alt="AirVibe UK" 
+                  className="w-full h-full object-cover rounded-full"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    if (e.target.parentElement) {
+                      e.target.parentElement.innerHTML = '<div class="w-full h-full bg-zinc-900 flex items-center justify-center text-white font-bold text-[10px] tracking-wider">AV</div>';
+                    }
+                  }}
+                />
               </div>
               <span className="font-display font-bold text-lg sm:text-xl text-white tracking-tight">
                 AIRVIBE<span className="text-zinc-500 font-light">.UK</span>
