@@ -117,7 +117,7 @@ export default function Hero({ onOpenBooking }) {
             src="https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg"
             alt="Aerial drone perspective of event and landscape"
             onError={(e) => {
-              e.currentTarget.src = "/img/IMG-0025.jpg";
+              e.currentTarget.src = "https://i.ibb.co/99TVY9DZ/IMG-0025.jpg";
             }}
             className="w-full h-full object-cover object-center opacity-30 scale-105 transition-transform duration-1000 ease-out"
           />

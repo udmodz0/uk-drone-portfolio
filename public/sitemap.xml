@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <url>
+    <loc>https://airvibe.uk/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://airvibe.uk/logo.jpeg</image:loc>
+      <image:title>AirVibe UK Logo</image:title>
+      <image:caption>Official AirVibe UK Logo - CAA Registered Drone Operator Newcastle</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://airvibe.uk/img/IMG-0025.jpg</image:loc>
+      <image:title>AirVibe UK 50MP Aerial Drone Photography Newcastle</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://airvibe.uk/img/IMG-0018.jpg</image:loc>
+      <image:title>AirVibe UK Drone Videography Durham</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://airvibe.uk/img/IMG-0021.jpg</image:loc>
+      <image:title>AirVibe UK Ground Photography Newcastle</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://airvibe.uk/img/IMG-0019.jpg</image:loc>
+      <image:title>AirVibe UK Event Videography Sunderland</image:title>
+    </image:image>
+  </url>
+</urlset>

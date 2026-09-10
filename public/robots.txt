@@ -1,0 +1,7 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Disallow: /admin
+
+# Sitemap Location
+Sitemap: https://airvibe.uk/sitemap.xml

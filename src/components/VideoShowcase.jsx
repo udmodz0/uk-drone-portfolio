@@ -211,7 +211,6 @@ export default function VideoShowcase() {
     camera: 'DJI Air 3S Dual-Camera Payload',
     thumbnail: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
     fallbackThumbnail: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
-    localFallback: '/img/IMG-0025.jpg',
     youtubeId: 'PIja76NisHs',
   };
 
@@ -224,7 +223,6 @@ export default function VideoShowcase() {
       quality: '4K Reel',
       thumbnail: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
       fallbackThumbnail: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg',
-      localFallback: '/img/IMG-0025.jpg',
       youtubeId: 'PIja76NisHs',
     },
     {
@@ -235,7 +233,6 @@ export default function VideoShowcase() {
       quality: '4K Reel',
       thumbnail: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
       fallbackThumbnail: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
-      localFallback: '/img/IMG-0018.jpg',
       youtubeId: 'TSlTqqy4SO8',
     }
   ];

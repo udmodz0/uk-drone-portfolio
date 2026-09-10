@@ -14,8 +14,7 @@ export default function PhotoGallery() {
       camera: 'DJI Air 3S • 50MP Aerial',
       aspect: 'md:col-span-2 aspect-[16/10]',
       url: 'https://i.ibb.co/hRWZ8R6Y/IMG-0025.jpg',
-      fullUrl: '/img/IMG-0025.jpg',
-      fallbackUrl: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg'
+      fullUrl: 'https://i.ibb.co/99TVY9DZ/IMG-0025.jpg'
     },
     {
       id: 2,
@@ -25,8 +24,7 @@ export default function PhotoGallery() {
       camera: 'DJI Air 3S • Ground & Aerial',
       aspect: 'aspect-[4/5]',
       url: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
-      fullUrl: '/img/IMG-0018.jpg',
-      fallbackUrl: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg'
+      fullUrl: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg'
     },
     {
       id: 3,
@@ -36,8 +34,7 @@ export default function PhotoGallery() {
       camera: 'iPhone 17 Pro • ProRAW',
       aspect: 'aspect-[4/5]',
       url: 'https://i.ibb.co/Kc42r24L/IMG-0021.jpg',
-      fullUrl: '/img/IMG-0021.jpg',
-      fallbackUrl: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg'
+      fullUrl: 'https://i.ibb.co/hxQBmBQZ/IMG-0021.jpg'
     },
     {
       id: 4,
@@ -47,8 +44,7 @@ export default function PhotoGallery() {
       camera: 'DJI Air 3S • 70mm Telephoto',
       aspect: 'aspect-[4/5]',
       url: 'https://i.ibb.co/v4cxrywr/IMG-0019.jpg',
-      fullUrl: '/img/IMG-0019.jpg',
-      fallbackUrl: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg'
+      fullUrl: 'https://i.ibb.co/B2fV7Wz7/IMG-0019.jpg'
     },
     {
       id: 5,
@@ -58,8 +54,7 @@ export default function PhotoGallery() {
       camera: 'iPhone 17 Pro • 48MP',
       aspect: 'md:col-span-2 aspect-[16/10]',
       url: 'https://i.ibb.co/XkMJ9y5x/IMG-0020.jpg',
-      fullUrl: '/img/IMG-0020.jpg',
-      fallbackUrl: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg'
+      fullUrl: 'https://i.ibb.co/TqdhZK0M/IMG-0020.jpg'
     }
   ];
 
