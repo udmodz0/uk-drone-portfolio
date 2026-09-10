@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, onDroneClick }) {
+export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, onDroneClick, onHotspotClick }) {
   const containerRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);
@@ -14,6 +14,7 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
   const currentProgressRef = useRef(0);
   const onIntroCompleteRef = useRef(onIntroComplete);
   const onDroneClickRef = useRef(onDroneClick);
+  const onHotspotClickRef = useRef(onHotspotClick);
 
   useEffect(() => {
     onIntroCompleteRef.current = onIntroComplete;
@@ -22,6 +23,10 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
   useEffect(() => {
     onDroneClickRef.current = onDroneClick;
   }, [onDroneClick]);
+
+  useEffect(() => {
+    onHotspotClickRef.current = onHotspotClick;
+  }, [onHotspotClick]);
 
   useEffect(() => {
     targetProgressRef.current = scrollProgress;
@@ -494,6 +499,65 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       droneGroup.scale.set(0.92, 0.92, 0.92);
     }
 
+    // Hotspots Group (Interactive 3D pins on the drone)
+    const hotspotsGroup = new THREE.Group();
+    const hotspots = [
+      {
+        id: 0, // CINEMA (Optics)
+        name: '50MP Dual Lens',
+        position: new THREE.Vector3(0, -0.28, 1.05),
+        color: 0x34D399, // emerald
+      },
+      {
+        id: 1, // NIGHTSCAPE (LiDAR)
+        name: 'Omni LiDAR',
+        position: new THREE.Vector3(0, 0.42, 0.25),
+        color: 0x38BDF8, // sky blue
+      },
+      {
+        id: 2, // FLIGHT (Propulsion/Transmission)
+        name: 'O4 Propulsion',
+        position: new THREE.Vector3(1.5, 0.22, 1.15),
+        color: 0xFBBF24, // amber
+      },
+    ];
+
+    const hotspotMeshes = [];
+    hotspots.forEach((item) => {
+      const pinGroup = new THREE.Group();
+      pinGroup.position.copy(item.position);
+      pinGroup.userData = { id: item.id, isHotspot: true, name: item.name };
+
+      const sphereGeo = new THREE.SphereGeometry(0.065, 16, 16);
+      const sphereMat = new THREE.MeshBasicMaterial({
+        color: item.color,
+        transparent: true,
+        opacity: 0.95,
+      });
+      const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
+      sphereMesh.userData = { id: item.id, isHotspot: true };
+      pinGroup.add(sphereMesh);
+
+      const glow = makeGlowSprite(item.color, 0.45);
+      glow.userData = { id: item.id, isHotspot: true };
+      pinGroup.add(glow);
+
+      const ringGeo = new THREE.RingGeometry(0.09, 0.12, 32);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: item.color,
+        transparent: true,
+        opacity: 0.65,
+        side: THREE.DoubleSide,
+      });
+      const ringMesh = new THREE.Mesh(ringGeo, ringMat);
+      ringMesh.userData = { id: item.id, isHotspot: true };
+      pinGroup.add(ringMesh);
+
+      hotspotsGroup.add(pinGroup);
+      hotspotMeshes.push({ group: pinGroup, ring: ringMesh, glow: glow });
+    });
+    droneGroup.add(hotspotsGroup);
+
     scene.add(droneGroup);
 
     // 7. ANIMATION & FLIGHT LOOP
@@ -502,6 +566,18 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
     let introElapsed = 0;
     const INTRO_DURATION = 2.4;
     let introCompleted = false;
+
+    // Interactive Drag Orbit & Parallax State
+    let isDragging = false;
+    let dragPointerStartX = 0;
+    let dragPointerStartY = 0;
+    let dragDistanceMoved = 0;
+    let targetOrbitYaw = 0;
+    let targetOrbitPitch = 0;
+    let currentOrbitYaw = 0;
+    let currentOrbitPitch = 0;
+    let mouseParallaxX = 0;
+    let mouseParallaxY = 0;
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
@@ -543,6 +619,23 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
         const pulse = Math.pow(Math.max(0, Math.sin(elapsedTime * 2.2 + item.phase)), 6);
         item.sprite.material.opacity = 0.25 + pulse * 0.75;
       });
+
+      // Interactive 3D Hotspots Animation (Pulse & face camera)
+      hotspotMeshes.forEach((h, i) => {
+        const pulse = 1 + Math.sin(elapsedTime * 3.5 + i * 1.5) * 0.25;
+        h.ring.scale.set(pulse, pulse, pulse);
+        h.ring.lookAt(camera.position);
+        h.glow.material.opacity = 0.4 + Math.sin(elapsedTime * 3.5 + i * 1.5) * 0.35;
+        h.group.visible = p < 0.25 && introInv < 0.2;
+      });
+
+      // Smooth Orbit Damping
+      currentOrbitYaw += (targetOrbitYaw - currentOrbitYaw) * 0.08;
+      currentOrbitPitch += (targetOrbitPitch - currentOrbitPitch) * 0.08;
+      if (!isDragging) {
+        targetOrbitYaw *= 0.985;
+        targetOrbitPitch *= 0.985;
+      }
 
       // 2. Idle Natural Hovering (Subtle aerodynamic float)
       const idleWeight = Math.max(0, (1 - p * 2.5) * (1 - introInv));
@@ -588,9 +681,10 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
 
         const flightRoll = Math.sin(p * Math.PI) * -0.06;
 
-        drone.rotation.x = forwardPitch + hoverPitch + introFlarePitch;
-        drone.rotation.y = ((isMobileRef.current ? 0 : -0.15) + introYaw) * (1 - p);
-        drone.rotation.z = flightRoll + hoverRoll + introBankRoll;
+        // Apply Flight Physics + 360° Drag Orbit + Mouse Parallax
+        drone.rotation.x = forwardPitch + hoverPitch + introFlarePitch + currentOrbitPitch + mouseParallaxY;
+        drone.rotation.y = ((isMobileRef.current ? 0 : -0.15) + introYaw + currentOrbitYaw + mouseParallaxX) * (1 - p);
+        drone.rotation.z = flightRoll + hoverRoll + introBankRoll - currentOrbitYaw * 0.12;
 
         if (shadowMeshRef.current) {
           const shadow = shadowMeshRef.current;
@@ -634,12 +728,12 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
 
     window.addEventListener('resize', handleResize);
 
-    // 9. RAYCASTING INTERACTION: CLICK DRONE TO INSPECT DETAILS
+    // 9. RAYCASTING & 360° DRAG ORBIT INTERACTION
     const raycaster = new THREE.Raycaster();
     const mouse = new THREE.Vector2();
 
     const checkDroneIntersect = (clientX, clientY) => {
-      if (!container || !camera || !droneGroupRef.current) return false;
+      if (!container || !camera || !droneGroupRef.current) return null;
       const rect = container.getBoundingClientRect();
       if (
         clientX < rect.left ||
@@ -647,7 +741,7 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
         clientY < rect.top ||
         clientY > rect.bottom
       ) {
-        return false;
+        return null;
       }
       mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
       mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
@@ -656,29 +750,72 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       const droneHits = hits.filter(
         (h) => h.object !== shadowMeshRef.current && !(h.object.material instanceof THREE.ShadowMaterial)
       );
-      return droneHits.length > 0;
+      return droneHits.length > 0 ? droneHits[0] : null;
     };
 
     const handlePointerDown = (e) => {
-      // Ignore if user clicked another interactive element (buttons, links, modal)
       if (e.target.closest('button, a, input, textarea, select, [role="button"]')) return;
-      if (checkDroneIntersect(e.clientX, e.clientY)) {
-        if (onDroneClickRef.current) {
-          onDroneClickRef.current();
+      const hit = checkDroneIntersect(e.clientX, e.clientY);
+      if (hit) {
+        // If clicked directly on a 3D hotspot pin
+        if (hit.object.userData?.isHotspot) {
+          if (onHotspotClickRef.current) {
+            onHotspotClickRef.current(hit.object.userData.id);
+          }
+          return;
         }
+
+        // Initiate 360° Drag Orbit
+        isDragging = true;
+        dragPointerStartX = e.clientX;
+        dragPointerStartY = e.clientY;
+        dragDistanceMoved = 0;
       }
     };
 
     const handlePointerMove = (e) => {
-      if (checkDroneIntersect(e.clientX, e.clientY)) {
-        document.body.style.cursor = 'pointer';
-      } else if (document.body.style.cursor === 'pointer') {
+      if (isDragging) {
+        const deltaX = e.clientX - dragPointerStartX;
+        const deltaY = e.clientY - dragPointerStartY;
+        dragDistanceMoved += Math.abs(deltaX) + Math.abs(deltaY);
+        dragPointerStartX = e.clientX;
+        dragPointerStartY = e.clientY;
+
+        targetOrbitYaw += deltaX * 0.007;
+        targetOrbitPitch = Math.max(-0.4, Math.min(0.4, targetOrbitPitch + deltaY * 0.005));
+        document.body.style.cursor = 'grabbing';
+        return;
+      }
+
+      mouseParallaxX = ((e.clientX / window.innerWidth) - 0.5) * 0.12;
+      mouseParallaxY = ((e.clientY / window.innerHeight) - 0.5) * 0.08;
+
+      const hit = checkDroneIntersect(e.clientX, e.clientY);
+      if (hit) {
+        document.body.style.cursor = hit.object.userData?.isHotspot ? 'pointer' : 'grab';
+      } else if (document.body.style.cursor === 'grab' || document.body.style.cursor === 'pointer') {
         document.body.style.cursor = '';
+      }
+    };
+
+    const handlePointerUp = () => {
+      if (isDragging) {
+        isDragging = false;
+        if (document.body.style.cursor === 'grabbing') {
+          document.body.style.cursor = '';
+        }
+        // If mouse moved less than 8px, it was a click
+        if (dragDistanceMoved < 8) {
+          if (onDroneClickRef.current) {
+            onDroneClickRef.current();
+          }
+        }
       }
     };
 
     window.addEventListener('pointerdown', handlePointerDown);
     window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerup', handlePointerUp);
 
     // 10. CLEANUP & RESOURCE DISPOSAL
     return () => {
@@ -686,7 +823,8 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('pointermove', handlePointerMove);
-      if (document.body.style.cursor === 'pointer') {
+      window.removeEventListener('pointerup', handlePointerUp);
+      if (document.body.style.cursor === 'pointer' || document.body.style.cursor === 'grab' || document.body.style.cursor === 'grabbing') {
         document.body.style.cursor = '';
       }
 

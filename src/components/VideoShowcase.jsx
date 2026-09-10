@@ -23,16 +23,39 @@ function HoverableVideoCard({ reel, isHero = false, onClick }) {
     return () => { active = false; };
   }, [isHovered, videoStreamUrl, isLoadingStream, reel.youtubeId]);
 
-  // Handle Play/Pause on hover
+  const playPromiseRef = useRef(null);
+
+  // Handle Play/Pause on hover safely to prevent AbortError
   useEffect(() => {
     if (videoRef.current && videoStreamUrl) {
       if (isHovered) {
-        const playPromise = videoRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {});
-        }
+        try {
+          const promise = videoRef.current.play();
+          if (promise !== undefined) {
+            playPromiseRef.current = promise;
+            promise
+              .then(() => {
+                playPromiseRef.current = null;
+              })
+              .catch(() => {
+                playPromiseRef.current = null;
+              });
+          }
+        } catch (e) {}
       } else {
-        videoRef.current.pause();
+        if (playPromiseRef.current) {
+          playPromiseRef.current
+            .then(() => {
+              if (videoRef.current) videoRef.current.pause();
+            })
+            .catch(() => {
+              if (videoRef.current) videoRef.current.pause();
+            });
+        } else {
+          try {
+            videoRef.current.pause();
+          } catch (e) {}
+        }
       }
     }
   }, [isHovered, videoStreamUrl]);
@@ -202,6 +225,28 @@ function HoverableVideoCard({ reel, isHero = false, onClick }) {
 export default function VideoShowcase() {
   const [selectedVideo, setSelectedVideo] = useState(null);
 
+  const handleCloseModal = () => {
+    setSelectedVideo(null);
+  };
+
+  // Keyboard Escape & Body Scroll Lock
+  useEffect(() => {
+    if (!selectedVideo) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        handleCloseModal();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [selectedVideo]);
+
   const featuredReel = {
     id: 1,
     title: 'Newcastle & North East Aerial Showcase',
@@ -276,15 +321,30 @@ export default function VideoShowcase() {
 
       </div>
 
-      {/* Video Custom Lightbox Player Modal (NO YouTube Iframe) */}
+      {/* Video Custom Lightbox Player Modal */}
       {selectedVideo && (
         <div 
-          onClick={() => setSelectedVideo(null)}
-          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200"
+          onClick={handleCloseModal}
+          className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200 cursor-pointer"
         >
+          {/* Prominent Always-Visible Floating Close Button at top-right */}
+          <button 
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleCloseModal();
+            }}
+            className="fixed top-4 right-4 sm:top-6 sm:right-6 z-[120] flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#11141B]/90 hover:bg-white/20 text-zinc-200 hover:text-white border border-white/20 backdrop-blur-xl transition-all shadow-2xl cursor-pointer group active:scale-95"
+            aria-label="Close video player (ESC)"
+          >
+            <i className="ri-close-line text-lg group-hover:rotate-90 transition-transform"></i>
+            <span className="text-xs font-mono uppercase tracking-wider hidden sm:inline-block font-medium">Close (ESC)</span>
+          </button>
+
+          {/* Player Container */}
           <div 
             onClick={(e) => e.stopPropagation()}
-            className="relative flex items-center justify-center w-full"
+            className="relative z-[110] flex items-center justify-center cursor-default max-w-full"
           >
             <CustomVideoPlayer 
               youtubeId={selectedVideo.youtubeId}
@@ -292,7 +352,7 @@ export default function VideoShowcase() {
               title={selectedVideo.title}
               subtitle={selectedVideo.subtitle}
               isAutoPlay={true}
-              onClose={() => setSelectedVideo(null)}
+              onClose={handleCloseModal}
             />
           </div>
         </div>

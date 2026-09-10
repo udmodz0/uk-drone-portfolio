@@ -15,10 +15,11 @@ export default function Navbar({ onOpenBooking }) {
   const navLinks = [
     { name: 'Services', href: '#services' },
     { name: 'Packages', href: '#packages' },
+    { name: 'Estimator', href: '#quote-calculator' },
+    { name: 'Compare', href: '#comparison' },
     { name: 'Reels', href: '#videos' },
     { name: 'Gallery', href: '#photography' },
     { name: 'Fleet', href: '#equipment' },
-    { name: 'CAA', href: '#safety' },
   ];
 
   return (

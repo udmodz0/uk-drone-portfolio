@@ -44,6 +44,65 @@ export default function CustomVideoPlayer({ youtubeId, initialVideoUrl, title, s
   const [showControls, setShowControls] = useState(true);
 
   const controlsTimeoutRef = useRef(null);
+  const playPromiseRef = useRef(null);
+
+  // Safe play helper to prevent AbortError
+  const safePlay = () => {
+    if (!videoRef.current) return;
+    try {
+      const promise = videoRef.current.play();
+      if (promise !== undefined) {
+        playPromiseRef.current = promise;
+        promise
+          .then(() => {
+            setIsPlaying(true);
+            playPromiseRef.current = null;
+          })
+          .catch((err) => {
+            playPromiseRef.current = null;
+            // Ignore intentional pause interrupts
+            if (err.name === 'AbortError') return;
+            console.log('Safe play attempt notice:', err);
+            // Fallback to muted playback if audio policy blocked
+            if (videoRef.current && !videoRef.current.muted) {
+              videoRef.current.muted = true;
+              setIsMuted(true);
+              const retryPromise = videoRef.current.play();
+              if (retryPromise !== undefined) {
+                retryPromise.then(() => setIsPlaying(true)).catch(() => {});
+              }
+            }
+          });
+      }
+    } catch (e) {
+      // Ignore
+    }
+  };
+
+  // Safe pause helper that awaits any pending play promise
+  const safePause = () => {
+    if (!videoRef.current) return;
+    if (playPromiseRef.current) {
+      playPromiseRef.current
+        .then(() => {
+          if (videoRef.current) {
+            videoRef.current.pause();
+            setIsPlaying(false);
+          }
+        })
+        .catch(() => {
+          if (videoRef.current) {
+            videoRef.current.pause();
+            setIsPlaying(false);
+          }
+        });
+    } else {
+      try {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      } catch (e) {}
+    }
+  };
 
   // Fetch direct video stream from API if not already supplied
   useEffect(() => {
@@ -81,21 +140,23 @@ export default function CustomVideoPlayer({ youtubeId, initialVideoUrl, title, s
   // Handle Autoplay on mount once video stream is ready
   useEffect(() => {
     if (streamUrl && videoRef.current && isAutoPlay) {
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => setIsPlaying(true))
-          .catch((err) => {
-            console.log('Autoplay muted attempt:', err);
-            if (videoRef.current) {
-              videoRef.current.muted = true;
-              setIsMuted(true);
-              videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
-            }
-          });
-      }
+      safePlay();
     }
+    return () => {
+      safePause();
+    };
   }, [streamUrl, isAutoPlay]);
+
+  // Global Escape key listener for the player
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && onClose) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
   // Video Event Handlers
   const handleTimeUpdate = () => {
@@ -108,11 +169,9 @@ export default function CustomVideoPlayer({ youtubeId, initialVideoUrl, title, s
   const togglePlay = () => {
     if (!videoRef.current) return;
     if (isPlaying) {
-      videoRef.current.pause();
-      setIsPlaying(false);
+      safePause();
     } else {
-      videoRef.current.play();
-      setIsPlaying(true);
+      safePlay();
     }
   };
 
@@ -173,7 +232,7 @@ export default function CustomVideoPlayer({ youtubeId, initialVideoUrl, title, s
     >
       {/* Video Loading State */}
       {loading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 z-20 gap-3">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 z-40 gap-3">
           <div className="w-10 h-10 border-2 border-white/10 border-t-emerald-400 rounded-full animate-spin"></div>
           <span className="text-xs font-mono tracking-wider text-zinc-400">Fetching direct video stream...</span>
         </div>
@@ -181,7 +240,7 @@ export default function CustomVideoPlayer({ youtubeId, initialVideoUrl, title, s
 
       {/* Video Error State */}
       {error && !loading && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 p-6 text-center z-20 gap-3">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 p-6 text-center z-40 gap-3">
           <i className="ri-error-warning-line text-3xl text-amber-400"></i>
           <p className="text-xs font-mono text-zinc-300">Unable to load direct stream. Please try again.</p>
         </div>
@@ -200,32 +259,39 @@ export default function CustomVideoPlayer({ youtubeId, initialVideoUrl, title, s
         />
       )}
 
-      {/* Top Header Bar Overlay */}
-      <div className={`absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/80 via-black/40 to-transparent flex items-center justify-between z-10 transition-opacity duration-300 ${showControls ? 'opacity-100' : 'opacity-0'}`}>
-        <div>
+      {/* Top Header Bar Overlay - High Z-index (z-30) so close button is ALWAYS clickable */}
+      <div className={`absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/90 via-black/50 to-transparent flex items-center justify-between z-30 transition-opacity duration-300 ${showControls ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        <div className="pr-2">
           <h4 className="font-display font-medium text-white text-sm line-clamp-1">{title}</h4>
           {subtitle && <p className="text-[10px] font-mono text-zinc-300">{subtitle}</p>}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           <span className="px-2 py-0.5 rounded-full text-[9px] font-mono bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
             DIRECT HD
           </span>
           {onClose && (
             <button 
-              onClick={onClose}
-              className="w-8 h-8 rounded-full bg-black/60 hover:bg-black/80 flex items-center justify-center text-zinc-300 hover:text-white transition-colors"
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                safePause();
+                onClose();
+              }}
+              className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/25 active:scale-95 flex items-center justify-center text-zinc-200 hover:text-white transition-all border border-white/20 shadow-lg cursor-pointer"
+              title="Close video"
+              aria-label="Close video player"
             >
-              <i className="ri-close-line text-base"></i>
+              <i className="ri-close-line text-lg"></i>
             </button>
           )}
         </div>
       </div>
 
-      {/* Big Center Play / Pause Icon Button Overlay */}
+      {/* Big Center Play / Pause Icon Button Overlay (z-20 so it never covers the header buttons) */}
       {!loading && !error && (
         <div 
           onClick={togglePlay}
-          className={`absolute inset-0 flex items-center justify-center pointer-events-auto cursor-pointer z-10 transition-opacity duration-300 ${!isPlaying || showControls ? 'opacity-100' : 'opacity-0'}`}
+          className={`absolute inset-0 flex items-center justify-center pointer-events-auto cursor-pointer z-20 transition-opacity duration-300 ${!isPlaying || showControls ? 'opacity-100' : 'opacity-0'}`}
         >
           <div className="btn-liquid w-16 h-16 rounded-full flex items-center justify-center text-white shadow-2xl group-hover:scale-110 transition-all duration-300">
             <i className={`ri-${isPlaying ? 'pause-fill' : 'play-fill'} text-2xl ${!isPlaying ? 'ml-1' : ''}`}></i>

@@ -49,6 +49,7 @@ export default function Footer({ onOpenAdmin, contactData }) {
             <ul className="space-y-2 text-xs">
               <li><a href="#services" className="hover:text-white transition-colors">Services</a></li>
               <li><a href="#packages" className="hover:text-white transition-colors">Packages & Rates</a></li>
+              <li><a href="#quote-calculator" className="hover:text-white transition-colors">Instant Quote Estimator</a></li>
               <li><a href="#videos" className="hover:text-white transition-colors">Featured Reels</a></li>
               <li><a href="#photography" className="hover:text-white transition-colors">Photo Gallery</a></li>
               <li><a href="#equipment" className="hover:text-white transition-colors">Fleet & Gear</a></li>

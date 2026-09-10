@@ -5,7 +5,7 @@ export default function FloatingActionDock({ onOpenBooking, whatsappNumber }) {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsVisible(window.scrollY > 400);
+      setIsVisible(window.scrollY > window.innerHeight * 0.85);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);

@@ -57,18 +57,12 @@ export default function Hero({ onOpenBooking }) {
     },
   ];
 
-  // Scroll listener for sticky hero track
+  // Scroll listener for hero flight transition (seamless, natural scroll without empty gap)
   useEffect(() => {
     const handleScroll = () => {
-      if (!heroTrackRef.current) return;
-      const rect = heroTrackRef.current.getBoundingClientRect();
-      const pinDistance = heroTrackRef.current.offsetHeight - window.innerHeight;
-      if (pinDistance <= 0) {
-        setScrollProgress(0);
-        return;
-      }
-      const scrolled = -rect.top;
-      const progress = Math.min(Math.max(scrolled / pinDistance, 0), 1);
+      const scrolled = window.scrollY;
+      const flightDistance = Math.min(window.innerHeight * 0.75, 600);
+      const progress = Math.min(Math.max(scrolled / flightDistance, 0), 1);
       setScrollProgress(progress);
 
       // Automatically dismiss detail card when user scrolls into flight
@@ -98,6 +92,11 @@ export default function Hero({ onOpenBooking }) {
     setShowDroneDetails((prev) => !prev);
   };
 
+  const handleHotspotClick = (specTabIdx) => {
+    setActiveSpecTab(specTabIdx);
+    setShowDroneDetails(true);
+  };
+
   // Scroll-driven visibility: visible at top, fades out smoothly as user scrolls down, reappears when scrolling back up
   const showcaseOpacity = introReady ? Math.max(0, 1 - scrollProgress * 3.4) : 0;
   const showcaseTranslateY = -(scrollProgress * 28);
@@ -106,10 +105,10 @@ export default function Hero({ onOpenBooking }) {
   return (
     <div 
       ref={heroTrackRef}
-      className="relative w-full min-h-[142vh] bg-[#0B0D11]"
+      className="relative w-full bg-[#0B0D11]"
     >
-      {/* Pinned Sticky Hero Frame (Pins while drone departs, then unpins cleanly) */}
-      <section className="sticky top-0 h-screen w-full flex flex-col justify-between pt-24 sm:pt-28 pb-6 sm:pb-10 overflow-hidden bg-[#0B0D11] z-20">
+      {/* Seamless Hero Frame (Drone departs smoothly on scroll into next section) */}
+      <section className="relative min-h-screen w-full flex flex-col justify-between pt-24 sm:pt-28 pb-6 sm:pb-10 overflow-hidden bg-[#0B0D11] z-20">
         
         {/* Full-Width Cinematic Background Image with Dark Gradient Vignette */}
         <div className="absolute inset-0 z-0 pointer-events-none">
@@ -125,11 +124,12 @@ export default function Hero({ onOpenBooking }) {
           <div className="absolute inset-0 bg-gradient-to-r from-[#0B0D11]/95 via-[#0B0D11]/45 to-[#0B0D11]/85" />
         </div>
 
-        {/* REAL 3D THREE.JS DRONE FLIGHT SCENE (Cinematic Intro + Click Raycaster + Scroll Departure) */}
+        {/* REAL 3D THREE.JS DRONE FLIGHT SCENE (Cinematic Intro + 360° Drag Orbit + 3D Hotspots) */}
         <ThreeDroneScene 
           scrollProgress={scrollProgress} 
           onIntroComplete={handleIntroComplete}
           onDroneClick={handleDroneClick}
+          onHotspotClick={handleHotspotClick}
         />
 
         {/* Main Content Split Grid */}
@@ -269,7 +269,7 @@ export default function Hero({ onOpenBooking }) {
                       <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                     </span>
                     <span className="text-[11px] font-mono tracking-wider">
-                      {showDroneDetails ? 'HIDE SPECS' : 'DJI AIR 3S • CLICK DRONE TO INSPECT'}
+                      {showDroneDetails ? 'HIDE SPECS' : 'DJI AIR 3S • DRAG 360° // TAP HOTSPOTS'}
                     </span>
                     <i className={`ri-${showDroneDetails ? 'close-line text-emerald-400' : 'cursor-line text-zinc-400 group-hover:text-emerald-400'} text-xs transition-colors`}></i>
                   </button>

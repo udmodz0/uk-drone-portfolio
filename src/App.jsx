@@ -3,12 +3,14 @@ import Navbar from './components/Navbar';
 import MarqueeTicker from './components/MarqueeTicker';
 import Hero from './components/Hero';
 import AboutIntro from './components/AboutIntro';
-import CaaBadge from './components/CaaBadge';
+import AerialComparisonSlider from './components/AerialComparisonSlider';
 import Services from './components/Services';
 import Packages from './components/Packages';
+import QuoteEstimator from './components/QuoteEstimator';
 import VideoShowcase from './components/VideoShowcase';
 import PhotoGallery from './components/PhotoGallery';
 import Equipment from './components/Equipment';
+import CaaBadge from './components/CaaBadge';
 import BookingNotice from './components/BookingNotice';
 import Footer from './components/Footer';
 import AdminModal from './components/AdminModal';
@@ -48,8 +50,10 @@ export default function App() {
         <Hero onOpenBooking={() => setIsBookingOpen(true)} />
         <MarqueeTicker />
         <AboutIntro onOpenBooking={() => setIsBookingOpen(true)} />
+        <AerialComparisonSlider />
         <Services />
         <Packages onSelectPackage={handleSelectPackage} siteData={siteData} />
+        <QuoteEstimator onOpenBooking={() => setIsBookingOpen(true)} whatsappNumber={siteData.contact.cleanNumber} />
         <VideoShowcase />
         <PhotoGallery />
         <Equipment />
