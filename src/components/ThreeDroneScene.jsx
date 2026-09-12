@@ -208,57 +208,57 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
     const fillLight = new THREE.HemisphereLight(0x64748B, 0x090D16, 0.85);
     scene.add(fillLight);
 
-    // 5. PHOTOREALISTIC PBR MATERIALS
+    // 5. PHOTOREALISTIC PBR MATERIALS (Refined Authentic DJI Air 3S Palette)
     const carbonTex = buildCarbonTexture();
 
-    // Matte Titanium Graphite Body Finish
+    // Matte Titanium Graphite Body Finish (Authentic Air 3S dark slate/graphite tone)
     const bodyMat = new THREE.MeshStandardMaterial({
-      color: 0x1E2430,
-      roughness: 0.35,
-      metalness: 0.45,
-      envMap,
-      envMapIntensity: 0.95,
-    });
-
-    const bodyDarkMat = new THREE.MeshStandardMaterial({
-      color: 0x11151F,
-      roughness: 0.5,
-      metalness: 0.2,
-      envMap,
-      envMapIntensity: 0.5,
-    });
-
-    // Carbon Fiber Arm Boom Material
-    const carbonArmMat = new THREE.MeshStandardMaterial({
-      map: carbonTex,
-      color: 0x181F2C,
+      color: 0x222834,
       roughness: 0.28,
       metalness: 0.65,
       envMap,
-      envMapIntensity: 1.1,
+      envMapIntensity: 1.4,
+    });
+
+    const bodyDarkMat = new THREE.MeshStandardMaterial({
+      color: 0x0F131C,
+      roughness: 0.45,
+      metalness: 0.35,
+      envMap,
+      envMapIntensity: 0.8,
+    });
+
+    // Carbon Fiber Arm Boom Material (Authentic 2x2 matte twill carbon weave)
+    const carbonArmMat = new THREE.MeshStandardMaterial({
+      map: carbonTex,
+      color: 0x1A212D,
+      roughness: 0.22,
+      metalness: 0.75,
+      envMap,
+      envMapIntensity: 1.6,
     });
 
     // CNC Machined Anodized Aluminum Motors
     const motorMat = new THREE.MeshStandardMaterial({
-      color: 0x475569,
-      roughness: 0.15,
-      metalness: 0.92,
-      envMap,
-      envMapIntensity: 1.8,
-    });
-
-    const copperStatorMat = new THREE.MeshStandardMaterial({
-      color: 0xB45309,
-      roughness: 0.3,
-      metalness: 0.85,
-    });
-
-    const metalBezelMat = new THREE.MeshStandardMaterial({
       color: 0x64748B,
       roughness: 0.12,
       metalness: 0.95,
       envMap,
-      envMapIntensity: 2.0,
+      envMapIntensity: 2.2,
+    });
+
+    const copperStatorMat = new THREE.MeshStandardMaterial({
+      color: 0xD97706,
+      roughness: 0.25,
+      metalness: 0.88,
+    });
+
+    const metalBezelMat = new THREE.MeshStandardMaterial({
+      color: 0x94A3B8,
+      roughness: 0.08,
+      metalness: 0.98,
+      envMap,
+      envMapIntensity: 2.6,
     });
 
     const rubberJointMat = new THREE.MeshStandardMaterial({
@@ -267,24 +267,24 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       metalness: 0.05,
     });
 
-    // Propeller Blade Materials
+    // Propeller Blade Materials (Dark translucent polycarbonate)
     const bladeMat = new THREE.MeshStandardMaterial({
-      color: 0x27303E,
-      roughness: 0.25,
-      metalness: 0.25,
+      color: 0x1E293B,
+      roughness: 0.18,
+      metalness: 0.35,
       transparent: true,
-      opacity: 0.88,
+      opacity: 0.92,
       envMap,
-      envMapIntensity: 0.6,
+      envMapIntensity: 1.1,
     });
 
-    // Signature DJI Low-Noise Orange Tip Material
+    // Signature DJI Low-Noise Orange Tip Material (Bright vibrant safety tip)
     const orangeTipMat = new THREE.MeshStandardMaterial({
-      color: 0xF97316,
-      roughness: 0.35,
+      color: 0xFF6B00,
+      roughness: 0.25,
       metalness: 0.1,
-      emissive: 0xEA580C,
-      emissiveIntensity: 0.25,
+      emissive: 0xFF5500,
+      emissiveIntensity: 0.35,
     });
 
     const blurDiscTex = buildBlurDiscTexture();
@@ -298,25 +298,25 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       blending: THREE.AdditiveBlending,
     });
 
-    // Camera Glass Lenses
+    // Camera Glass Lenses with Multi-Coated Optical Glint
     const wideLensGlassMat = new THREE.MeshStandardMaterial({
-      color: 0x0F172A,
-      roughness: 0.04,
-      metalness: 0.96,
+      color: 0x020617,
+      roughness: 0.02,
+      metalness: 0.98,
       envMap,
-      envMapIntensity: 2.8,
+      envMapIntensity: 3.5,
     });
 
     const blueCoatingMat = new THREE.MeshBasicMaterial({
       color: 0x38BDF8,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.85,
     });
 
     const violetCoatingMat = new THREE.MeshBasicMaterial({
-      color: 0xA78BFA,
+      color: 0xC084FC,
       transparent: true,
-      opacity: 0.8,
+      opacity: 0.85,
     });
 
     // 6. BUILD PHOTOREALISTIC 3D DJI AIR 3S MODEL
