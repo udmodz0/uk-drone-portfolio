@@ -1,10 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-// Cache for resolved API video stream URLs so we don't refetch identical videos repeatedly
+// ─── Global URL Cache ──────────────────────────────────────────────────────────
+// Persists direct stream URLs across all component instances for the page session.
+// Populated eagerly on site load via prefetchVideoUrls() so interactions are instant.
 const videoUrlCache = {};
 
+// ─── Core Fetch Helper ─────────────────────────────────────────────────────────
 export async function fetchDirectVideoUrl(youtubeId) {
   if (!youtubeId) return null;
+  // Return cached URL immediately — no network round-trip
   if (videoUrlCache[youtubeId]) return videoUrlCache[youtubeId];
 
   try {
@@ -25,6 +29,22 @@ export async function fetchDirectVideoUrl(youtubeId) {
     console.warn('API video fetch error:', err);
   }
   return null;
+}
+
+// ─── Eager Site-Load Prefetcher ────────────────────────────────────────────────
+// Call this once on App mount. Fires all ytdl requests in parallel and populates
+// the cache. By the time the user hovers or clicks, URLs are already resolved.
+export async function prefetchVideoUrls(youtubeIds = []) {
+  const unique = [...new Set(youtubeIds.filter(Boolean))];
+  if (unique.length === 0) return;
+  // Fire all in parallel — results automatically land in videoUrlCache
+  await Promise.allSettled(unique.map((id) => fetchDirectVideoUrl(id)));
+}
+
+// ─── Synchronous Cache Read ────────────────────────────────────────────────────
+// Returns the already-cached URL synchronously (null if not yet fetched).
+export function getVideoUrlFromCache(youtubeId) {
+  return videoUrlCache[youtubeId] || null;
 }
 
 export default function CustomVideoPlayer({ youtubeId, initialVideoUrl, title, subtitle, isAutoPlay = true, onClose }) {

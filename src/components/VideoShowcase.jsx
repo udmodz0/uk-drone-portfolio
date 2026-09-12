@@ -1,17 +1,33 @@
 import React, { useState, useEffect, useRef } from 'react';
-import CustomVideoPlayer, { fetchDirectVideoUrl } from './CustomVideoPlayer';
+import CustomVideoPlayer, { fetchDirectVideoUrl, prefetchVideoUrls, getVideoUrlFromCache } from './CustomVideoPlayer';
+
+// ─── All video IDs in one place ───────────────────────────────────────────────
+// Keep this list in sync whenever you add new reels. Site-load prefetch reads it.
+const ALL_YOUTUBE_IDS = ['PIja76NisHs', 'TSlTqqy4SO8'];
+
 
 // Subcomponent for Video Card with Autoplay on Hover
-function HoverableVideoCard({ reel, isHero = false, onClick }) {
+// prefetchedUrl: synchronously read from cache (already resolved at site load)
+function HoverableVideoCard({ reel, isHero = false, onClick, prefetchedUrl = null }) {
   const [isHovered, setIsHovered] = useState(false);
-  const [videoStreamUrl, setVideoStreamUrl] = useState(null);
+  // Start with the prefetched URL if it is already available
+  const [videoStreamUrl, setVideoStreamUrl] = useState(prefetchedUrl);
   const [isLoadingStream, setIsLoadingStream] = useState(false);
   const videoRef = useRef(null);
 
-  // Fetch direct video stream when hovered
+  // Fetch direct video stream when hovered.
+  // If the URL was already prefetched at site load, cache hit is synchronous and
+  // this effect becomes a no-op (isLoadingStream stays false, no spinner shown).
   useEffect(() => {
     let active = true;
     if (isHovered && !videoStreamUrl && !isLoadingStream && reel.youtubeId) {
+      // Try cache first (zero-cost synchronous read)
+      const cached = getVideoUrlFromCache(reel.youtubeId);
+      if (cached) {
+        setVideoStreamUrl(cached);
+        return;
+      }
+      // Fallback: fetch live if prefetch hadn't completed yet
       setIsLoadingStream(true);
       fetchDirectVideoUrl(reel.youtubeId).then((url) => {
         if (active) {
@@ -224,10 +240,32 @@ function HoverableVideoCard({ reel, isHero = false, onClick }) {
 
 export default function VideoShowcase() {
   const [selectedVideo, setSelectedVideo] = useState(null);
+  // Tracks whether prefetch has completed so child components can sync
+  const [prefetchDone, setPrefetchDone] = useState(false);
 
   const handleCloseModal = () => {
     setSelectedVideo(null);
   };
+
+  // ─── Prefetch all video URLs on site load ──────────────────────────────────
+  // Uses requestIdleCallback so it only runs after the browser has finished
+  // critical rendering work, keeping first-paint fast.
+  useEffect(() => {
+    let handle;
+    function run() {
+      prefetchVideoUrls(ALL_YOUTUBE_IDS).then(() => setPrefetchDone(true));
+    }
+    if (typeof requestIdleCallback !== 'undefined') {
+      handle = requestIdleCallback(run, { timeout: 3000 });
+    } else {
+      // Safari fallback
+      handle = setTimeout(run, 500);
+    }
+    return () => {
+      if (typeof cancelIdleCallback !== 'undefined') cancelIdleCallback(handle);
+      else clearTimeout(handle);
+    };
+  }, []);
 
   // Keyboard Escape & Body Scroll Lock
   useEffect(() => {
@@ -305,6 +343,7 @@ export default function VideoShowcase() {
         <HoverableVideoCard 
           reel={featuredReel} 
           isHero={true} 
+          prefetchedUrl={prefetchDone ? getVideoUrlFromCache(featuredReel.youtubeId) : null}
           onClick={() => setSelectedVideo(featuredReel)} 
         />
 
@@ -314,6 +353,7 @@ export default function VideoShowcase() {
             <HoverableVideoCard
               key={reel.id}
               reel={reel}
+              prefetchedUrl={prefetchDone ? getVideoUrlFromCache(reel.youtubeId) : null}
               onClick={() => setSelectedVideo(reel)}
             />
           ))}
@@ -348,7 +388,7 @@ export default function VideoShowcase() {
           >
             <CustomVideoPlayer 
               youtubeId={selectedVideo.youtubeId}
-              initialVideoUrl={selectedVideo.videoUrl}
+              initialVideoUrl={selectedVideo.videoUrl || getVideoUrlFromCache(selectedVideo.youtubeId)}
               title={selectedVideo.title}
               subtitle={selectedVideo.subtitle}
               isAutoPlay={true}
