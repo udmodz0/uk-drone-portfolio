@@ -1,5 +1,5 @@
-import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import { initializeApp, getApps, getApp } from '@firebase/app';
+import { getFirestore, doc, getDoc, setDoc } from '@firebase/firestore';
 
 let db = null;
 let initPromise = null;
