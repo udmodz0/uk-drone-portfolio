@@ -38,21 +38,18 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
 
     isMobileRef.current = window.innerWidth < 768;
 
-    // ---------- helpers: procedural textures (no external assets) ----------
+    // ---------- Procedural Texture & Environment Generators ----------
 
-    // Small studio-style environment map so metal actually reflects something
-    // instead of reading as flat gray. Built as a 6-face gradient cube, cheap
-    // and deterministic — no network fetch, no CDN dependency.
+    // Studio environment map for realistic PBR metallic reflections
     function buildEnvMap() {
-      const size = 128;
+      const size = 256;
       const faces = [
-        // +x, -x, +y, -y, +z, -z — soft studio gradient, brighter "top" face
-        { top: '#3a4356', bottom: '#0c0e12' },
-        { top: '#2e3648', bottom: '#0c0e12' },
-        { top: '#8892a6', bottom: '#3a4356' }, // sky-ish top face (main reflection source)
-        { top: '#14171d', bottom: '#050608' }, // ground face, dark
-        { top: '#3a4356', bottom: '#0c0e12' },
-        { top: '#2e3648', bottom: '#0c0e12' },
+        { top: '#475569', bottom: '#0f172a' },
+        { top: '#334155', bottom: '#0f172a' },
+        { top: '#94a3b8', bottom: '#475569' }, // sky reflection
+        { top: '#1e293b', bottom: '#020617' }, // ground
+        { top: '#475569', bottom: '#0f172a' },
+        { top: '#334155', bottom: '#0f172a' },
       ];
       const canvases = faces.map((f) => {
         const c = document.createElement('canvas');
@@ -71,8 +68,40 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       return cubeTex;
     }
 
-    // Radial falloff texture for propeller motion-blur discs: dense translucent
-    // center fading to a soft feathered edge, instead of a flat-opacity ring.
+    // Procedural 2x2 Twill Carbon Fiber Weave Texture
+    function buildCarbonTexture() {
+      const size = 128;
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#0f131a';
+      ctx.fillRect(0, 0, size, size);
+      
+      const s = 16;
+      for (let y = 0; y < size; y += s) {
+        for (let x = 0; x < size; x += s) {
+          const isCheck = (x / s + y / s) % 2 === 0;
+          ctx.fillStyle = isCheck ? '#1c2330' : '#121722';
+          ctx.fillRect(x, y, s, s);
+          // Highlight diagonal weave fibers
+          ctx.fillStyle = 'rgba(255,255,255,0.06)';
+          if (isCheck) {
+            ctx.fillRect(x, y, s, 4);
+          } else {
+            ctx.fillRect(x, y + 4, 4, s - 4);
+          }
+        }
+      }
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(4, 4);
+      tex.needsUpdate = true;
+      return tex;
+    }
+
+    // Radial falloff texture for propeller blur discs
     function buildBlurDiscTexture() {
       const size = 256;
       const canvas = document.createElement('canvas');
@@ -81,11 +110,11 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       const ctx = canvas.getContext('2d');
       const cx = size / 2;
       const cy = size / 2;
-      const grad = ctx.createRadialGradient(cx, cy, size * 0.14, cx, cy, size * 0.5);
+      const grad = ctx.createRadialGradient(cx, cy, size * 0.15, cx, cy, size * 0.5);
       grad.addColorStop(0, 'rgba(226,232,240,0)');
-      grad.addColorStop(0.55, 'rgba(226,232,240,0.10)');
-      grad.addColorStop(0.78, 'rgba(226,232,240,0.30)');
-      grad.addColorStop(0.92, 'rgba(226,232,240,0.14)');
+      grad.addColorStop(0.55, 'rgba(226,232,240,0.12)');
+      grad.addColorStop(0.82, 'rgba(226,232,240,0.32)');
+      grad.addColorStop(0.94, 'rgba(249,115,22,0.22)'); // orange tip blur outer halo
       grad.addColorStop(1, 'rgba(226,232,240,0)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, size, size);
@@ -94,8 +123,7 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       return tex;
     }
 
-    // Soft circular glow sprite for LED bloom (cheaper + more reliable than
-    // full post-processing bloom for a small decorative hero element).
+    // Soft glow sprite texture for LED navigation strobes & spotlights
     function buildGlowTexture() {
       const size = 128;
       const canvas = document.createElement('canvas');
@@ -105,8 +133,8 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       const cx = size / 2;
       const cy = size / 2;
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, size / 2);
-      grad.addColorStop(0, 'rgba(255,255,255,0.9)');
-      grad.addColorStop(0.35, 'rgba(255,255,255,0.35)');
+      grad.addColorStop(0, 'rgba(255,255,255,1.0)');
+      grad.addColorStop(0.3, 'rgba(255,255,255,0.45)');
       grad.addColorStop(1, 'rgba(255,255,255,0)');
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, size, size);
@@ -139,9 +167,10 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
     // 2. CAMERA SETUP
     const width = container.clientWidth || window.innerWidth;
     const height = container.clientHeight || window.innerHeight;
-    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 200);
-    camera.position.set(0, 0.4, 8);
-    camera.lookAt(0, 0, 0);
+    const isMobile = isMobileRef.current;
+    const camera = new THREE.PerspectiveCamera(isMobile ? 48 : 40, width / height, 0.1, 200);
+    camera.position.set(0, isMobile ? 0.2 : 0.45, isMobile ? 7.6 : 8.2);
+    camera.lookAt(0, isMobile ? -0.4 : 0, 0);
     cameraRef.current = camera;
 
     // 3. RENDERER SETUP
@@ -153,182 +182,355 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.15;
+    renderer.toneMappingExposure = 1.25;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
-    // 4. LIGHTING SETUP (Soft cinema aerial lighting)
-    const ambientLight = new THREE.AmbientLight(0xE2E8F0, 1.1);
+    // 4. LIGHTING SETUP (Studio Cinema Lighting)
+    const ambientLight = new THREE.AmbientLight(0xF1F5F9, 1.25);
     scene.add(ambientLight);
 
-    const sunLight = new THREE.DirectionalLight(0xFFFFFF, 2.6);
-    sunLight.position.set(5, 8, 4);
+    const sunLight = new THREE.DirectionalLight(0xFFFFFF, 3.2);
+    sunLight.position.set(6, 10, 5);
     sunLight.castShadow = true;
-    sunLight.shadow.mapSize.set(1024, 1024);
+    sunLight.shadow.mapSize.set(2048, 2048);
     sunLight.shadow.camera.near = 1;
-    sunLight.shadow.camera.far = 20;
-    sunLight.shadow.bias = -0.0015;
+    sunLight.shadow.camera.far = 25;
+    sunLight.shadow.bias = -0.001;
     scene.add(sunLight);
 
-    const rimLight = new THREE.DirectionalLight(0x60A5FA, 1.2);
-    rimLight.position.set(-4, -2, -4);
+    const rimLight = new THREE.DirectionalLight(0x38BDF8, 1.8);
+    rimLight.position.set(-6, -1, -5);
     scene.add(rimLight);
 
-    // Small fill light bounced up from "ground" to soften harsh AO on the belly
-    const fillLight = new THREE.HemisphereLight(0x4a5568, 0x0a0c10, 0.5);
+    const fillLight = new THREE.HemisphereLight(0x64748B, 0x090D16, 0.85);
     scene.add(fillLight);
 
-    // 5. PBR MATERIALS (Authentic DJI Air 3S palette, now env-mapped)
+    // 5. PHOTOREALISTIC PBR MATERIALS
+    const carbonTex = buildCarbonTexture();
+
+    // Matte Titanium Graphite Body Finish
     const bodyMat = new THREE.MeshStandardMaterial({
-      color: 0x1A1F29,
-      roughness: 0.42,
-      metalness: 0.35,
+      color: 0x1E2430,
+      roughness: 0.35,
+      metalness: 0.45,
+      envMap,
+      envMapIntensity: 0.95,
+    });
+
+    const bodyDarkMat = new THREE.MeshStandardMaterial({
+      color: 0x11151F,
+      roughness: 0.5,
+      metalness: 0.2,
+      envMap,
+      envMapIntensity: 0.5,
+    });
+
+    // Carbon Fiber Arm Boom Material
+    const carbonArmMat = new THREE.MeshStandardMaterial({
+      map: carbonTex,
+      color: 0x181F2C,
+      roughness: 0.28,
+      metalness: 0.65,
+      envMap,
+      envMapIntensity: 1.1,
+    });
+
+    // CNC Machined Anodized Aluminum Motors
+    const motorMat = new THREE.MeshStandardMaterial({
+      color: 0x475569,
+      roughness: 0.15,
+      metalness: 0.92,
+      envMap,
+      envMapIntensity: 1.8,
+    });
+
+    const copperStatorMat = new THREE.MeshStandardMaterial({
+      color: 0xB45309,
+      roughness: 0.3,
+      metalness: 0.85,
+    });
+
+    const metalBezelMat = new THREE.MeshStandardMaterial({
+      color: 0x64748B,
+      roughness: 0.12,
+      metalness: 0.95,
+      envMap,
+      envMapIntensity: 2.0,
+    });
+
+    const rubberJointMat = new THREE.MeshStandardMaterial({
+      color: 0x080A0E,
+      roughness: 0.85,
+      metalness: 0.05,
+    });
+
+    // Propeller Blade Materials
+    const bladeMat = new THREE.MeshStandardMaterial({
+      color: 0x27303E,
+      roughness: 0.25,
+      metalness: 0.25,
+      transparent: true,
+      opacity: 0.88,
       envMap,
       envMapIntensity: 0.6,
     });
 
-    const carbonArmMat = new THREE.MeshStandardMaterial({
-      color: 0x13171F,
-      roughness: 0.32,
-      metalness: 0.55,
-      envMap,
-      envMapIntensity: 0.8,
-    });
-
-    const motorMat = new THREE.MeshStandardMaterial({
-      color: 0x4A5568,
-      roughness: 0.22,
-      metalness: 0.88,
-      envMap,
-      envMapIntensity: 1.4,
-    });
-
-    // Dedicated dark AO material for recessed joints (arm-to-body sockets,
-    // gimbal recess) — cheap substitute for baked AO maps.
-    const aoJointMat = new THREE.MeshStandardMaterial({
-      color: 0x05060a,
-      roughness: 0.7,
+    // Signature DJI Low-Noise Orange Tip Material
+    const orangeTipMat = new THREE.MeshStandardMaterial({
+      color: 0xF97316,
+      roughness: 0.35,
       metalness: 0.1,
-    });
-
-    const bladeMat = new THREE.MeshStandardMaterial({
-      color: 0xCBD5E1,
-      roughness: 0.3,
-      metalness: 0.1,
-      transparent: true,
-      opacity: 0.78,
-      envMap,
-      envMapIntensity: 0.4,
+      emissive: 0xEA580C,
+      emissiveIntensity: 0.25,
     });
 
     const blurDiscTex = buildBlurDiscTexture();
     const blurDiscMat = new THREE.MeshBasicMaterial({
       map: blurDiscTex,
-      color: 0xE2E8F0,
+      color: 0xFFFFFF,
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.92,
       side: THREE.DoubleSide,
       depthWrite: false,
       blending: THREE.AdditiveBlending,
     });
 
-    const lensMat = new THREE.MeshStandardMaterial({
-      color: 0x05070A,
-      roughness: 0.08,
-      metalness: 0.95,
+    // Camera Glass Lenses
+    const wideLensGlassMat = new THREE.MeshStandardMaterial({
+      color: 0x0F172A,
+      roughness: 0.04,
+      metalness: 0.96,
       envMap,
-      envMapIntensity: 1.6,
+      envMapIntensity: 2.8,
     });
 
-    const lensCoatingMat = new THREE.MeshBasicMaterial({
+    const blueCoatingMat = new THREE.MeshBasicMaterial({
       color: 0x38BDF8,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.8,
     });
 
-    // 6. BUILD HIGH-FIDELITY 3D DRONE MODEL
+    const violetCoatingMat = new THREE.MeshBasicMaterial({
+      color: 0xA78BFA,
+      transparent: true,
+      opacity: 0.8,
+    });
+
+    // 6. BUILD PHOTOREALISTIC 3D DJI AIR 3S MODEL
     const droneGroup = new THREE.Group();
     droneGroupRef.current = droneGroup;
 
-    // --- Fuselage Core ---
-    const fuselageGeom = new THREE.CylinderGeometry(0.38, 0.46, 1.6, 12);
-    fuselageGeom.rotateX(Math.PI / 2);
-    const fuselage = new THREE.Mesh(fuselageGeom, bodyMat);
-    fuselage.scale.set(1.15, 0.58, 1);
-    fuselage.castShadow = true;
-    fuselage.receiveShadow = true;
-    droneGroup.add(fuselage);
+    // --- Main Aerodynamic Sculpted Fuselage ---
+    const bodyGroup = new THREE.Group();
 
-    // Top battery cowl
-    const cowlGeom = new THREE.BoxGeometry(0.55, 0.22, 1.05);
-    const cowl = new THREE.Mesh(cowlGeom, bodyMat);
-    cowl.position.set(0, 0.16, 0.05);
-    cowl.castShadow = true;
-    droneGroup.add(cowl);
+    // Sculpted Main Lower Hull (Smooth tapered contour)
+    const hullPoints = [
+      new THREE.Vector2(0.01, -0.92),
+      new THREE.Vector2(0.28, -0.85),
+      new THREE.Vector2(0.48, -0.55),
+      new THREE.Vector2(0.54, 0.0),
+      new THREE.Vector2(0.50, 0.55),
+      new THREE.Vector2(0.38, 0.88),
+      new THREE.Vector2(0.01, 0.96),
+    ];
+    const hullGeom = new THREE.LatheGeometry(hullPoints, 32);
+    hullGeom.rotateX(Math.PI / 2);
+    hullGeom.scale(1.0, 0.52, 1.0);
+    const mainHull = new THREE.Mesh(hullGeom, bodyMat);
+    mainHull.castShadow = true;
+    mainHull.receiveShadow = true;
+    bodyGroup.add(mainHull);
 
-    // Aerodynamic Nose Cone
-    const noseGeom = new THREE.SphereGeometry(0.38, 16, 12);
+    // Upper Battery Bay Canopy Panel
+    const canopyGeom = new THREE.BoxGeometry(0.58, 0.24, 1.12, 4, 4, 4);
+    const canopy = new THREE.Mesh(canopyGeom, bodyMat);
+    canopy.position.set(0, 0.16, 0.04);
+    canopy.castShadow = true;
+    bodyGroup.add(canopy);
+
+    // Battery Bay Power Button & 4 LED Status Ring
+    const powerBtn = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.08, 0.08, 0.03, 24),
+      bodyDarkMat
+    );
+    powerBtn.position.set(0, 0.285, 0.25);
+    bodyGroup.add(powerBtn);
+
+    const powerLightRing = new THREE.Mesh(
+      new THREE.TorusGeometry(0.065, 0.012, 12, 24),
+      new THREE.MeshBasicMaterial({ color: 0x34D399 })
+    );
+    powerLightRing.rotation.x = Math.PI / 2;
+    powerLightRing.position.set(0, 0.29, 0.25);
+    bodyGroup.add(powerLightRing);
+
+    // Side Cooling Air Intakes (Left & Right)
+    [-0.3, 0.3].forEach((x) => {
+      const intake = new THREE.Mesh(
+        new THREE.BoxGeometry(0.08, 0.1, 0.5),
+        bodyDarkMat
+      );
+      intake.position.set(x, 0.06, -0.2);
+      bodyGroup.add(intake);
+    });
+
+    // Aerodynamic Nose Canopy Sloping down to Gimbal Bay
+    const noseGeom = new THREE.SphereGeometry(0.42, 32, 24);
     const nose = new THREE.Mesh(noseGeom, bodyMat);
-    nose.position.set(0, -0.02, -0.85);
-    nose.scale.set(1.0, 0.55, 0.9);
-    droneGroup.add(nose);
+    nose.position.set(0, -0.02, -0.86);
+    nose.scale.set(0.98, 0.52, 0.88);
+    bodyGroup.add(nose);
 
-    // Top LiDAR Dome
-    const lidarGeom = new THREE.CylinderGeometry(0.12, 0.14, 0.1, 16);
-    const lidar = new THREE.Mesh(lidarGeom, new THREE.MeshStandardMaterial({ color: 0x0F131A, roughness: 0.2, envMap, envMapIntensity: 0.5 }));
-    lidar.position.set(0, 0.28, -0.1);
-    droneGroup.add(lidar);
+    // Top Omnidirectional Nightscape LiDAR Sensor Pod
+    const lidarDome = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.13, 0.15, 0.09, 24),
+      new THREE.MeshStandardMaterial({ color: 0x0A0D14, roughness: 0.1, metalness: 0.9, envMap, envMapIntensity: 1.5 })
+    );
+    lidarDome.position.set(0, 0.29, -0.22);
+    bodyGroup.add(lidarDome);
 
-    // --- 3-Axis Camera Gimbal Assembly ---
-    const gimbalBase = new THREE.Group();
-    gimbalBase.position.set(0, -0.22, -0.92);
+    const lidarGlass = new THREE.Mesh(
+      new THREE.SphereGeometry(0.10, 16, 16),
+      new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.05, metalness: 0.95, envMap, envMapIntensity: 2.2 })
+    );
+    lidarGlass.position.set(0, 0.34, -0.22);
+    lidarGlass.scale.set(1.0, 0.4, 1.0);
+    bodyGroup.add(lidarGlass);
 
-    // AO recess behind the gimbal housing, sits slightly further back so it
-    // reads as a shadowed pocket instead of the housing floating on nothing
+    // Stereoscopic Front Binocular Vision Sensors (Left & Right Lenses)
+    [-0.18, 0.18].forEach((x) => {
+      const visionEye = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.045, 0.045, 0.03, 16),
+        metalBezelMat
+      );
+      visionEye.rotateX(Math.PI / 2);
+      visionEye.position.set(x, 0.1, -0.96);
+      bodyGroup.add(visionEye);
+
+      const eyeGlass = new THREE.Mesh(
+        new THREE.CircleGeometry(0.035, 16),
+        blueCoatingMat
+      );
+      eyeGlass.position.set(x, 0.1, -0.976);
+      bodyGroup.add(eyeGlass);
+    });
+
+    // Downward Auxiliary Landing LED Spotlight (Belly)
+    const bellySpotlight = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.07, 0.07, 0.02, 16),
+      metalBezelMat
+    );
+    bellySpotlight.position.set(0, -0.28, 0.1);
+    bodyGroup.add(bellySpotlight);
+
+    const spotGlow = makeGlowSprite(0xFFFFFF, 0.45);
+    spotGlow.position.set(0, -0.32, 0.1);
+    bodyGroup.add(spotGlow);
+
+    // AIR 3S Silver Embossed Branding Wordmark
+    const wordmarkBg = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.28, 0.08),
+      new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.4 })
+    );
+    wordmarkBg.rotation.x = -Math.PI / 2;
+    wordmarkBg.position.set(0, 0.282, -0.55);
+    bodyGroup.add(wordmarkBg);
+
+    droneGroup.add(bodyGroup);
+
+    // --- 3-Axis Dual Camera Gimbal Assembly ---
+    const gimbalGroup = new THREE.Group();
+    gimbalGroup.position.set(0, -0.21, -0.94);
+
+    // Anti-Vibration Rubber Dampener Mounts (4 rubber isolation balls)
+    [
+      { x: -0.2, z: 0.1 }, { x: 0.2, z: 0.1 },
+      { x: -0.2, z: -0.1 }, { x: 0.2, z: -0.1 }
+    ].forEach((p) => {
+      const dampener = new THREE.Mesh(
+        new THREE.SphereGeometry(0.04, 12, 12),
+        rubberJointMat
+      );
+      dampener.position.set(p.x, 0.14, p.z);
+      gimbalGroup.add(dampener);
+    });
+
+    // Gimbal Recess Pocket (AO shadow pocket)
     const gimbalRecess = new THREE.Mesh(
-      new THREE.BoxGeometry(0.48, 0.36, 0.1),
-      aoJointMat
+      new THREE.BoxGeometry(0.52, 0.38, 0.12),
+      rubberJointMat
     );
-    gimbalRecess.position.set(0, 0, 0.1);
-    gimbalBase.add(gimbalRecess);
+    gimbalRecess.position.set(0, 0.02, 0.12);
+    gimbalGroup.add(gimbalRecess);
 
-    const gimbalHousing = new THREE.Mesh(
-      new THREE.BoxGeometry(0.42, 0.3, 0.35),
-      new THREE.MeshStandardMaterial({ color: 0x0E1117, roughness: 0.3, metalness: 0.7, envMap, envMapIntensity: 0.9 })
+    // Mechanical Pitch Arm Brackets
+    const pitchArm = new THREE.Mesh(
+      new THREE.BoxGeometry(0.48, 0.08, 0.34),
+      metalBezelMat
     );
-    gimbalBase.add(gimbalHousing);
+    pitchArm.position.set(0, 0.1, -0.02);
+    gimbalGroup.add(pitchArm);
 
-    // Primary 1-inch Wide Camera Lens
-    const lensRing = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.12, 0.12, 0.08, 16),
-      new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.9, roughness: 0.2, envMap, envMapIntensity: 1.2 })
+    // Sculpted Dual-Camera Payload Pod
+    const payloadPod = new THREE.Mesh(
+      new THREE.BoxGeometry(0.44, 0.32, 0.38, 2, 2, 2),
+      new THREE.MeshStandardMaterial({ color: 0x111520, roughness: 0.22, metalness: 0.8, envMap, envMapIntensity: 1.4 })
     );
-    lensRing.rotateX(Math.PI / 2);
-    lensRing.position.set(-0.1, 0, -0.16);
-    gimbalBase.add(lensRing);
+    payloadPod.position.set(0, -0.05, -0.04);
+    gimbalGroup.add(payloadPod);
 
-    const lensGlass = new THREE.Mesh(new THREE.CircleGeometry(0.09, 16), lensMat);
-    lensGlass.position.set(-0.1, 0, -0.201);
-    gimbalBase.add(lensGlass);
-
-    // Telephoto Secondary Lens
-    const teleRing = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.09, 0.09, 0.06, 16),
-      new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.9, roughness: 0.2, envMap, envMapIntensity: 1.2 })
+    // 1. Primary 1-inch CMOS 50MP Wide Lens Assembly (Left Lens)
+    const wideBezel = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.125, 0.125, 0.09, 24),
+      metalBezelMat
     );
-    teleRing.rotateX(Math.PI / 2);
-    teleRing.position.set(0.11, 0, -0.16);
-    gimbalBase.add(teleRing);
+    wideBezel.rotateX(Math.PI / 2);
+    wideBezel.position.set(-0.105, -0.05, -0.24);
+    gimbalGroup.add(wideBezel);
 
-    const teleGlass = new THREE.Mesh(new THREE.CircleGeometry(0.07, 16), lensCoatingMat);
-    teleGlass.position.set(0.11, 0, -0.191);
-    gimbalBase.add(teleGlass);
+    const wideGlass = new THREE.Mesh(
+      new THREE.CircleGeometry(0.095, 24),
+      wideLensGlassMat
+    );
+    wideGlass.position.set(-0.105, -0.05, -0.286);
+    gimbalGroup.add(wideGlass);
 
-    droneGroup.add(gimbalBase);
+    const wideCoating = new THREE.Mesh(
+      new THREE.CircleGeometry(0.075, 24),
+      blueCoatingMat
+    );
+    wideCoating.position.set(-0.105, -0.05, -0.287);
+    gimbalGroup.add(wideCoating);
 
-    // --- 4 Carbon Fiber Arms & Motors ---
+    // 2. Secondary 70mm 48MP Telephoto Lens Assembly (Right Lens)
+    const teleBezel = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.095, 0.095, 0.07, 24),
+      metalBezelMat
+    );
+    teleBezel.rotateX(Math.PI / 2);
+    teleBezel.position.set(0.11, -0.05, -0.24);
+    gimbalGroup.add(teleBezel);
+
+    const teleGlass = new THREE.Mesh(
+      new THREE.CircleGeometry(0.072, 24),
+      wideLensGlassMat
+    );
+    teleGlass.position.set(0.11, -0.05, -0.276);
+    gimbalGroup.add(teleGlass);
+
+    const teleCoating = new THREE.Mesh(
+      new THREE.CircleGeometry(0.055, 24),
+      violetCoatingMat
+    );
+    teleCoating.position.set(0.11, -0.05, -0.277);
+    gimbalGroup.add(teleCoating);
+
+    droneGroup.add(gimbalGroup);
+
+    // --- 4 Carbon Fiber Boom Arms, Hinge Knuckles & Motors ---
     const armPositions = [
       { name: 'FL', x: -1.35, y: 0.08, z: -0.95, angle: 0.62 },
       { name: 'FR', x: 1.35, y: 0.08, z: -0.95, angle: -0.62 },
@@ -340,113 +542,174 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
     const ledGlowSprites = [];
 
     armPositions.forEach((pos, idx) => {
-      // Structural Carbon Arm Boom
-      const armLength = Math.sqrt(pos.x * pos.x + pos.z * pos.z) * 0.92;
-      const armGeom = new THREE.CylinderGeometry(0.065, 0.075, armLength, 12);
+      // Hinge Knuckle Joint where arm attaches to fuselage
+      const hinge = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.1, 0.1, 0.18, 16),
+        metalBezelMat
+      );
+      hinge.position.set(pos.x * 0.22, pos.y, pos.z * 0.22);
+      droneGroup.add(hinge);
+
+      // Structural Carbon Fiber Boom Arm
+      const armLength = Math.sqrt(pos.x * pos.x + pos.z * pos.z) * 0.90;
+      const armGeom = new THREE.CylinderGeometry(0.07, 0.08, armLength, 16);
       const arm = new THREE.Mesh(armGeom, carbonArmMat);
-      arm.position.set(pos.x * 0.5, pos.y, pos.z * 0.5);
+      arm.position.set(pos.x * 0.52, pos.y, pos.z * 0.52);
       arm.rotation.z = Math.PI / 2;
       arm.rotation.y = pos.angle;
       arm.castShadow = true;
       droneGroup.add(arm);
 
-      // AO joint where the arm socket meets the fuselage — small dark sphere
-      // tucked at the root, invisible on its own but darkens the seam.
-      const armRootAO = new THREE.Mesh(new THREE.SphereGeometry(0.09, 8, 8), aoJointMat);
-      armRootAO.position.set(pos.x * 0.12, pos.y - 0.02, pos.z * 0.12);
-      droneGroup.add(armRootAO);
+      // Foldable Landing Legs under Front Motor Mounts
+      if (pos.name === 'FL' || pos.name === 'FR') {
+        const leg = new THREE.Mesh(
+          new THREE.CylinderGeometry(0.035, 0.02, 0.32, 12),
+          bodyDarkMat
+        );
+        leg.position.set(pos.x, pos.y - 0.16, pos.z - 0.04);
+        leg.rotation.x = 0.25;
+        droneGroup.add(leg);
+      }
 
-      // Brushless Motor Pod
-      const motorGeom = new THREE.CylinderGeometry(0.2, 0.22, 0.22, 16);
-      const motor = new THREE.Mesh(motorGeom, motorMat);
-      motor.position.set(pos.x, pos.y + 0.06, pos.z);
-      motor.castShadow = true;
-      droneGroup.add(motor);
+      // CNC Machined Brushless Motor Base & Stator Coil Ring
+      const motorBase = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.22, 0.24, 0.08, 24),
+        motorMat
+      );
+      motorBase.position.set(pos.x, pos.y + 0.02, pos.z);
+      droneGroup.add(motorBase);
 
-      // AO ring at the motor-to-arm joint
-      const motorJointAO = new THREE.Mesh(new THREE.TorusGeometry(0.1, 0.03, 8, 16), aoJointMat);
-      motorJointAO.rotation.x = Math.PI / 2;
-      motorJointAO.position.set(pos.x, pos.y - 0.02, pos.z);
-      droneGroup.add(motorJointAO);
+      const statorCoil = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.19, 0.19, 0.06, 24),
+        copperStatorMat
+      );
+      statorCoil.position.set(pos.x, pos.y + 0.08, pos.z);
+      droneGroup.add(statorCoil);
 
-      // Motor Spinner Hub
-      const spinnerGeom = new THREE.ConeGeometry(0.08, 0.12, 16);
-      const spinner = new THREE.Mesh(spinnerGeom, motorMat);
-      spinner.position.set(pos.x, pos.y + 0.2, pos.z);
-      droneGroup.add(spinner);
+      // CNC Motor Bell Cap with Specular Lip Ring
+      const motorBell = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.21, 0.21, 0.16, 24),
+        motorMat
+      );
+      motorBell.position.set(pos.x, pos.y + 0.14, pos.z);
+      motorBell.castShadow = true;
+      droneGroup.add(motorBell);
 
-      // Rotating Propeller Group
+      const motorRimHighlight = new THREE.Mesh(
+        new THREE.TorusGeometry(0.205, 0.012, 12, 24),
+        metalBezelMat
+      );
+      motorRimHighlight.rotation.x = Math.PI / 2;
+      motorRimHighlight.position.set(pos.x, pos.y + 0.22, pos.z);
+      droneGroup.add(motorRimHighlight);
+
+      // Quick-Release Propeller Lock Post (Central silver post)
+      const propLockPost = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.06, 0.06, 0.1, 16),
+        metalBezelMat
+      );
+      propLockPost.position.set(pos.x, pos.y + 0.26, pos.z);
+      droneGroup.add(propLockPost);
+
+      // --- Rotating Low-Noise Propeller Assembly ---
       const propGroup = new THREE.Group();
-      propGroup.position.set(pos.x, pos.y + 0.18, pos.z);
+      propGroup.position.set(pos.x, pos.y + 0.24, pos.z);
 
-      // Tapered airfoil blade: thin twisted profile instead of a flat box.
-      // Built from a shape (chord tapering toward the tip) extruded thin,
-      // with a slight twist per segment to fake an airfoil silhouette.
+      // Central Propeller Hub Cap
+      const hubCap = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.09, 0.11, 0.05, 16),
+        bodyDarkMat
+      );
+      propGroup.add(hubCap);
+
+      // Aerodynamic Airfoil Blade Shape
       const bladeShape = new THREE.Shape();
-      bladeShape.moveTo(-0.02, 0.13);
-      bladeShape.quadraticCurveTo(0.35, 0.1, 0.7, 0.045);
-      bladeShape.lineTo(0.7, -0.045);
-      bladeShape.quadraticCurveTo(0.35, -0.09, -0.02, -0.13);
-      bladeShape.lineTo(-0.02, 0.13);
-      const bladeExtrude = new THREE.ExtrudeGeometry(bladeShape, {
+      bladeShape.moveTo(0, 0.12);
+      bladeShape.quadraticCurveTo(0.35, 0.095, 0.65, 0.04);
+      bladeShape.lineTo(0.65, -0.04);
+      bladeShape.quadraticCurveTo(0.35, -0.085, 0, -0.12);
+      bladeShape.lineTo(0, 0.12);
+
+      const bladeGeom = new THREE.ExtrudeGeometry(bladeShape, {
         depth: 0.012,
         bevelEnabled: true,
-        bevelThickness: 0.004,
-        bevelSize: 0.004,
+        bevelThickness: 0.003,
+        bevelSize: 0.003,
         bevelSegments: 1,
         curveSegments: 8,
       });
-      bladeExtrude.center();
-      bladeExtrude.rotateX(Math.PI / 2);
+      bladeGeom.center();
+      bladeGeom.rotateX(Math.PI / 2);
 
-      const blade1 = new THREE.Mesh(bladeExtrude, bladeMat);
-      blade1.position.x = 0.32;
-      propGroup.add(blade1);
+      // Blade 1 (Dark Charcoal Body + Signature DJI Orange Tip)
+      const blade1Group = new THREE.Group();
+      const blade1Mesh = new THREE.Mesh(bladeGeom, bladeMat);
+      blade1Mesh.position.x = 0.32;
+      blade1Group.add(blade1Mesh);
 
-      const blade2 = new THREE.Mesh(bladeExtrude.clone(), bladeMat);
-      blade2.position.x = -0.32;
-      blade2.rotation.y = Math.PI;
-      propGroup.add(blade2);
+      // Signature Orange/Gold Tip Accent (Blade 1)
+      const tip1Mesh = new THREE.Mesh(
+        new THREE.BoxGeometry(0.12, 0.016, 0.07),
+        orangeTipMat
+      );
+      tip1Mesh.position.x = 0.61;
+      blade1Group.add(tip1Mesh);
+      propGroup.add(blade1Group);
 
-      // Translucent High-Speed Blur Disc, now with real radial falloff texture
-      const blurDisc = new THREE.Mesh(new THREE.RingGeometry(0.16, 0.74, 32), blurDiscMat);
+      // Blade 2 (180 degrees opposite)
+      const blade2Group = new THREE.Group();
+      const blade2Mesh = new THREE.Mesh(bladeGeom.clone(), bladeMat);
+      blade2Mesh.position.x = -0.32;
+      blade2Mesh.rotation.y = Math.PI;
+      blade2Group.add(blade2Mesh);
+
+      const tip2Mesh = new THREE.Mesh(
+        new THREE.BoxGeometry(0.12, 0.016, 0.07),
+        orangeTipMat
+      );
+      tip2Mesh.position.x = -0.61;
+      blade2Group.add(tip2Mesh);
+      propGroup.add(blade2Group);
+
+      // High-Speed Translucent Blur Disc
+      const blurDisc = new THREE.Mesh(new THREE.RingGeometry(0.16, 0.76, 32), blurDiscMat);
       blurDisc.rotation.x = -Math.PI / 2;
       propGroup.add(blurDisc);
 
       droneGroup.add(propGroup);
-      propellerGroups.push({ group: propGroup, clockwise: idx % 2 === 0, blade1, blade2 });
+      propellerGroups.push({ group: propGroup, clockwise: idx % 2 === 0 });
 
-      // Navigation LED Beacons — now with an additive glow sprite for bloom
+      // Navigation LED Strobes with Glow Bloom
       if (pos.name === 'FL') {
         const redLed = new THREE.Mesh(
-          new THREE.SphereGeometry(0.045, 8, 8),
+          new THREE.SphereGeometry(0.045, 12, 12),
           new THREE.MeshBasicMaterial({ color: 0xEF4444 })
         );
-        redLed.position.set(pos.x - 0.08, pos.y - 0.08, pos.z);
+        redLed.position.set(pos.x - 0.08, pos.y - 0.09, pos.z);
         droneGroup.add(redLed);
-        const glow = makeGlowSprite(0xEF4444, 0.32);
+        const glow = makeGlowSprite(0xEF4444, 0.35);
         glow.position.copy(redLed.position);
         droneGroup.add(glow);
         ledGlowSprites.push({ sprite: glow, phase: 0 });
       } else if (pos.name === 'FR') {
         const greenLed = new THREE.Mesh(
-          new THREE.SphereGeometry(0.045, 8, 8),
+          new THREE.SphereGeometry(0.045, 12, 12),
           new THREE.MeshBasicMaterial({ color: 0x10B981 })
         );
-        greenLed.position.set(pos.x + 0.08, pos.y - 0.08, pos.z);
+        greenLed.position.set(pos.x + 0.08, pos.y - 0.09, pos.z);
         droneGroup.add(greenLed);
-        const glow = makeGlowSprite(0x10B981, 0.32);
+        const glow = makeGlowSprite(0x10B981, 0.35);
         glow.position.copy(greenLed.position);
         droneGroup.add(glow);
         ledGlowSprites.push({ sprite: glow, phase: Math.PI * 0.4 });
       } else {
         const whiteLed = new THREE.Mesh(
-          new THREE.SphereGeometry(0.04, 8, 8),
+          new THREE.SphereGeometry(0.04, 12, 12),
           new THREE.MeshBasicMaterial({ color: 0xFFFFFF })
         );
-        whiteLed.position.set(pos.x, pos.y - 0.08, pos.z + 0.08);
+        whiteLed.position.set(pos.x, pos.y - 0.09, pos.z + 0.08);
         droneGroup.add(whiteLed);
-        const glow = makeGlowSprite(0xFFFFFF, 0.22);
+        const glow = makeGlowSprite(0xFFFFFF, 0.25);
         glow.position.copy(whiteLed.position);
         droneGroup.add(glow);
         ledGlowSprites.push({ sprite: glow, phase: Math.PI * (pos.name === 'RL' ? 0.9 : 1.3) });
@@ -455,70 +718,67 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
 
     propellersRef.current = propellerGroups;
 
-    // --- Dynamic Ground / Atmospheric Shadow Plane ---
+    // --- Dynamic Ground Contact Shadow Planes ---
     const canvas = document.createElement('canvas');
-    canvas.width = 128;
-    canvas.height = 128;
+    canvas.width = 256;
+    canvas.height = 256;
     const ctx = canvas.getContext('2d');
-    const grad = ctx.createRadialGradient(64, 64, 0, 64, 64, 60);
-    grad.addColorStop(0, 'rgba(0,0,0,0.65)');
-    grad.addColorStop(0.4, 'rgba(0,0,0,0.3)');
+    const grad = ctx.createRadialGradient(128, 128, 0, 128, 128, 120);
+    grad.addColorStop(0, 'rgba(0,0,0,0.72)');
+    grad.addColorStop(0.35, 'rgba(0,0,0,0.35)');
     grad.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, 128, 128);
+    ctx.fillRect(0, 0, 256, 256);
 
     const shadowTex = new THREE.CanvasTexture(canvas);
     const shadowMat = new THREE.MeshBasicMaterial({
       map: shadowTex,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.55,
       depthWrite: false,
     });
-    const shadowMesh = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 2.8), shadowMat);
+    const shadowMesh = new THREE.Mesh(new THREE.PlaneGeometry(3.8, 3.0), shadowMat);
     shadowMesh.rotation.x = -Math.PI / 2;
     shadowMesh.position.set(0, -2.2, 0);
-    shadowMesh.receiveShadow = false; // fake shadow already; real shadow-map catcher optional below
     droneGroup.add(shadowMesh);
     shadowMeshRef.current = shadowMesh;
 
-    // Real shadow-catcher plane (invisible material, only receives cast shadows)
-    // layered under the fake canvas shadow for extra grounding contact detail.
-    const catcherMat = new THREE.ShadowMaterial({ opacity: 0.22 });
+    const catcherMat = new THREE.ShadowMaterial({ opacity: 0.25 });
     const shadowCatcher = new THREE.Mesh(new THREE.PlaneGeometry(6, 6), catcherMat);
     shadowCatcher.rotation.x = -Math.PI / 2;
     shadowCatcher.position.set(0, -2.19, 0);
     shadowCatcher.receiveShadow = true;
     droneGroup.add(shadowCatcher);
 
-    // Initial 3D placement (Hovering gracefully on right side of hero)
+    // Initial 3D placement
     if (isMobileRef.current) {
-      droneGroup.position.set(0, -0.55, 1.2);
-      droneGroup.scale.set(0.65, 0.65, 0.65);
+      droneGroup.position.set(0, -1.65, 1.4);
+      droneGroup.scale.set(0.68, 0.68, 0.68);
     } else {
       droneGroup.position.set(2.5, 0.82, 1.9);
       droneGroup.scale.set(0.92, 0.92, 0.92);
     }
 
-    // Hotspots Group (Interactive 3D pins on the drone)
+    // Interactive 3D Hotspots Group (Pins)
     const hotspotsGroup = new THREE.Group();
     const hotspots = [
       {
-        id: 0, // CINEMA (Optics)
-        name: '50MP Dual Lens',
+        id: 0,
+        name: '50MP Dual Optics',
         position: new THREE.Vector3(0, -0.28, 1.05),
-        color: 0x34D399, // emerald
+        color: 0x34D399,
       },
       {
-        id: 1, // NIGHTSCAPE (LiDAR)
-        name: 'Omni LiDAR',
+        id: 1,
+        name: 'Omni LiDAR Pod',
         position: new THREE.Vector3(0, 0.42, 0.25),
-        color: 0x38BDF8, // sky blue
+        color: 0x38BDF8,
       },
       {
-        id: 2, // FLIGHT (Propulsion/Transmission)
+        id: 2,
         name: 'O4 Propulsion',
         position: new THREE.Vector3(1.5, 0.22, 1.15),
-        color: 0xFBBF24, // amber
+        color: 0xFBBF24,
       },
     ];
 
@@ -567,11 +827,9 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
     const INTRO_DURATION = 2.4;
     let introCompleted = false;
 
-    // Interactive Drag Orbit & Parallax State
     let isDragging = false;
     let dragPointerStartX = 0;
     let dragPointerStartY = 0;
-    let dragDistanceMoved = 0;
     let targetOrbitYaw = 0;
     let targetOrbitPitch = 0;
     let currentOrbitYaw = 0;
@@ -582,15 +840,13 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
 
-      const delta = Math.min(clock.getDelta(), 0.1); // clamp delta against tab background pauses
+      const delta = Math.min(clock.getDelta(), 0.1);
       const elapsedTime = clock.getElapsedTime();
 
-      // Cinematic Intro Progress (Flies in from depth on first load)
       let introInv = 0;
       if (!introCompleted) {
         introElapsed += delta;
         const rawIntro = Math.min(1, introElapsed / INTRO_DURATION);
-        // Smooth quartic ease-out
         const introEase = 1 - Math.pow(1 - rawIntro, 4);
         introInv = 1 - introEase;
 
@@ -607,20 +863,20 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       currentProgressRef.current += (target - prev) * 0.085;
       const p = currentProgressRef.current;
 
-      // 1. Continuous Realistic Propeller Rotation
-      const rpm = 24 + p * 18 + introInv * 12;
+      // Realistic Propeller Spin RPM
+      const rpm = 26 + p * 20 + introInv * 14;
       propellerGroups.forEach((item) => {
         const dir = item.clockwise ? 1 : -1;
         item.group.rotation.y += rpm * delta * dir;
       });
 
-      // LED strobe pulse via emissive-style opacity flicker on the glow sprites
+      // Strobe Light LED Bloom Flicker
       ledGlowSprites.forEach((item) => {
-        const pulse = Math.pow(Math.max(0, Math.sin(elapsedTime * 2.2 + item.phase)), 6);
+        const pulse = Math.pow(Math.max(0, Math.sin(elapsedTime * 2.5 + item.phase)), 5);
         item.sprite.material.opacity = 0.25 + pulse * 0.75;
       });
 
-      // Interactive 3D Hotspots Animation (Pulse & face camera)
+      // Hotspots Pulse & Camera Face
       hotspotMeshes.forEach((h, i) => {
         const pulse = 1 + Math.sin(elapsedTime * 3.5 + i * 1.5) * 0.25;
         h.ring.scale.set(pulse, pulse, pulse);
@@ -637,7 +893,7 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
         targetOrbitPitch *= 0.985;
       }
 
-      // 2. Idle Natural Hovering (Subtle aerodynamic float)
+      // Hover Motion Physics
       const idleWeight = Math.max(0, (1 - p * 2.5) * (1 - introInv));
       const hoverY = Math.sin(elapsedTime * 1.7) * 0.08 * idleWeight;
       const hoverX = Math.cos(elapsedTime * 1.2) * 0.04 * idleWeight;
@@ -648,12 +904,11 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
         const drone = droneGroupRef.current;
 
         const startX = isMobileRef.current ? 0 : 2.5;
-        const startY = isMobileRef.current ? -0.55 : 0.82;
-        const startZ = isMobileRef.current ? 1.2 : 1.9;
+        const startY = isMobileRef.current ? -1.65 : 0.82;
+        const startZ = isMobileRef.current ? 1.4 : 1.9;
 
-        // Intro swoop offsets (starts in distance, descends and curves inwards)
-        const introOffsetX = (isMobileRef.current ? 1.8 : 3.6) * introInv;
-        const introOffsetY = 1.4 * introInv;
+        const introOffsetX = (isMobileRef.current ? 1.2 : 3.6) * introInv;
+        const introOffsetY = (isMobileRef.current ? 1.0 : 1.4) * introInv;
         const introOffsetZ = -22.0 * introInv;
         const introFlarePitch = Math.sin(introInv * Math.PI) * -0.15;
         const introBankRoll = Math.sin(introInv * Math.PI) * 0.14;
@@ -666,7 +921,7 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
         const currentBaseZ = startZ + introOffsetZ;
 
         const targetX = currentBaseX + (0 - startX) * Math.pow(p, 1.2) * 0.75 + hoverX;
-        const targetY = currentBaseY + (0.4 - startY) * p * 0.6 + hoverY;
+        const targetY = currentBaseY + (isMobileRef.current ? -0.8 : 0.4 - startY) * p * 0.6 + hoverY;
         const targetZ = currentBaseZ + flightDepth;
 
         drone.position.set(targetX, targetY, targetZ);
@@ -681,7 +936,6 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
 
         const flightRoll = Math.sin(p * Math.PI) * -0.06;
 
-        // Apply Flight Physics + 360° Drag Orbit + Mouse Parallax
         drone.rotation.x = forwardPitch + hoverPitch + introFlarePitch + currentOrbitPitch + mouseParallaxY;
         drone.rotation.y = ((isMobileRef.current ? 0 : -0.15) + introYaw + currentOrbitYaw + mouseParallaxX) * (1 - p);
         drone.rotation.z = flightRoll + hoverRoll + introBankRoll - currentOrbitYaw * 0.12;
@@ -691,14 +945,10 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
           const introShadowMult = 1 - introInv * 0.85;
           const shadowScale = Math.max(0.05, (1 - p * 0.9) * introShadowMult);
           shadow.scale.set(shadowScale, shadowScale, shadowScale);
-          shadow.material.opacity = Math.max(0, (1 - p * 1.25) * 0.45 * introShadowMult);
+          shadow.material.opacity = Math.max(0, (1 - p * 1.25) * 0.55 * introShadowMult);
         }
 
-        if (p >= 0.99) {
-          drone.visible = false;
-        } else {
-          drone.visible = true;
-        }
+        drone.visible = p < 0.99;
       }
 
       renderer.render(scene, camera);
@@ -757,7 +1007,6 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       if (e.target.closest('button, a, input, textarea, select, [role="button"]')) return;
       const hit = checkDroneIntersect(e.clientX, e.clientY);
       if (hit) {
-        // If clicked directly on a 3D hotspot pin
         if (hit.object.userData?.isHotspot) {
           if (onHotspotClickRef.current) {
             onHotspotClickRef.current(hit.object.userData.id);
@@ -765,11 +1014,9 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
           return;
         }
 
-        // Initiate 360° Drag Orbit
         isDragging = true;
         dragPointerStartX = e.clientX;
         dragPointerStartY = e.clientY;
-        dragDistanceMoved = 0;
       }
     };
 
@@ -777,7 +1024,6 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
       if (isDragging) {
         const deltaX = e.clientX - dragPointerStartX;
         const deltaY = e.clientY - dragPointerStartY;
-        dragDistanceMoved += Math.abs(deltaX) + Math.abs(deltaY);
         dragPointerStartX = e.clientX;
         dragPointerStartY = e.clientY;
 
@@ -801,15 +1047,7 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
     const handlePointerUp = () => {
       if (isDragging) {
         isDragging = false;
-        if (document.body.style.cursor === 'grabbing') {
-          document.body.style.cursor = '';
-        }
-        // If mouse moved less than 8px, it was a click
-        if (dragDistanceMoved < 8) {
-          if (onDroneClickRef.current) {
-            onDroneClickRef.current();
-          }
-        }
+        document.body.style.cursor = '';
       }
     };
 
@@ -817,47 +1055,24 @@ export default function ThreeDroneScene({ scrollProgress = 0, onIntroComplete, o
     window.addEventListener('pointermove', handlePointerMove);
     window.addEventListener('pointerup', handlePointerUp);
 
-    // 10. CLEANUP & RESOURCE DISPOSAL
     return () => {
-      cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('pointerdown', handlePointerDown);
       window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('pointerup', handlePointerUp);
-      if (document.body.style.cursor === 'pointer' || document.body.style.cursor === 'grab' || document.body.style.cursor === 'grabbing') {
-        document.body.style.cursor = '';
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
       }
-
-      scene.traverse((obj) => {
-        if (obj.geometry) obj.geometry.dispose();
-        if (obj.material) {
-          if (Array.isArray(obj.material)) {
-            obj.material.forEach((m) => {
-              if (m.map) m.map.dispose();
-              m.dispose();
-            });
-          } else {
-            if (obj.material.map) obj.material.map.dispose();
-            obj.material.dispose();
-          }
-        }
-      });
-
-      envMap.dispose();
-      blurDiscTex.dispose();
-
-      if (renderer.domElement && container.contains(renderer.domElement)) {
-        container.removeChild(renderer.domElement);
+      if (renderer && renderer.domElement && renderer.domElement.parentNode) {
+        renderer.domElement.parentNode.removeChild(renderer.domElement);
       }
-      renderer.dispose();
     };
   }, []);
 
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-hidden"
-      aria-hidden="true"
+      className="absolute inset-0 z-10 w-full h-full pointer-events-auto select-none"
     />
   );
 }

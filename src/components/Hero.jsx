@@ -177,9 +177,17 @@ export default function Hero({ onOpenBooking }) {
                 </a>
               </div>
 
+              {/* Mobile Dedicated 3D Drone Interactive Stage Spacer & Badge */}
+              <div className="lg:hidden h-[210px] sm:h-[260px] my-3 relative flex flex-col items-center justify-end pointer-events-none">
+                <div className="px-3.5 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/20 text-zinc-200 text-[10px] font-mono flex items-center gap-2 shadow-2xl pointer-events-auto">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>DJI AIR 3S • DRAG 360° // TAP HOTSPOTS</span>
+                </div>
+              </div>
+
               {/* Mobile DJI Specs Strip (Toggle button on mobile) */}
               <div 
-                className="mt-6 lg:hidden transition-all duration-300 ease-out"
+                className="mt-2 lg:hidden transition-all duration-300 ease-out"
                 style={{
                   opacity: showcaseOpacity,
                   transform: `translateY(${showcaseTranslateY}px)`,
