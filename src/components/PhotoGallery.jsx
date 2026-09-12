@@ -21,7 +21,7 @@ export default function PhotoGallery() {
       id: 2,
       title: 'Outdoor Youth Event & Setup',
       category: 'events',
-      location: 'Durham Event Park',
+      location: 'Newcastle sixer crickert match',
       camera: 'DJI Air 3S • Ground & Aerial',
       aspect: 'aspect-[4/5]',
       url: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
@@ -71,8 +71,8 @@ export default function PhotoGallery() {
     { id: 'landscape', label: 'Sports & Landscape' },
   ];
 
-  const filteredPhotos = activeFilter === 'all' 
-    ? photos 
+  const filteredPhotos = activeFilter === 'all'
+    ? photos
     : photos.filter(p => p.category === activeFilter);
 
   const handleOpenPhoto = (photo) => {
@@ -83,7 +83,7 @@ export default function PhotoGallery() {
   return (
     <section id="photography" className="py-16 sm:py-24 md:py-32 bg-[#0B0D11] relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         {/* Editorial Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
           <div>
@@ -102,11 +102,10 @@ export default function PhotoGallery() {
               <button
                 key={cat.id}
                 onClick={() => setActiveFilter(cat.id)}
-                className={`flex-shrink-0 px-4 py-2 text-xs font-semibold tracking-wide transition-all whitespace-nowrap ${
-                  activeFilter === cat.id
+                className={`flex-shrink-0 px-4 py-2 text-xs font-semibold tracking-wide transition-all whitespace-nowrap ${activeFilter === cat.id
                     ? 'btn-liquid-primary shadow-sm'
                     : 'btn-liquid text-zinc-300 hover:text-white'
-                }`}
+                  }`}
               >
                 {cat.label}
               </button>
@@ -164,11 +163,11 @@ export default function PhotoGallery() {
 
       {/* Lightbox Modal with Animated Loading Spinner */}
       {activeImage && (
-        <div 
+        <div
           onClick={() => setActiveImage(null)}
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 cursor-zoom-out animate-in fade-in duration-200"
         >
-          <div 
+          <div
             onClick={(e) => e.stopPropagation()}
             className="relative max-w-5xl w-full bg-[#0F1217] rounded-2xl overflow-hidden border border-white/15 shadow-2xl cursor-default"
           >
@@ -198,7 +197,7 @@ export default function PhotoGallery() {
                 </button>
               </div>
             </div>
-            
+
             <div className="relative min-h-[380px] max-h-[82vh] bg-black/80 flex items-center justify-center p-2 sm:p-4">
               {isImageLoading && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 gap-3 z-10">
@@ -206,16 +205,16 @@ export default function PhotoGallery() {
                   <span className="text-xs font-mono tracking-wider text-zinc-400">Loading High-Res Image...</span>
                 </div>
               )}
-              <img 
-                src={activeImage.fullUrl || activeImage.url} 
-                alt={activeImage.title} 
+              <img
+                src={activeImage.fullUrl || activeImage.url}
+                alt={activeImage.title}
                 onError={(e) => {
                   if (activeImage.fallbackUrl && e.currentTarget.src !== activeImage.fallbackUrl) {
                     e.currentTarget.src = activeImage.fallbackUrl;
                   }
                 }}
                 onLoad={() => setIsImageLoading(false)}
-                className={`max-h-[75vh] sm:max-h-[80vh] w-full max-w-full object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'}`} 
+                className={`max-h-[75vh] sm:max-h-[80vh] w-full max-w-full object-contain rounded-xl shadow-2xl transition-opacity duration-300 ${isImageLoading ? 'opacity-0' : 'opacity-100'}`}
               />
             </div>
           </div>

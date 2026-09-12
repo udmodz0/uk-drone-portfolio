@@ -33,7 +33,7 @@ export default function Footer({ onOpenAdmin, contactData }) {
             </div>
 
             <p className="text-xs text-zinc-400 leading-relaxed max-w-sm font-normal">
-              Professional CAA registered drone cinematography and high-resolution event photography. Based in Newcastle upon Tyne (NE3), serving Sunderland, Durham, and across North East England.
+              Professional CAA registered drone cinematography and high-resolution event photography. Based in Newcastle upon Tyne (NE3), serving Sunderland, Newcastle Sixer Cricket Match, and across North East England.
             </p>
 
             <div className="text-[11px] font-mono text-zinc-400">
@@ -67,7 +67,7 @@ export default function Footer({ onOpenAdmin, contactData }) {
                 Regional Base: {contactData?.location || 'Newcastle NE3'}
               </li>
               <li className="text-zinc-400">
-                Coverage: Newcastle • Sunderland • Durham • North East England
+                Coverage: Newcastle • Sunderland • Newcastle Sixer Cricket Match • North East England
               </li>
               <li>
                 <a 

@@ -21,7 +21,7 @@ export default function Services() {
       fullImage: 'https://files.catbox.moe/dddnw8.JPG',
       fallbackFullImage: 'https://i.ibb.co/8L0kgQQV/IMG-0018.jpg',
       tag: '4K 60FPS D-Log',
-      location: 'Durham Event Grounds',
+      location: 'Newcastle Sixer Cricket Match Grounds',
     },
     {
       title: 'Ground Photography',

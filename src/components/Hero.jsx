@@ -12,7 +12,7 @@ export default function Hero({ onOpenBooking }) {
     { label: 'CAA REGISTERED', detail: 'UK Certified Operator' },
     { label: '50MP RESOLUTION', detail: 'Ultra-HD Aerial Stills' },
     { label: '4K CINEMA', detail: '60fps 10-bit D-Log Video' },
-    { label: 'NORTH EAST BASE', detail: 'Newcastle • Sunderland • Durham' },
+    { label: 'NORTH EAST BASE', detail: 'Newcastle • Sunderland • Newcastle Sixer Cricket Match' },
   ];
 
   const djiSpecs = [
@@ -155,7 +155,7 @@ export default function Hero({ onOpenBooking }) {
 
               {/* Supporting Copy */}
               <p className="mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg text-zinc-300 font-normal leading-relaxed max-w-xl">
-                Professional aerial photography, videography, and event coverage across Newcastle, Sunderland, Durham, and surrounding areas.
+                Professional aerial photography, videography, and event coverage across Newcastle, Sunderland, Newcastle Sixer Cricket Match, and surrounding areas.
               </p>
 
               {/* Exact Liquid Pill CTAs */}

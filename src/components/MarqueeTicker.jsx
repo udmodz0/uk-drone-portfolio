@@ -5,7 +5,7 @@ export default function MarqueeTicker() {
     'UK CAA Registered & Certified Operator',
     'DJI Air 3S 50MP Dual-Camera Aerial Stills',
     'Cinematic 4K 60fps 10-Bit D-Log Video',
-    'Newcastle (NE3 Base) • Sunderland • Durham Coverage',
+    'Newcastle (NE3 Base) • Sunderland • Newcastle Sixer Cricket Match Coverage',
     'Advance 1-Week Booking for Airspace Clearance',
     'Full Commercial Public Liability Assurance',
     'Professional Post-Production & Color Grading',

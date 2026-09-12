@@ -3,7 +3,7 @@ export const DEFAULT_SITE_DATA = {
     whatsapp: '+44 7432266867',
     cleanNumber: '447432266867',
     location: 'Newcastle NE3',
-    coverage: 'Newcastle • Sunderland • Durham & surrounding areas',
+    coverage: 'Newcastle • Sunderland • Newcastle Sixer Cricket Match & surrounding areas',
     bookingNotice: 'Please book your appointment at least 1 week in advance to allow for CAA airspace pre-flight safety checks.'
   },
   adminPassword: 'admin',

@@ -272,8 +272,8 @@ export default function VideoShowcase() {
     },
     {
       id: 3,
-      title: 'Durham Festival & Youth Setup',
-      subtitle: 'Durham Sports Park (IMG 8292)',
+      title: 'Newcastle Sixer Cricket Match Setup',
+      subtitle: 'Newcastle Sixer Cricket Match Park (IMG 8292)',
       duration: '00:25',
       quality: '4K Reel',
       thumbnail: 'https://i.ibb.co/LX8Kdssf/IMG-0018.jpg',
@@ -297,7 +297,7 @@ export default function VideoShowcase() {
             Events. Moments.
           </h2>
           <p className="mt-3 sm:mt-4 text-zinc-300 text-xs sm:text-base leading-relaxed font-normal max-w-xl">
-            Experience sample 4K cinema highlight reels filmed with our dual-camera DJI Air 3S platform across Newcastle, Sunderland, and Durham. Hover over any reel to preview automatically.
+            Experience sample 4K cinema highlight reels filmed with our dual-camera DJI Air 3S platform across Newcastle, Sunderland, and Newcastle Sixer Cricket Match. Hover over any reel to preview automatically.
           </p>
         </div>
 

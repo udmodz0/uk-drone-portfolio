@@ -29,7 +29,7 @@ export default function CaaBadge() {
     },
     { 
       title: 'North East Regional Coverage', 
-      desc: 'Base of operations in Newcastle upon Tyne (NE3), serving Sunderland, Durham, and across North East England.', 
+      desc: 'Base of operations in Newcastle upon Tyne (NE3), serving Sunderland, Newcastle Sixer Cricket Match, and across North East England.', 
       icon: 'ri-map-pin-2-line' 
     }
   ];
@@ -84,7 +84,7 @@ export default function CaaBadge() {
             <i className="ri-information-line text-base text-zinc-400"></i>
             <span>All flights require on-site risk assessment and formal pre-flight authorization.</span>
           </div>
-          <span className="text-zinc-300 font-medium">Newcastle NE3 • Sunderland • Durham</span>
+          <span className="text-zinc-300 font-medium">Newcastle NE3 • Sunderland • Newcastle Sixer Cricket Match</span>
         </div>
 
       </div>

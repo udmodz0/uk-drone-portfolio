@@ -115,7 +115,7 @@ Please confirm flight availability!`;
             </label>
             <input
               type="text"
-              placeholder="e.g. Newcastle NE3, Sunderland, Durham"
+              placeholder="e.g. Newcastle NE3, Sunderland, Newcastle Sixer Cricket Match"
               value={locationInput}
               onChange={(e) => setLocationInput(e.target.value)}
               className="w-full px-3.5 py-3 rounded-xl bg-[#141820] border border-white/10 text-white text-xs sm:text-xs focus:border-white/30 focus:outline-none"

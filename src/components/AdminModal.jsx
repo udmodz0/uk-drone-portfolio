@@ -23,8 +23,8 @@ export default function AdminModal({ isOpen, onClose, siteData, onSaveData }) {
 
   const handleSave = () => {
     onSaveData(formData);
-    setSaveMessage('✓ Changes saved successfully');
-    setTimeout(() => setSaveMessage(''), 3000);
+    setSaveMessage('✓ Changes saved & synced to Firebase Firestore database.');
+    setTimeout(() => setSaveMessage(''), 3500);
   };
 
   const handleReset = () => {

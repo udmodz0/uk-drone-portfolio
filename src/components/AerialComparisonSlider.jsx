@@ -25,7 +25,7 @@ export default function AerialComparisonSlider() {
     };
   }, []);
 
-  // Real client photos taken by AirVibe UK across Newcastle, Durham & Sunderland
+  // Real client photos taken by AirVibe UK across Newcastle, Newcastle Sixer Cricket Match & Sunderland
   const presets = [
     {
       title: 'Trophy Presentation & Pavilion Gathering',
@@ -46,7 +46,7 @@ export default function AerialComparisonSlider() {
     },
     {
       title: 'Tournament Winners & Ground Scale',
-      subtitle: 'Durham Sports Park Complex',
+      subtitle: 'Newcastle Sixer Cricket Match Park Complex',
       badge: 'Real Client Shoot',
       groundImg: 'https://files.catbox.moe/9mz2ri.JPEG',
       groundFallback: 'https://i.ibb.co/Kc42r24L/IMG-0021.jpg',
@@ -59,7 +59,7 @@ export default function AerialComparisonSlider() {
       aerialLabel: 'Real Drone Aerial (DJI Air 3S 50MP)',
       aerialDesc: 'Real bird’s-eye elevation photo at 75m altitude displaying the complete multi-pitch setup, perimeter grounds, and event infrastructure with architectural symmetry.',
       telemetry: 'ALT: 75M // 1" CMOS 50MP // LEVEL 6 WIND RESIST // CAA OP',
-      location: 'Durham Event Park Grounds',
+      location: 'Newcastle Sixer Cricket Match Grounds',
     },
     {
       title: 'Action Dynamics & 70mm Telephoto Depth',
@@ -168,6 +168,19 @@ export default function AerialComparisonSlider() {
           onTouchMove={handleTouchMove}
           className="relative w-full h-[390px] sm:h-[540px] lg:h-[620px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-white/20 select-none cursor-ew-resize group bg-[#11141B]"
         >
+          {/* Top Non-overlapping Badge Overlay Container */}
+          <div className="absolute top-3 inset-x-3 sm:top-5 sm:inset-x-5 z-20 flex items-center justify-between gap-2 pointer-events-none">
+            <span className="px-2.5 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full text-[9px] sm:text-xs font-mono tracking-wider uppercase bg-black/85 border border-white/25 text-zinc-200 backdrop-blur-md shadow-xl flex items-center gap-1.5 max-w-[48%] truncate">
+              <i className="ri-camera-3-line text-amber-400 shrink-0"></i>
+              <span className="font-semibold truncate">{current.groundLabel}</span>
+            </span>
+
+            <span className="px-2.5 py-1.5 sm:px-3.5 sm:py-1.5 rounded-full text-[9px] sm:text-xs font-mono tracking-wider uppercase bg-emerald-950/90 border border-emerald-500/50 text-emerald-300 backdrop-blur-md shadow-xl flex items-center gap-1.5 max-w-[48%] truncate">
+              <i className="ri-flight-takeoff-line text-emerald-400 shrink-0"></i>
+              <span className="font-semibold truncate">{current.aerialLabel}</span>
+            </span>
+          </div>
+
           {/* Background Image: Real Aerial Drone Photo (Right side revealed) */}
           <img
             src={current.aerialImg}
@@ -206,22 +219,6 @@ export default function AerialComparisonSlider() {
               }}
               loading="eager"
             />
-            
-            {/* Ground label overlay (Left side) */}
-            <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20">
-              <span className="px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-mono tracking-wider uppercase bg-black/85 border border-white/25 text-zinc-200 backdrop-blur-md shadow-xl flex items-center gap-1.5">
-                <i className="ri-camera-3-line text-amber-400"></i>
-                <span className="font-semibold">{current.groundLabel}</span>
-              </span>
-            </div>
-          </div>
-
-          {/* Aerial label overlay (Right side) */}
-          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20">
-            <span className="px-3.5 py-1.5 rounded-full text-[10px] sm:text-xs font-mono tracking-wider uppercase bg-emerald-950/90 border border-emerald-500/50 text-emerald-300 backdrop-blur-md shadow-xl flex items-center gap-1.5">
-              <i className="ri-flight-takeoff-line text-emerald-400"></i>
-              <span className="font-semibold">{current.aerialLabel}</span>
-            </span>
           </div>
 
           {/* Telemetry HUD (Bottom Right) */}

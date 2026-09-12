@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import MarqueeTicker from './components/MarqueeTicker';
 import Hero from './components/Hero';
@@ -18,6 +18,7 @@ import ContactModal from './components/ContactModal';
 import FloatingActionDock from './components/FloatingActionDock';
 import InteractiveBackground from './components/InteractiveBackground';
 import { getStoredData, saveStoredData } from './utils/initialData';
+import { fetchSiteDataFromFirebase, saveSiteDataToFirebase } from './services/firebase';
 
 export default function App() {
   const [siteData, setSiteData] = useState(getStoredData());
@@ -25,10 +26,28 @@ export default function App() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
 
-  // Sync state to localStorage whenever modified
-  const handleSaveData = (newData) => {
+  // Fetch dynamic price configuration from Firebase Firestore on mount
+  useEffect(() => {
+    let isMounted = true;
+    async function syncFirebaseData() {
+      const fbData = await fetchSiteDataFromFirebase();
+      if (fbData && isMounted) {
+        setSiteData((prev) => {
+          const merged = { ...prev, ...fbData };
+          saveStoredData(merged);
+          return merged;
+        });
+      }
+    }
+    syncFirebaseData();
+    return () => { isMounted = false; };
+  }, []);
+
+  // Sync state to localStorage and Firebase Firestore database whenever modified
+  const handleSaveData = async (newData) => {
     setSiteData(newData);
     saveStoredData(newData);
+    await saveSiteDataToFirebase(newData);
   };
 
   const handleSelectPackage = (name, price) => {

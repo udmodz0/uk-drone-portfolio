@@ -24,7 +24,7 @@ export default function AboutIntro({ onOpenBooking }) {
           {/* Right: Readable Paragraph Content */}
           <div className="lg:col-span-6 space-y-4 sm:space-y-6 text-zinc-300 text-sm sm:text-base lg:text-lg leading-relaxed font-normal">
             <p>
-              Based in Newcastle upon Tyne (NE3) and serving Sunderland, Durham, and across North East England, AirVibe delivers high-calibre aerial cinematography and ground photography for private celebrations, outdoor events, and bespoke productions.
+              Based in Newcastle upon Tyne (NE3) and serving Sunderland, Newcastle Sixer Cricket Match, and across North East England, AirVibe delivers high-calibre aerial cinematography and ground photography for private celebrations, outdoor events, and bespoke productions.
             </p>
             <p className="text-zinc-400 text-xs sm:text-sm sm:leading-relaxed">
               Operating under strict UK Civil Aviation Authority (CAA) standards, every flight is meticulously planned with full risk assessments, airspace clearances, and commercial public liability assurance. We pair the flagship DJI Air 3S 50MP dual-camera system with professional color grading to deliver timeless, cinema-grade reels.
@@ -59,7 +59,7 @@ export default function AboutIntro({ onOpenBooking }) {
           </div>
           <div>
             <div className="font-display text-xl sm:text-2xl lg:text-3xl font-bold text-[#FAF9F6]">North East UK</div>
-            <p className="text-[10px] sm:text-xs text-zinc-400 mt-1 uppercase tracking-wider font-mono">Newcastle • Sunderland • Durham</p>
+            <p className="text-[10px] sm:text-xs text-zinc-400 mt-1 uppercase tracking-wider font-mono">Newcastle • Sunderland • Newcastle Sixer Cricket Match</p>
           </div>
         </div>
 

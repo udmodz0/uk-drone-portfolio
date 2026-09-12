@@ -58,7 +58,7 @@ export default function QuoteEstimator({ onOpenBooking, whatsappNumber = '447432
   const locations = [
     { id: 'newcastle', label: 'Newcastle upon Tyne (NE3 Base)', fee: 0, tag: 'FREE DISPATCH' },
     { id: 'sunderland', label: 'Sunderland & Coastline', fee: 0, tag: 'FREE DISPATCH' },
-    { id: 'durham', label: 'Durham City & Venues', fee: 0, tag: 'FREE DISPATCH' },
+    { id: 'durham', label: 'Newcastle Sixer Cricket Match', fee: 0, tag: 'FREE DISPATCH' },
     { id: 'northumberland', label: 'Wider Northumberland', fee: 25, tag: '+£25 TRAVEL' },
   ];
 
